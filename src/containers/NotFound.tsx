@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 
 import { TITLE } from '../constants';
 
-class NotFound extends React.Component {
+class NotFound extends React.Component<{}> {
   render() {
     return (
       <div>
         <Helmet>
-          <title>${TITLE} - 404 Not Found</title>
+          <title>{TITLE} - 404 Not Found</title>
           <meta name="description" content="404 Page not found" />
         </Helmet>
 

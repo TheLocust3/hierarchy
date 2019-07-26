@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 
 import { TITLE } from '../constants';
 
-class Index extends React.Component {
+class Index extends React.Component<{}> {
   render() {
     return (
       <div>
         <Helmet>
-          <title>${TITLE} - Index</title>
+          <title>{TITLE} - Index</title>
           <meta name="description" content="Index" />
         </Helmet>
 

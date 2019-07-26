@@ -6,6 +6,7 @@ import { store, history } from './constants';
 import './global-styles';
 
 import Index from './containers/Index';
+import TreeView from './containers/TreeView';
 import NotFound from './containers/NotFound';
 
 const App: React.FC = () => {
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <div>
           <Switch>
             <Route exact path="/" component={Index} />
+            <Route exact path="/tree" component={TreeView} />
 
             <Route component={NotFound} />
           </Switch>
