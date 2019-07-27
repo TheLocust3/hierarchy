@@ -5,21 +5,22 @@ import { IData } from './Tree';
 import NodeComponent from './NodeComponent';
 
 const LeafContainer = styled('div')`
-  position: relative;
   width: 100%;
 `;
 
 interface LeafProps {
   data: IData;
+  parentX: number;
+  parentY: number;
 }
 
 class LeafComponent extends React.Component<LeafProps, {}> {
   render() {
-    const { data, ...props } = this.props;
+    const { data, parentX, parentY } = this.props;
 
     return (
-      <LeafContainer {...props}>
-        <NodeComponent data={data} />
+      <LeafContainer>
+        <NodeComponent data={data} parentX={parentX} parentY={parentY} getXY={(x, y) => {}} />
       </LeafContainer>
     );
   }

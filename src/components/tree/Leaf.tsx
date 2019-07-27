@@ -1,5 +1,4 @@
 import React from 'react';
-import uuid from 'uuid/v4';
 
 import { IData, ITree } from './Tree';
 import LeafComponent from './LeafComponent';
@@ -15,7 +14,7 @@ export default class Leaf implements ITree {
     return this._data;
   }
 
-  render() {
-    return <LeafComponent data={this.data} key={uuid()} />;
+  render(parentX: number, parentY: number) {
+    return <LeafComponent data={this.data} parentX={parentX} parentY={parentY} />;
   }
 }

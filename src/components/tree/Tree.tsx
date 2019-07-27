@@ -1,5 +1,4 @@
 import React from 'react';
-import uuid from 'uuid/v4';
 
 import TreeComponent from './TreeComponent';
 
@@ -10,7 +9,7 @@ export interface IData {
 
 export interface ITree {
   data: IData;
-  render: () => JSX.Element;
+  render: (parentX: number, parentY: number) => JSX.Element;
 }
 
 export default class Tree implements ITree {
@@ -30,7 +29,9 @@ export default class Tree implements ITree {
     return this._data;
   }
 
-  render() {
-    return <TreeComponent data={this.data} nodes={this.nodes} key={uuid()} />;
+  render(parentX: number, parentY: number) {
+    return (
+      <TreeComponent data={this.data} nodes={this.nodes} parentX={parentX} parentY={parentY} />
+    );
   }
 }
