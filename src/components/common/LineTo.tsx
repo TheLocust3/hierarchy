@@ -24,11 +24,19 @@ interface LineToProps {
 }
 
 class LineTo extends React.Component<LineToProps, {}> {
+  lineRef: React.RefObject<HTMLDivElement> = React.createRef();
+
+  componentDidMount() {
+    if (this.lineRef.current !== null) {
+      this.lineRef.current.style.width = `${document.body.scrollWidth}px`;
+    }
+  }
+
   render() {
     const { fromX, fromY, toX, toY } = this.props;
 
     return (
-      <LineContainer>
+      <LineContainer ref={this.lineRef}>
         <LineSVG>
           <line
             x1={`${fromX}`}

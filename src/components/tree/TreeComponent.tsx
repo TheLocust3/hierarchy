@@ -6,6 +6,7 @@ import { IData, ITree } from './Tree';
 import NodeComponent from './NodeComponent';
 
 const TreeContainer = styled('div')`
+  display: inline-block;
   width: 100%;
 `;
 

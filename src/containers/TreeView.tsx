@@ -28,8 +28,19 @@ class TreeView extends React.Component {
                 new Leaf({ title: 'leaf 2', body: 'body' })
               ]),
               new Tree({ title: 'tree 2', body: 'body' }, [
+                new Tree({ title: 'tree 4', body: 'body' }, [
+                  new Leaf({ title: 'leaf 5', body: 'body' })
+                ]),
                 new Leaf({ title: 'leaf 3', body: 'body' }),
-                new Leaf({ title: 'leaf 4', body: 'body' })
+                new Leaf({ title: 'leaf 4', body: 'body' }),
+                new Tree({ title: 'tree 6', body: 'body' }, [
+                  new Leaf({ title: 'leaf 6', body: 'body' }),
+                  new Leaf({ title: 'leaf 7', body: 'body' }),
+                  new Leaf({ title: 'leaf 7', body: 'body' }),
+                  new Leaf({ title: 'leaf 7', body: 'body' }),
+                  new Leaf({ title: 'leaf 7', body: 'body' }),
+                  new Leaf({ title: 'leaf 7', body: 'body' })
+                ])
               ])
             ]}
           />
