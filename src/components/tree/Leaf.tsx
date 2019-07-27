@@ -2,10 +2,10 @@ import React from 'react';
 import uuid from 'uuid/v4';
 
 import { IData, ITree } from './Tree';
-import NodeComponent from './NodeComponent';
+import LeafComponent from './LeafComponent';
 
-export default class Node implements ITree {
-  _data: IData = { data: '' };
+export default class Leaf implements ITree {
+  _data: IData = { title: '', body: '' };
 
   constructor(data: IData) {
     this._data = data;
@@ -16,6 +16,6 @@ export default class Node implements ITree {
   }
 
   render() {
-    return <NodeComponent data={this.data} key={uuid()} />;
+    return <LeafComponent data={this.data} key={uuid()} />;
   }
 }

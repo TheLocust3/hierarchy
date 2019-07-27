@@ -6,7 +6,7 @@ import { TITLE } from '../constants';
 
 import TreeComponent from '../components/tree/TreeComponent';
 import Tree from '../components/tree/Tree';
-import Node from '../components/tree/Node';
+import Leaf from '../components/tree/Leaf';
 
 class TreeView extends React.Component {
   render() {
@@ -21,19 +21,15 @@ class TreeView extends React.Component {
           <h1>Tree View</h1>
 
           <TreeComponent
-            data={{ data: 'root' }}
+            data={{ title: 'root', body: 'body' }}
             nodes={[
-              new Tree({ data: 'tree 1' }, [
-                new Node({ data: 'node 1' }),
-                new Tree({ data: 'tree middle' }, [
-                  new Node({ data: 'node 2' }),
-                  new Node({ data: 'node 3' })
-                ]),
-                new Node({ data: 'node 4' })
+              new Tree({ title: 'tree 1', body: 'body' }, [
+                new Leaf({ title: 'leaf 1', body: 'body' }),
+                new Leaf({ title: 'leaf 2', body: 'body' })
               ]),
-              new Tree({ data: 'tree 2' }, [
-                new Node({ data: 'node 5' }),
-                new Node({ data: 'node 6' })
+              new Tree({ title: 'tree 2', body: 'body' }, [
+                new Leaf({ title: 'leaf 3', body: 'body' }),
+                new Leaf({ title: 'leaf 4', body: 'body' })
               ])
             ]}
           />

@@ -4,7 +4,8 @@ import uuid from 'uuid/v4';
 import TreeComponent from './TreeComponent';
 
 export interface IData {
-  data: string;
+  title: string;
+  body: string;
 }
 
 export interface ITree {
@@ -14,7 +15,7 @@ export interface ITree {
 
 export default class Tree implements ITree {
   private _nodes: ReadonlyArray<ITree> = [];
-  private _data: IData = { data: '' };
+  private _data: IData = { title: '', body: '' };
 
   constructor(data: IData, nodes: ReadonlyArray<ITree>) {
     this._data = data;

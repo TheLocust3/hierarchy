@@ -9,7 +9,7 @@ export const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 export const history = createBrowserHistory();
 
 export const colors = {
-  textBlack: '#444'
+  black: '#444'
 };
 
 export const MAX_MOBILE_WIDTH = '768px';

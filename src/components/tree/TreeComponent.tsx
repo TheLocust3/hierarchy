@@ -2,9 +2,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { IData, ITree } from './Tree';
+import NodeComponent from './NodeComponent';
 
 const TreeContainer = styled('div')`
-  margin-left: 2.5%;
+  position: relative;
+  width: 100%;
+`;
+
+const Nodes = styled('div')`
+  display: flex;
 `;
 
 interface TreeProps {
@@ -14,18 +20,17 @@ interface TreeProps {
 
 class TreeComponent extends React.Component<TreeProps, {}> {
   render() {
-    let { data, nodes, ...props } = this.props;
+    const { data, nodes, ...props } = this.props;
 
     return (
       <TreeContainer {...props}>
-        <i>{data.data}</i>
-        <br />
+        <NodeComponent data={data} />
 
-        <b>Nodes:</b>
-        <br />
-        {nodes.map((node) => {
-          return node.render();
-        })}
+        <Nodes>
+          {nodes.map((node) => {
+            return node.render();
+          })}
+        </Nodes>
       </TreeContainer>
     );
   }
