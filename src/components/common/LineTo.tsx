@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
+import { Viewport } from '../../containers/TreeView';
 
 const LineContainer = styled('div')`
   position: absolute;
@@ -9,6 +10,8 @@ const LineContainer = styled('div')`
   left: 0;
   width: 100%;
   height: 100%;
+
+  z-index: -1;
 `;
 
 const LineSVG = styled('svg')`
@@ -21,15 +24,18 @@ interface LineToProps {
   fromY: number;
   toX: number;
   toY: number;
+  viewport: Viewport;
 }
 
 class LineTo extends React.Component<LineToProps, {}> {
   lineRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   componentDidMount() {
-    if (this.lineRef.current !== null) {
-      this.lineRef.current.style.width = `${document.body.scrollWidth}px`;
-    }
+    this.updateWidth(this.props);
+  }
+
+  componentWillReceiveProps(nextProps: LineToProps) {
+    this.updateWidth(nextProps);
   }
 
   render() {
@@ -49,6 +55,12 @@ class LineTo extends React.Component<LineToProps, {}> {
         </LineSVG>
       </LineContainer>
     );
+  }
+
+  updateWidth(props: LineToProps) {
+    if (this.lineRef.current !== null) {
+      this.lineRef.current.style.width = `${props.viewport.width}px`;
+    }
   }
 }
 

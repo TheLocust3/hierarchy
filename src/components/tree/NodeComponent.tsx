@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { getAbsolutePosition } from '../../helpers';
 import { colors } from '../../constants';
 import { IData } from './Tree';
 
 import LineTo from '../common/LineTo';
+import { Viewport } from '../../containers/TreeView';
 
 const NODE_WIDTH = 100;
 const NODE_HEIGHT = 100;
@@ -35,6 +35,7 @@ interface LeafProps {
   parentX?: number;
   parentY?: number;
   getXY: (x: number, y: number) => void;
+  viewport: Viewport;
 }
 
 interface LeafState {
@@ -49,36 +50,33 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
     this.state = { x: 0, y: 0 };
   }
 
-  renderLineUnlessRoot(parentX?: number, parentY?: number) {
+  renderLineUnlessRoot(viewport: Viewport, parentX?: number, parentY?: number) {
     if (parentX === undefined || parentY === undefined) return;
 
     return (
       <LineTo
-        fromX={parentX + X_OFFSET}
-        fromY={parentY + Y_OFFSET}
-        toX={this.state.x + X_OFFSET}
-        toY={this.state.y}
+        fromX={parentX + X_OFFSET - viewport.x}
+        fromY={parentY + Y_OFFSET - viewport.y - 1}
+        toX={this.state.x + X_OFFSET - viewport.x}
+        toY={this.state.y - viewport.y - 1}
+        viewport={this.props.viewport}
       />
     );
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', () => this.forceUpdate());
-  }
-
   render() {
-    const { data, parentX, parentY, getXY } = this.props;
+    const { data, parentX, parentY, getXY, viewport } = this.props;
 
     return (
       <NodeContainer>
-        {this.renderLineUnlessRoot(parentX, parentY)}
+        {this.renderLineUnlessRoot(viewport, parentX, parentY)}
 
         <NodeInner
           ref={(e: HTMLDivElement) => {
             if (e !== null) {
-              const pos = getAbsolutePosition(e);
-              getXY(pos.x, pos.y);
-              this.updateXYState(pos.x, pos.y);
+              const rect = e.getBoundingClientRect();
+              getXY(rect.left, rect.top);
+              this.updateXYState(rect.left, rect.top);
             }
           }}>
           <h3>{data.title}</h3>

@@ -4,18 +4,14 @@ import uuid from 'uuid/v4';
 
 import { IData, ITree } from './Tree';
 import NodeComponent from './NodeComponent';
+import { Viewport } from '../../containers/TreeView';
 
 const TreeContainer = styled('div')`
   display: inline-block;
-  width: 100%;
 `;
 
 const Nodes = styled('div')`
   display: flex;
-`;
-
-const NodeContainer = styled('div')`
-  width: 100%;
 `;
 
 interface TreeProps {
@@ -23,6 +19,7 @@ interface TreeProps {
   nodes: ReadonlyArray<ITree>;
   parentX?: number;
   parentY?: number;
+  viewport: Viewport;
 }
 
 interface TreeState {
@@ -38,7 +35,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   render() {
-    const { data, nodes, parentX, parentY } = this.props;
+    const { data, nodes, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
@@ -47,13 +44,12 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           parentX={parentX}
           parentY={parentY}
           getXY={(x: number, y: number) => this.updateXYState(x, y)}
+          viewport={viewport}
         />
 
         <Nodes>
           {nodes.map((node) => {
-            return (
-              <NodeContainer key={uuid()}>{node.render(this.state.x, this.state.y)}</NodeContainer>
-            );
+            return <div key={uuid()}>{node.render(this.state.x, this.state.y, viewport)}</div>;
           })}
         </Nodes>
       </TreeContainer>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { IData, ITree } from './Tree';
 import LeafComponent from './LeafComponent';
+import { Viewport } from '../../containers/TreeView';
 
 export default class Leaf implements ITree {
   _data: IData = { title: '', body: '' };
@@ -14,7 +15,9 @@ export default class Leaf implements ITree {
     return this._data;
   }
 
-  render(parentX: number, parentY: number) {
-    return <LeafComponent data={this.data} parentX={parentX} parentY={parentY} />;
+  render(parentX: number, parentY: number, viewport: Viewport) {
+    return (
+      <LeafComponent data={this.data} parentX={parentX} parentY={parentY} viewport={viewport} />
+    );
   }
 }

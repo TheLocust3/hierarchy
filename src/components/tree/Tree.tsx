@@ -1,6 +1,7 @@
 import React from 'react';
 
 import TreeComponent from './TreeComponent';
+import { Viewport } from '../../containers/TreeView';
 
 export interface IData {
   title: string;
@@ -9,7 +10,7 @@ export interface IData {
 
 export interface ITree {
   data: IData;
-  render: (parentX: number, parentY: number) => JSX.Element;
+  render: (parentX: number, parentY: number, viewport: Viewport) => JSX.Element;
 }
 
 export default class Tree implements ITree {
@@ -29,9 +30,15 @@ export default class Tree implements ITree {
     return this._data;
   }
 
-  render(parentX: number, parentY: number) {
+  render(parentX: number, parentY: number, viewport: Viewport) {
     return (
-      <TreeComponent data={this.data} nodes={this.nodes} parentX={parentX} parentY={parentY} />
+      <TreeComponent
+        data={this.data}
+        nodes={this.nodes}
+        parentX={parentX}
+        parentY={parentY}
+        viewport={viewport}
+      />
     );
   }
 }
