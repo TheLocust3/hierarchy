@@ -26,7 +26,7 @@ const TreeViewport = styled('div')`
   margin: 1%;
 
   width: 96%;
-  height: 91vh;
+  height: 87vh;
 
   overflow: scroll;
 
@@ -74,6 +74,7 @@ class TreeView extends React.Component<{}, TreeViewState> {
                 ]),
                 new Tree({ title: 'tree 2', body: 'body' }, [
                   new Tree({ title: 'tree 4', body: 'body' }, [
+                    new Leaf({ title: 'leaf 5', body: 'body' }),
                     new Leaf({ title: 'leaf 5', body: 'body' })
                   ]),
                   new Leaf({ title: 'leaf 3', body: 'body' }),
@@ -81,6 +82,10 @@ class TreeView extends React.Component<{}, TreeViewState> {
                   new Tree({ title: 'tree 6', body: 'body' }, [
                     new Leaf({ title: 'leaf 6', body: 'body' }),
                     new Leaf({ title: 'leaf 7', body: 'body' }),
+                    new Tree({ title: 'tree 6', body: 'body' }, [
+                      new Leaf({ title: 'leaf 7', body: 'body' }),
+                      new Leaf({ title: 'leaf 7', body: 'body' })
+                    ]),
                     new Leaf({ title: 'leaf 7', body: 'body' }),
                     new Leaf({ title: 'leaf 7', body: 'body' }),
                     new Leaf({ title: 'leaf 7', body: 'body' }),

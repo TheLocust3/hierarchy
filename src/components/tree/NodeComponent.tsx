@@ -15,8 +15,8 @@ const Y_OFFSET = NODE_HEIGHT + 2; // adjusted for border
 
 const NodeContainer = styled('div')`
   text-align: center;
-  margin-bottom: 50px;
-  min-width: 105px;
+  margin-bottom: 75px;
+  min-width: 110px;
 `;
 
 const NodeInner = styled('div')`
