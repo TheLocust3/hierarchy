@@ -2,10 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
-import { IData } from './Tree';
+import { Data, Viewport } from './tree-types';
 
 import LineTo from '../common/LineTo';
-import { Viewport } from '../../containers/TreeView';
 
 const NODE_WIDTH = 100;
 const NODE_HEIGHT = 100;
@@ -31,7 +30,7 @@ const NodeInner = styled('div')`
 `;
 
 interface LeafProps {
-  data: IData;
+  data: Data;
   parentX?: number;
   parentY?: number;
   getXY: (x: number, y: number) => void;

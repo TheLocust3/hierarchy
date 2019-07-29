@@ -1,18 +1,28 @@
 import React from 'react';
 
-import { IData, ITree } from './Tree';
+import { Data, ITree, Viewport } from './tree-types';
 import LeafComponent from './LeafComponent';
-import { Viewport } from '../../containers/TreeView';
 
 export default class Leaf implements ITree {
-  _data: IData = { title: '', body: '' };
+  private _uuid: String = '';
+  private _data: Data = { title: '', body: '' };
+  private _nodes: ReadonlyArray<ITree> = [];
 
-  constructor(data: IData) {
+  constructor(uuid: String, data: Data) {
+    this._uuid = uuid;
     this._data = data;
+  }
+
+  get uuid() {
+    return this._uuid;
   }
 
   get data() {
     return this._data;
+  }
+
+  get nodes() {
+    return this._nodes;
   }
 
   render(parentX: number, parentY: number, viewport: Viewport) {

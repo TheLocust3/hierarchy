@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
-import { Viewport } from '../../containers/TreeView';
+import { Viewport } from '../tree/tree-types';
 
 const LineContainer = styled('div')`
   position: absolute;

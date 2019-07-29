@@ -2,9 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import uuid from 'uuid/v4';
 
-import { IData, ITree } from './Tree';
+import { Data, ITree, Viewport } from './tree-types';
 import NodeComponent from './NodeComponent';
-import { Viewport } from '../../containers/TreeView';
 
 const TreeContainer = styled('div')`
   display: inline-block;
@@ -15,7 +14,7 @@ const Nodes = styled('div')`
 `;
 
 interface TreeProps {
-  data: IData;
+  data: Data;
   nodes: ReadonlyArray<ITree>;
   parentX?: number;
   parentY?: number;

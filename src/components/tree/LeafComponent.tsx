@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { IData } from './Tree';
+import { Data, Viewport } from './tree-types';
 import NodeComponent from './NodeComponent';
-import { Viewport } from '../../containers/TreeView';
 
 interface LeafProps {
-  data: IData;
+  data: Data;
   parentX: number;
   parentY: number;
   viewport: Viewport;

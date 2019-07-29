@@ -1,20 +1,16 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
 import styled from '@emotion/styled';
 
 import { colors, TITLE } from '../constants';
+import { AppState } from '../reducers/root-reducer';
 
+import { Viewport, ITree } from '../components/tree/tree-types';
 import TreeComponent from '../components/tree/TreeComponent';
-import Tree from '../components/tree/Tree';
-import Leaf from '../components/tree/Leaf';
-
-export interface Viewport {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-}
+import { getTree } from '../actions/tree-actions';
+import { AppAction } from '../actions/app-action';
 
 const TreeViewport = styled('div')`
   position: relative;
@@ -33,17 +29,27 @@ const TreeViewport = styled('div')`
   text-align: center;
 `;
 
+interface TreeViewProps {
+  tree: ITree;
+  isReady: boolean;
+  dispatch: ThunkDispatch<AppState, null, AppAction>;
+}
+
 interface TreeViewState {
   viewport: Viewport;
 }
 
-class TreeView extends React.Component<{}, TreeViewState> {
+class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   viewportRef: React.RefObject<HTMLDivElement> = React.createRef();
 
-  constructor(props: {}) {
+  constructor(props: TreeViewProps) {
     super(props);
 
     this.state = { viewport: { width: 0, height: 0, x: 0, y: 0 } };
+  }
+
+  componentWillMount() {
+    this.props.dispatch(getTree('uuid'));
   }
 
   componentDidMount() {
@@ -66,38 +72,8 @@ class TreeView extends React.Component<{}, TreeViewState> {
           <TreeViewport ref={this.viewportRef}>
             <TreeComponent
               viewport={this.state.viewport}
-              data={{ title: 'root', body: 'body' }}
-              nodes={[
-                new Tree({ title: 'tree 1', body: 'body' }, [
-                  new Leaf({ title: 'leaf 1', body: 'body' }),
-                  new Leaf({ title: 'leaf 2', body: 'body' })
-                ]),
-                new Tree({ title: 'tree 2', body: 'body' }, [
-                  new Tree({ title: 'tree 4', body: 'body' }, [
-                    new Leaf({ title: 'leaf 5', body: 'body' }),
-                    new Leaf({ title: 'leaf 5', body: 'body' })
-                  ]),
-                  new Leaf({ title: 'leaf 3', body: 'body' }),
-                  new Leaf({ title: 'leaf 4', body: 'body' }),
-                  new Tree({ title: 'tree 6', body: 'body' }, [
-                    new Leaf({ title: 'leaf 6', body: 'body' }),
-                    new Leaf({ title: 'leaf 7', body: 'body' }),
-                    new Tree({ title: 'tree 6', body: 'body' }, [
-                      new Leaf({ title: 'leaf 7', body: 'body' }),
-                      new Leaf({ title: 'leaf 7', body: 'body' })
-                    ]),
-                    new Leaf({ title: 'leaf 7', body: 'body' }),
-                    new Leaf({ title: 'leaf 7', body: 'body' }),
-                    new Leaf({ title: 'leaf 7', body: 'body' }),
-                    new Leaf({ title: 'leaf 7', body: 'body' })
-                  ])
-                ]),
-                new Tree({ title: 'tree 6', body: 'body' }, [
-                  new Leaf({ title: 'leaf 6', body: 'body' }),
-                  new Leaf({ title: 'leaf 6', body: 'body' }),
-                  new Leaf({ title: 'leaf 6', body: 'body' })
-                ])
-              ]}
+              data={this.props.tree.data}
+              nodes={this.props.tree.nodes}
             />
           </TreeViewport>
         </div>
@@ -130,4 +106,9 @@ class TreeView extends React.Component<{}, TreeViewState> {
   }
 }
 
-export default connect()(TreeView);
+const mapStateToProps = (state: AppState) => ({
+  tree: state.tree.tree,
+  isReady: state.tree.isReady
+});
+
+export default connect(mapStateToProps)(TreeView);
