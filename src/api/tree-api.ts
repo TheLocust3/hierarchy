@@ -1,5 +1,5 @@
+import { API_ENDPOINT } from '../constants';
 import { ITree, Data } from '../components/tree/tree-types';
-import Leaf from '../components/tree/Leaf';
 import Tree from '../components/tree/Tree';
 
 export interface TreeApiStructure {
@@ -10,55 +10,70 @@ export interface TreeApiStructure {
   deleteTree(uuid: String): Promise<Boolean>;
 }
 
+export interface DataJSON {
+  title: string;
+  body: string;
+}
+
+export interface TreeJSON {
+  uuid: string;
+  data: DataJSON;
+  nodes?: ReadonlyArray<TreeJSON>;
+  type: string;
+}
+
+interface TreeResponse {
+  tree: TreeJSON;
+}
+
+interface ListOfTreesResponse {
+  trees: ReadonlyArray<TreeJSON>;
+}
+
+interface TreeSuccessResponse {
+  success: string;
+}
+
 const TreeApi: TreeApiStructure = {
   async getAllTrees(): Promise<ReadonlyArray<ITree>> {
-    return [];
+    const response = await fetch(`${API_ENDPOINT}/tree`, { method: 'GET' });
+    const json: ListOfTreesResponse = await response.json();
+
+    return json.trees.map((tree) => Tree.fromJSON(tree));
   },
 
   async getTree(uuid: String): Promise<ITree> {
-    return new Tree(uuid, { title: 'root', body: 'body' }, [
-      new Tree('', { title: 'tree 1', body: 'body' }, [
-        new Leaf('', { title: 'leaf 1', body: 'body' }),
-        new Leaf('', { title: 'leaf 2', body: 'body' })
-      ]),
-      new Tree('', { title: 'tree 2', body: 'body' }, [
-        new Tree('', { title: 'tree 4', body: 'body' }, [
-          new Leaf('', { title: 'leaf 5', body: 'body' }),
-          new Leaf('', { title: 'leaf 5', body: 'body' })
-        ]),
-        new Leaf('', { title: 'leaf 3', body: 'body' }),
-        new Leaf('', { title: 'leaf 4', body: 'body' }),
-        new Tree('', { title: 'tree 6', body: 'body' }, [
-          new Leaf('', { title: 'leaf 6', body: 'body' }),
-          new Leaf('', { title: 'leaf 7', body: 'body' }),
-          new Tree('', { title: 'tree 6', body: 'body' }, [
-            new Leaf('', { title: 'leaf 7', body: 'body' }),
-            new Leaf('', { title: 'leaf 7', body: 'body' })
-          ]),
-          new Leaf('', { title: 'leaf 7', body: 'body' }),
-          new Leaf('', { title: 'leaf 7', body: 'body' }),
-          new Leaf('', { title: 'leaf 7', body: 'body' }),
-          new Leaf('', { title: 'leaf 7', body: 'body' })
-        ])
-      ]),
-      new Tree('', { title: 'tree 6', body: 'body' }, [
-        new Leaf('', { title: 'leaf 6', body: 'body' }),
-        new Leaf('', { title: 'leaf 6', body: 'body' }),
-        new Leaf('', { title: 'leaf 6', body: 'body' })
-      ])
-    ]);
+    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, { method: 'GET' });
+    const json: TreeResponse = await response.json();
+
+    return Tree.fromJSON(json.tree);
   },
 
   async createLeaf(data: Data, parentUuid: String): Promise<Boolean> {
-    return true;
+    const response = await fetch(`${API_ENDPOINT}/tree`, {
+      method: 'POST',
+      body: JSON.stringify({ data: data, parentUuid: parentUuid })
+    });
+    const json: TreeSuccessResponse = await response.json();
+
+    return json.success === 'ok';
   },
 
   async updateTree(uuid: String, data: Data): Promise<Boolean> {
-    return true;
+    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ data: data })
+    });
+    const json: TreeSuccessResponse = await response.json();
+
+    return json.success === 'ok';
   },
 
   async deleteTree(uuid: String): Promise<Boolean> {
-    return true;
+    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, { method: 'DELETE' });
+    const json: TreeSuccessResponse = await response.json();
+
+    return json.success === 'ok';
   }
 };
 
