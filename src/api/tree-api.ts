@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from '../constants';
 import { ITree, Data } from '../models/tree/tree-base';
-import Tree from '../models/tree/Tree';
+import Tree from '../models/tree/tree';
 import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../models/json/tree-json';
 
 export interface TreeApiStructure {

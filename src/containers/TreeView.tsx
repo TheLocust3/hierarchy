@@ -1,17 +1,16 @@
+import _ from 'lodash';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import styled from '@emotion/styled';
 
 import { colors, TITLE } from '../constants';
-import { AppState } from '../reducers/root-reducer';
+import { AppState, Dispatch } from '../types';
 
 import { ITree } from '../models/tree/tree-base';
-import { Viewport } from '../models/viewport';
+import Viewport from '../models/viewport';
 import TreeComponent from '../components/tree/TreeComponent';
 import { getTree } from '../actions/tree-actions';
-import { AppAction } from '../actions/app-action';
 
 const TreeViewport = styled('div')`
   position: relative;
@@ -33,7 +32,7 @@ const TreeViewport = styled('div')`
 interface TreeViewProps {
   tree: ITree;
   isReady: boolean;
-  dispatch: ThunkDispatch<AppState, null, AppAction>;
+  dispatch: Dispatch;
 }
 
 interface TreeViewState {
@@ -86,7 +85,6 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
     if (this.viewportRef.current === null) return;
 
     const rect = this.viewportRef.current.getBoundingClientRect();
-
     const newViewport: Viewport = {
       width: this.viewportRef.current.scrollWidth,
       height: this.viewportRef.current.scrollHeight,
@@ -94,12 +92,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
       y: rect.top - this.viewportRef.current.scrollTop
     };
 
-    if (
-      newViewport.height !== this.state.viewport.height ||
-      newViewport.width !== this.state.viewport.width ||
-      newViewport.x !== this.state.viewport.x ||
-      newViewport.y !== this.state.viewport.y
-    ) {
+    if (!_.isEqual(newViewport, this.state.viewport)) {
       this.setState({
         viewport: newViewport
       });

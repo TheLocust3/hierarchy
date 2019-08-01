@@ -6,6 +6,4 @@ const reducer = combineReducers({
   tree: treeReducer
 });
 
-export type AppState = ReturnType<typeof reducer>;
-
 export default reducer;

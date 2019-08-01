@@ -1,23 +1,23 @@
 import { ITree } from '../models/tree/tree-base';
-import Leaf from '../models/tree/Leaf';
+import Leaf from '../models/tree/leaf';
 import { TreeActionTypes } from '../actions/tree-actions';
 
-interface TreeStore {
+interface TreeState {
   tree: ITree;
   trees: ReadonlyArray<ITree>;
   isReady: boolean;
 }
 
-const defaultTreeStore: TreeStore = {
+const defaultTreeState: TreeState = {
   tree: new Leaf('', { title: '', body: '' }),
   trees: [],
   isReady: false
 };
 
 export function treeReducer(
-  state: TreeStore = defaultTreeStore,
+  state: TreeState = defaultTreeState,
   action: TreeActionTypes
-): TreeStore {
+): TreeState {
   switch (action.type) {
     case 'REQUEST_ALL_TREES':
     case 'REQUEST_TREE':

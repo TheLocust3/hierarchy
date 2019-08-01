@@ -1,5 +1,4 @@
 import { DataJSON } from '../json/tree-json';
-import { Viewport } from '../viewport';
 
 export class Data {
   title: string = '';
@@ -19,5 +18,4 @@ export interface ITree {
   uuid: String;
   data: Data;
   nodes: ReadonlyArray<ITree>;
-  render: (parentX: number, parentY: number, viewport: Viewport) => JSX.Element;
 }

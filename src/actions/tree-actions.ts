@@ -1,8 +1,8 @@
 import { ThunkAction } from 'redux-thunk';
 
+import { AppState } from '../types'
 import { ITree } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
-import { AppState } from '../reducers/root-reducer';
 
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';

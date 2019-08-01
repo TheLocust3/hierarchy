@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Data } from '../../models/tree/tree-base';
-import { Viewport } from '../../models/viewport';
+import Viewport from '../../models/viewport';
 import NodeComponent from './NodeComponent';
 
 interface LeafProps {

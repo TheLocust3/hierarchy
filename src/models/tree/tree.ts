@@ -1,10 +1,6 @@
-import React from 'react';
-
 import { Data, ITree } from './tree-base';
-import { Viewport } from '../../models/viewport';
-import TreeComponent from '../../components/tree/TreeComponent';
 import { TreeJSON } from '../json/tree-json';
-import Leaf from './Leaf';
+import Leaf from './leaf';
 
 export default class Tree implements ITree {
   private _uuid: String = '';
@@ -39,17 +35,5 @@ export default class Tree implements ITree {
 
   get data() {
     return this._data;
-  }
-
-  render(parentX: number, parentY: number, viewport: Viewport) {
-    return (
-      <TreeComponent
-        data={this.data}
-        nodes={this.nodes}
-        parentX={parentX}
-        parentY={parentY}
-        viewport={viewport}
-      />
-    );
   }
 }

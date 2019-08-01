@@ -3,8 +3,12 @@ import styled from '@emotion/styled';
 import uuid from 'uuid/v4';
 
 import { Data, ITree } from '../../models/tree/tree-base';
-import { Viewport } from '../../models/viewport';
+import Viewport from '../../models/viewport';
+import Tree from '../../models/tree/tree';
+import Leaf from '../../models/tree/leaf';
+
 import NodeComponent from './NodeComponent';
+import LeafComponent from './LeafComponent';
 
 const TreeContainer = styled('div')`
   display: inline-block;
@@ -48,12 +52,35 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
         />
 
         <Nodes>
-          {nodes.map((node) => {
-            return <div key={uuid()}>{node.render(this.state.x, this.state.y, viewport)}</div>;
-          })}
+          {nodes.map((node) => this.renderNode(node, viewport))}
         </Nodes>
       </TreeContainer>
     );
+  }
+
+  renderNode(node: ITree, viewport: Viewport): JSX.Element {
+    switch (node.constructor) {
+      case Tree:
+        return (
+          <div key={uuid()}>
+            <TreeComponent
+              data={node.data}
+              nodes={node.nodes}
+              parentX={this.state.x}
+              parentY={this.state.y}
+              viewport={viewport}
+            />
+          </div>
+        );
+      case Leaf:
+        return (
+          <div key={uuid()}>
+            <LeafComponent data={node.data} parentX={this.state.x} parentY={this.state.y} viewport={viewport} />
+          </div>
+        );
+      default:
+        return <div />;
+    }
   }
 
   updateXYState(x: number, y: number) {
