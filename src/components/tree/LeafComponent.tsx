@@ -21,7 +21,6 @@ class LeafComponent extends React.Component<LeafProps, {}> {
           data={data}
           parentX={parentX}
           parentY={parentY}
-          getXY={(x, y) => {}}
           viewport={viewport}
         />
       </div>

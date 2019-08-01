@@ -34,7 +34,7 @@ interface LeafProps {
   data: Data;
   parentX?: number;
   parentY?: number;
-  getXY: (x: number, y: number) => void;
+  getXY?: (x: number, y: number) => void;
   viewport: Viewport;
 }
 
@@ -50,8 +50,8 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
     this.state = { x: 0, y: 0 };
   }
 
-  renderLineUnlessRoot(viewport: Viewport, parentX?: number, parentY?: number) {
-    if (parentX === undefined || parentY === undefined) return;
+  renderLine(viewport: Viewport, parentX?: number, parentY?: number) {
+    if (parentX == null || parentY == null) return; // root tree doesn't have any parents and no line
 
     return (
       <LineTo
@@ -65,11 +65,12 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
   }
 
   render() {
-    const { data, parentX, parentY, getXY, viewport } = this.props;
+    const { data, parentX, parentY, viewport } = this.props;
+    const getXY = this.props.getXY == null ? (x: number, y: number) => {} : this.props.getXY
 
     return (
       <NodeContainer>
-        {this.renderLineUnlessRoot(viewport, parentX, parentY)}
+        {this.renderLine(viewport, parentX, parentY)}
 
         <NodeInner
           ref={(e: HTMLDivElement) => {
