@@ -7,7 +7,8 @@ import styled from '@emotion/styled';
 import { colors, TITLE } from '../constants';
 import { AppState } from '../reducers/root-reducer';
 
-import { Viewport, ITree } from '../components/tree/tree-types';
+import { ITree } from '../models/tree/tree-base';
+import { Viewport } from '../models/viewport';
 import TreeComponent from '../components/tree/TreeComponent';
 import { getTree } from '../actions/tree-actions';
 import { AppAction } from '../actions/app-action';

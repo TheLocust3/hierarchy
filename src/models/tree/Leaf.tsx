@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Data, ITree, Viewport } from './tree-types';
-import LeafComponent from './LeafComponent';
+import { Data, ITree } from './tree-base';
+import { Viewport } from '../../models/viewport';
+import LeafComponent from '../../components/tree/LeafComponent';
 
 export default class Leaf implements ITree {
   private _uuid: String = '';

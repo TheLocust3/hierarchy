@@ -2,7 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
-import { Data, Viewport } from './tree-types';
+import { Data } from '../../models/tree/tree-base';
+import { Viewport } from '../../models/viewport';
 
 import LineTo from '../common/LineTo';
 

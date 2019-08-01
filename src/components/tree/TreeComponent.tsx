@@ -2,7 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import uuid from 'uuid/v4';
 
-import { Data, ITree, Viewport } from './tree-types';
+import { Data, ITree } from '../../models/tree/tree-base';
+import { Viewport } from '../../models/viewport';
 import NodeComponent from './NodeComponent';
 
 const TreeContainer = styled('div')`

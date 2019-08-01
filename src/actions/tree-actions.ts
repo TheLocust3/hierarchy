@@ -1,6 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { ITree } from '../components/tree/tree-types';
+import { ITree } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
 import { AppState } from '../reducers/root-reducer';
 

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Data, ITree, Viewport } from './tree-types';
-import TreeComponent from './TreeComponent';
-import { TreeJSON } from '../../api/tree-api';
+import { Data, ITree } from './tree-base';
+import { Viewport } from '../../models/viewport';
+import TreeComponent from '../../components/tree/TreeComponent';
+import { TreeJSON } from '../json/tree-json';
 import Leaf from './Leaf';
 
 export default class Tree implements ITree {

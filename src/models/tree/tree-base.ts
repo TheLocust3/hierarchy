@@ -1,11 +1,5 @@
-import { DataJSON } from '../../api/tree-api';
-
-export interface Viewport {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-}
+import { DataJSON } from '../json/tree-json';
+import { Viewport } from '../viewport';
 
 export class Data {
   title: string = '';

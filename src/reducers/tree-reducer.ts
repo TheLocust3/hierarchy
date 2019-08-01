@@ -1,5 +1,5 @@
-import { ITree } from '../components/tree/tree-types';
-import Leaf from '../components/tree/Leaf';
+import { ITree } from '../models/tree/tree-base';
+import Leaf from '../models/tree/Leaf';
 import { TreeActionTypes } from '../actions/tree-actions';
 
 interface TreeStore {
