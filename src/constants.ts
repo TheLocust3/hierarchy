@@ -3,7 +3,15 @@ import { createBrowserHistory } from 'history';
 export const history = createBrowserHistory();
 
 export const colors = {
-  black: '#444'
+  black: '#444',
+  lightBlack: '#999',
+
+  actionHover: '#e0e0e0',
+  actionShadow: '#bdbdbd',
+  deleteRed: '#f44336',
+  actionPurple: '#ab47bc',
+
+  nodeBackground: '#fafafa'
 };
 
 export const MAX_MOBILE_WIDTH = '768px';

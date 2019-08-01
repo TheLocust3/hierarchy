@@ -6,6 +6,7 @@ import { Data } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 
 import LineTo from '../common/LineTo';
+import NodeActions from './NodeActions';
 
 const NODE_WIDTH = 100;
 const NODE_HEIGHT = 100;
@@ -20,6 +21,7 @@ const NodeContainer = styled('div')`
 `;
 
 const NodeInner = styled('div')`
+  position: relative;
   cursor: pointer;
 
   display: inline-block;
@@ -28,6 +30,8 @@ const NodeInner = styled('div')`
 
   border: 1px solid ${colors.black};
   border-radius: 10px;
+
+  background-color: ${colors.nodeBackground}
 `;
 
 interface LeafProps {
@@ -80,6 +84,7 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
+          <NodeActions />
           <h3>{data.title}</h3>
 
           <p>{data.body}</p>
