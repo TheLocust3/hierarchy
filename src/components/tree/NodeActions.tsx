@@ -2,10 +2,10 @@ import React from 'react';
 import { css } from 'emotion';
 import styled from '@emotion/styled';
 
-import { colors, history } from '../../constants'
-
-import MaterialIcon from '../common/MaterialIcon'
+import { colors, history } from '../../constants';
 import { TreeOverlay } from '../../reducers/tree-reducer';
+
+import MaterialIcon from '../common/MaterialIcon';
 
 const ActionsContainer = styled('div')`
   position: absolute;
@@ -63,6 +63,33 @@ const noHover = css`
   }
 `;
 
+const AddButtonContainer = styled('div')`
+  position: absolute;
+  bottom: -5px;
+  left: 25px;
+`
+
+const AddButton = styled('div')`
+  position: relative;
+  width: 50px;
+  height: 20px;
+
+  text-align: center;
+  padding-right: 2px;
+  padding-bottom: 4px;
+
+  border: 1px solid ${colors.lightBlack};
+  border-radius: 3px;
+  box-shadow: 1px 2px 5px ${colors.actionShadow};
+
+  background-color: ${colors.addGreen};
+  transition: background-color 0.4s;
+
+  &:hover {
+    background-color: ${colors.addGreenHover};
+  }
+`
+
 interface NodeActionsProps {
   uuid: string;
   onDelete: () => void;
@@ -89,12 +116,11 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
           <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
         </IconFrameRight>
 
-        <IconFrameRight onClick={(event) => {
-          history.push(`/tree/${uuid}/edit`)
-          event.stopPropagation()
-        }}>
-          <MaterialIcon icon="edit" fontSize="15px" color={colors.actionPurple} />
-        </IconFrameRight>
+        <AddButtonContainer>
+            <AddButton>
+              <MaterialIcon icon="add" fontSize="24px" color={"white"} />
+            </AddButton>
+        </AddButtonContainer>
       </ActionsContainer>
     );
   }

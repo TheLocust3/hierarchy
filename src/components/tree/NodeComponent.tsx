@@ -33,7 +33,12 @@ const NodeInner = styled('div')`
   border: 1px solid ${colors.black};
   border-radius: 10px;
 
-  background-color: ${colors.nodeBackground}
+  background-color: ${colors.nodeBackground};
+  transition: background-color 0.25s;
+
+  &:hover {
+    background-color: ${colors.nodeBackgroundHover};
+  }
 `;
 
 interface NodeProps {

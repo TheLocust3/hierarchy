@@ -10,9 +10,11 @@ export const colors = {
   actionShadow: '#bdbdbd',
   deleteRed: '#f44336',
   viewBlue: '#64b5f6',
-  actionPurple: '#ab47bc',
+  addGreen: '#a5d6a7',
+  addGreenHover: '#81c784',
 
-  nodeBackground: '#fafafa'
+  nodeBackground: '#fafafa',
+  nodeBackgroundHover: '#eeeeee'
 };
 
 export const MAX_MOBILE_WIDTH = '768px';
