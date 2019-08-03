@@ -9,6 +9,7 @@ export const colors = {
   actionHover: '#e0e0e0',
   actionShadow: '#bdbdbd',
   deleteRed: '#f44336',
+  viewBlue: '#64b5f6',
   actionPurple: '#ab47bc',
 
   nodeBackground: '#fafafa'

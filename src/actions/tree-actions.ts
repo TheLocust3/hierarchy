@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 
-import { AppState } from '../types'
+import { AppState } from '../types';
+import { TreeOverlay } from '../reducers/tree-reducer';
 import { ITree } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
 
@@ -9,6 +10,8 @@ export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
+
+export const SET_OVERLAY = 'SET_OVERLAY';
 
 interface RequestAllTreesAction {
   type: typeof REQUEST_ALL_TREES;
@@ -28,11 +31,17 @@ interface ReceiveTreeAction {
   payload: ITree;
 }
 
+interface SetOverlay {
+  type: typeof SET_OVERLAY;
+  payload: TreeOverlay;
+}
+
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
   | RequestTreeAction
-  | ReceiveTreeAction;
+  | ReceiveTreeAction
+  | SetOverlay;
 
 function requestAllTrees(): TreeActionTypes {
   return {
@@ -58,6 +67,13 @@ function receiveTree(tree: ITree): TreeActionTypes {
     type: RECEIVE_TREE,
     payload: tree
   };
+}
+
+export function setOverlay(overlay: TreeOverlay): TreeActionTypes {
+  return {
+    type: SET_OVERLAY,
+    payload: overlay
+  }
 }
 
 export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes> => {

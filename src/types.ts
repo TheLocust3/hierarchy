@@ -1,9 +1,11 @@
 import { ThunkDispatch } from 'redux-thunk';
-import { TreeActionTypes } from './actions/tree-actions';
-import reducer from './reducers/root-reducer';
+import { TreeActionTypes, setOverlay } from './actions/tree-actions';
+import { TreeState } from './reducers/tree-reducer';
 
 export type AppAction = TreeActionTypes;
-export type AppState = ReturnType<typeof reducer>;
+export interface AppState {
+  tree: TreeState;
+}
 
 export type Dispatch = ThunkDispatch<AppState, null, AppAction>;
 

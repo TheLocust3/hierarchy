@@ -8,6 +8,7 @@ import TreeApi from '../../api/tree-api';
 
 import LineTo from '../common/LineTo';
 import NodeActions from './NodeActions';
+import { TreeOverlay } from '../../reducers/tree-reducer';
 
 const NODE_WIDTH = 100;
 const NODE_HEIGHT = 100;
@@ -35,23 +36,24 @@ const NodeInner = styled('div')`
   background-color: ${colors.nodeBackground}
 `;
 
-interface LeafProps {
+interface NodeProps {
   uuid: string;
   data: Data;
+  overlay: TreeOverlay;
   parentX?: number;
   parentY?: number;
   getXY?: (x: number, y: number) => void;
   viewport: Viewport;
-  onClick: () => void
+  onClick: (event: any) => void;
 }
 
-interface LeafState {
+interface NodeState {
   x: number;
   y: number;
 }
 
-class NodeComponent extends React.Component<LeafProps, LeafState> {
-  constructor(props: LeafProps) {
+class NodeComponent extends React.Component<NodeProps, NodeState> {
+  constructor(props: NodeProps) {
     super(props);
 
     this.state = { x: 0, y: 0 };
@@ -80,7 +82,7 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
   }
 
   render() {
-    const { uuid, data, parentX, parentY, viewport, onClick } = this.props;
+    const { uuid, data, parentX, parentY, viewport, onClick, overlay } = this.props;
     const getXY = this.props.getXY == null ? (x: number, y: number) => {} : this.props.getXY
 
     return (
@@ -88,7 +90,7 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
         {this.renderLine(viewport, parentX, parentY)}
 
         <NodeInner
-          onClick={onClick}
+          onClick={(event) => onClick(event)}
           ref={(e: HTMLDivElement) => {
             if (e !== null) {
               const rect = e.getBoundingClientRect();
@@ -96,7 +98,7 @@ class NodeComponent extends React.Component<LeafProps, LeafState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
-          <NodeActions uuid={uuid} onDelete={() => this.deleteNode()} />
+          <NodeActions uuid={uuid} onDelete={() => this.deleteNode()} overlay={overlay} />
           <h3>{data.title}</h3>
 
           <p>{data.body}</p>

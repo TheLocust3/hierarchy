@@ -2,16 +2,23 @@ import { ITree } from '../models/tree/tree-base';
 import Leaf from '../models/tree/leaf';
 import { TreeActionTypes } from '../actions/tree-actions';
 
-interface TreeState {
+export interface TreeOverlay {
+  uuid: string;
+  open: boolean;
+}
+
+export interface TreeState {
   tree: ITree;
   trees: ReadonlyArray<ITree>;
   isReady: boolean;
+  overlay: TreeOverlay;
 }
 
 const defaultTreeState: TreeState = {
   tree: new Leaf('', { title: '', body: '' }),
   trees: [],
-  isReady: false
+  isReady: false,
+  overlay: { uuid: '', open: false }
 };
 
 export function treeReducer(
@@ -37,6 +44,11 @@ export function treeReducer(
         tree: action.payload,
         isReady: true
       };
+    case 'SET_OVERLAY':
+      return {
+        ...state,
+        overlay: action.payload
+      }
     default:
       return state;
   }

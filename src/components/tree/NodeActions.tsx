@@ -1,9 +1,11 @@
 import React from 'react';
+import { css } from 'emotion';
 import styled from '@emotion/styled';
 
 import { colors, history } from '../../constants'
 
 import MaterialIcon from '../common/MaterialIcon'
+import { TreeOverlay } from '../../reducers/tree-reducer';
 
 const ActionsContainer = styled('div')`
   position: absolute;
@@ -48,27 +50,51 @@ const IconFrame = styled('div')`
   }
 `
 
+const IconFrameRight = styled(IconFrame)`
+  float: right;
+  margin-left: 10px;
+  margin-right: -7px;
+  margin-top: -7px;
+`
+
+const noHover = css`
+  &:hover {
+    opacity: 0 !important;
+  }
+`;
+
 interface NodeActionsProps {
   uuid: string;
   onDelete: () => void;
+  overlay: TreeOverlay;
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
   render() {
-    const { uuid, onDelete } = this.props
+    const { uuid, onDelete, overlay } = this.props;
 
     return (
-      <ActionsContainer>
+      <ActionsContainer className={overlay.open ? noHover : ""}>
         <IconFrame onClick={(event) => {
+            history.push(`/tree/${uuid}`)
+            event.stopPropagation()
+          }}>
+          <MaterialIcon icon="visibility" fontSize="15px" color={colors.viewBlue} />
+        </IconFrame>
+
+        <IconFrameRight onClick={(event) => {
+            onDelete()
+            event.stopPropagation()
+          }}>
+          <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
+        </IconFrameRight>
+
+        <IconFrameRight onClick={(event) => {
           history.push(`/tree/${uuid}/edit`)
           event.stopPropagation()
         }}>
           <MaterialIcon icon="edit" fontSize="15px" color={colors.actionPurple} />
-        </IconFrame>
-
-        <IconFrame onClick={() => onDelete()}>
-          <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
-        </IconFrame>
+        </IconFrameRight>
       </ActionsContainer>
     );
   }

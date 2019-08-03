@@ -10,7 +10,8 @@ import { AppState, Dispatch, RouterMatch, RouterParams } from '../types';
 import { ITree } from '../models/tree/tree-base';
 import Viewport from '../models/viewport';
 import TreeComponent from '../components/tree/TreeComponent';
-import { getTree } from '../actions/tree-actions';
+import { getTree, setOverlay } from '../actions/tree-actions';
+import { TreeOverlay } from '../reducers/tree-reducer';
 
 const TreeViewport = styled('div')`
   position: relative;
@@ -34,10 +35,12 @@ interface TreeViewParams extends RouterParams {
 }
 
 interface TreeViewProps {
+  setOverlay: typeof setOverlay;
   tree: ITree;
   isReady: boolean;
+  overlay: TreeOverlay;
   dispatch: Dispatch;
-  match: RouterMatch<TreeViewParams>
+  match: RouterMatch<TreeViewParams>;
 }
 
 interface TreeViewState {
@@ -82,6 +85,8 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
               viewport={this.state.viewport}
               data={this.props.tree.data}
               nodes={this.props.tree.nodes}
+              overlay={this.props.overlay}
+              setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
             />
           </TreeViewport>
         </div>
@@ -110,7 +115,8 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
 const mapStateToProps = (state: AppState) => ({
   tree: state.tree.tree,
-  isReady: state.tree.isReady
+  isReady: state.tree.isReady,
+  overlay: state.tree.overlay
 });
 
 export default connect(mapStateToProps)(TreeView);
