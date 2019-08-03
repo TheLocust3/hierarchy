@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { colors, TITLE } from '../constants';
-import { AppState, Dispatch } from '../types';
+import { AppState, Dispatch, RouterMatch, RouterParams } from '../types';
 
 import { ITree } from '../models/tree/tree-base';
 import Viewport from '../models/viewport';
@@ -29,10 +29,15 @@ const TreeViewport = styled('div')`
   text-align: center;
 `;
 
+interface TreeViewParams extends RouterParams {
+  uuid: string;
+}
+
 interface TreeViewProps {
   tree: ITree;
   isReady: boolean;
   dispatch: Dispatch;
+  match: RouterMatch<TreeViewParams>
 }
 
 interface TreeViewState {
@@ -49,7 +54,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   }
 
   componentWillMount() {
-    this.props.dispatch(getTree('uuid'));
+    this.props.dispatch(getTree(this.props.match.params.uuid));
   }
 
   componentDidMount() {
@@ -59,18 +64,21 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   }
 
   render() {
+    const title = this.props.tree.data.title
+
     return (
       <div>
         <Helmet>
-          <title>{TITLE} - Tree View</title>
+          <title>{TITLE} - {title} Tree</title>
           <meta name="description" content="Tree View" />
         </Helmet>
 
         <div>
-          <h1>Tree View</h1>
+          <h1>{title} Tree</h1>
 
           <TreeViewport ref={this.viewportRef}>
             <TreeComponent
+              uuid={this.props.tree.uuid}
               viewport={this.state.viewport}
               data={this.props.tree.data}
               nodes={this.props.tree.nodes}

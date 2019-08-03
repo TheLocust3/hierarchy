@@ -6,3 +6,9 @@ export type AppAction = TreeActionTypes;
 export type AppState = ReturnType<typeof reducer>;
 
 export type Dispatch = ThunkDispatch<AppState, null, AppAction>;
+
+export interface RouterParams {}
+
+export interface RouterMatch<T extends RouterParams> {
+  params: T
+}

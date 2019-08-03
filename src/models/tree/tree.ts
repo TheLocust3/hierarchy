@@ -3,7 +3,7 @@ import { TreeJSON } from '../json/tree-json';
 import Leaf from './leaf';
 
 export default class Tree implements ITree {
-  private _uuid: String = '';
+  private _uuid: string = '';
   private _nodes: ReadonlyArray<ITree> = [];
   private _data: Data = { title: '', body: '' };
 
@@ -19,7 +19,7 @@ export default class Tree implements ITree {
     }
   }
 
-  constructor(uuid: String, data: Data, nodes: ReadonlyArray<ITree>) {
+  constructor(uuid: string, data: Data, nodes: ReadonlyArray<ITree>) {
     this._uuid = uuid;
     this._data = data;
     this._nodes = nodes;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import uuid from 'uuid/v4';
 
 import { Data, ITree } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 import Tree from '../../models/tree/tree';
 import Leaf from '../../models/tree/leaf';
+import { history } from '../../constants';
 
 import NodeComponent from './NodeComponent';
 import LeafComponent from './LeafComponent';
@@ -19,6 +19,7 @@ const Nodes = styled('div')`
 `;
 
 interface TreeProps {
+  uuid: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
   parentX?: number;
@@ -39,16 +40,18 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   render() {
-    const { data, nodes, parentX, parentY, viewport } = this.props;
+    const { uuid, data, nodes, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
         <NodeComponent
+          uuid={uuid}
           data={data}
           parentX={parentX}
           parentY={parentY}
           getXY={(x: number, y: number) => this.updateXYState(x, y)}
           viewport={viewport}
+          onClick={() => history.push(`/tree/${uuid}`)}
         />
 
         <Nodes>
@@ -62,8 +65,9 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
     switch (node.constructor) {
       case Tree:
         return (
-          <div key={uuid()}>
+          <div key={node.uuid}>
             <TreeComponent
+              uuid={node.uuid}
               data={node.data}
               nodes={node.nodes}
               parentX={this.state.x}
@@ -74,8 +78,14 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
         );
       case Leaf:
         return (
-          <div key={uuid()}>
-            <LeafComponent data={node.data} parentX={this.state.x} parentY={this.state.y} viewport={viewport} />
+          <div key={node.uuid}>
+            <LeafComponent
+              uuid={node.uuid}
+              data={node.data}
+              parentX={this.state.x}
+              parentY={this.state.y}
+              viewport={viewport}
+            />
           </div>
         );
       default:

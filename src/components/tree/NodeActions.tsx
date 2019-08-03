@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import MaterialIcon from '../common/MaterialIcon'
+import { colors, history } from '../../constants'
 
-import { colors } from '../../constants'
+import MaterialIcon from '../common/MaterialIcon'
 
 const ActionsContainer = styled('div')`
   position: absolute;
@@ -17,7 +17,7 @@ const ActionsContainer = styled('div')`
 
   &:hover {
     opacity: 1;
-    transition-delay: 0.5s;
+    transition-delay: 0.25s;
   }
 `;
 
@@ -48,15 +48,25 @@ const IconFrame = styled('div')`
   }
 `
 
-class NodeActions extends React.Component<{}, {}> {
+interface NodeActionsProps {
+  uuid: string;
+  onDelete: () => void;
+}
+
+class NodeActions extends React.Component<NodeActionsProps, {}> {
   render() {
+    const { uuid, onDelete } = this.props
+
     return (
       <ActionsContainer>
-        <IconFrame>
+        <IconFrame onClick={(event) => {
+          history.push(`/tree/${uuid}/edit`)
+          event.stopPropagation()
+        }}>
           <MaterialIcon icon="edit" fontSize="15px" color={colors.actionPurple} />
         </IconFrame>
 
-        <IconFrame>
+        <IconFrame onClick={() => onDelete()}>
           <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
         </IconFrame>
       </ActionsContainer>

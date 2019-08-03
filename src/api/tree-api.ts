@@ -6,9 +6,9 @@ import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../model
 export interface TreeApiStructure {
   getAllTrees(): Promise<ReadonlyArray<ITree>>;
   getTree(uuid: String): Promise<ITree>;
-  createLeaf(data: Data, parentUuid: String): Promise<Boolean>;
-  updateTree(uuid: String, data: Data): Promise<Boolean>;
-  deleteTree(uuid: String): Promise<Boolean>;
+  createLeaf(data: Data, parentUuid: String): Promise<String>;
+  updateTree(uuid: String, data: Data): Promise<String>;
+  deleteTree(uuid: String): Promise<String>;
 }
 
 const TreeApi: TreeApiStructure = {
@@ -26,31 +26,31 @@ const TreeApi: TreeApiStructure = {
     return Tree.fromJSON(json.tree);
   },
 
-  async createLeaf(data: Data, parentUuid: String): Promise<Boolean> {
+  async createLeaf(data: Data, parentUuid: String): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       body: JSON.stringify({ data: data, parentUuid: parentUuid })
     });
     const json: TreeSuccessResponse = await response.json();
 
-    return json.success === 'ok';
+    return json.success;
   },
 
-  async updateTree(uuid: String, data: Data): Promise<Boolean> {
+  async updateTree(uuid: String, data: Data): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, {
       method: 'PATCH',
       body: JSON.stringify({ data: data })
     });
     const json: TreeSuccessResponse = await response.json();
 
-    return json.success === 'ok';
+    return json.success;
   },
 
-  async deleteTree(uuid: String): Promise<Boolean> {
+  async deleteTree(uuid: String): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, { method: 'DELETE' });
     const json: TreeSuccessResponse = await response.json();
 
-    return json.success === 'ok';
+    return json.success;
   }
 };
 
