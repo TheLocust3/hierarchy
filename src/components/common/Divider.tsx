@@ -7,7 +7,7 @@ type DividerProps = {
   marginBottom: string;
 }
 
-let Divider = styled('div')<DividerProps>`
+const Divider = styled('div')<DividerProps>`
   width: 100%;
   height: 1px;
 

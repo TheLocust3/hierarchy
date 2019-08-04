@@ -21,7 +21,7 @@ const Overlay = styled('div')`
 
 const OverlayContainer = styled('div')`
   display: block;
-  width: 500px;
+  width: 600px;
   min-height: 500px;
 
   border: 1px solid ${colors.black};

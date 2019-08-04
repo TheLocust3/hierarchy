@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-let Center = styled('div')`
+const Center = styled('div')`
   position: absolute;
   transform: translate(-50%, 0%);
   left: 50%;
