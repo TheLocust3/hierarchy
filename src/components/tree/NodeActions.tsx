@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'emotion';
+import { css, keyframes } from 'emotion';
 import styled from '@emotion/styled';
 
 import { colors, history } from '../../constants';
@@ -13,15 +13,39 @@ const ActionsContainer = styled('div')`
   height: 100%;
 
   text-align: left;
+`;
 
+type TransitionInProps = {
+  delay: string;
+}
+
+const transitionIn = keyframes`
+  0% {
+    transform: scale(0.95);
+  }
+
+  66% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+`
+
+const TransitionIn = styled('div')<TransitionInProps>`
+  display: inline-block;
   opacity: 0;
   transition: opacity 0.4s;
 
-  &:hover {
+  div:hover > & {
     opacity: 1;
-    transition-delay: 0.25s;
+    transition-delay: ${(props: TransitionInProps) => props.delay};
+
+    animation: ${transitionIn} 0.3s ease-in-out;
+    animation-delay: ${(props: TransitionInProps) => props.delay};
   }
-`;
+`
 
 const IconFrame = styled('div')`
   position: relative;
@@ -52,8 +76,8 @@ const IconFrame = styled('div')`
 
 const IconFrameRight = styled(IconFrame)`
   float: right;
-  margin-left: 10px;
-  margin-right: -7px;
+  margin-left: 60px;
+  margin-right: -17px;
   margin-top: -7px;
 `
 
@@ -63,7 +87,7 @@ const noHover = css`
   }
 `;
 
-const AddButtonContainer = styled('div')`
+const AddButtonTransitionContainer = styled(TransitionIn)`
   position: absolute;
   bottom: -5px;
   left: 25px;
@@ -102,25 +126,29 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
 
     return (
       <ActionsContainer className={overlay.open ? noHover : ""}>
-        <IconFrame onClick={(event) => {
-            history.push(`/tree/${uuid}`)
-            event.stopPropagation()
-          }}>
-          <MaterialIcon icon="visibility" fontSize="15px" color={colors.viewBlue} />
-        </IconFrame>
+        <TransitionIn delay="0.25s">
+          <IconFrame onClick={(event) => {
+              history.push(`/tree/${uuid}`)
+              event.stopPropagation()
+            }}>
+            <MaterialIcon icon="visibility" fontSize="15px" color={colors.viewBlue} />
+          </IconFrame>
+        </TransitionIn>
 
-        <IconFrameRight onClick={(event) => {
-            onDelete()
-            event.stopPropagation()
-          }}>
-          <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
-        </IconFrameRight>
+        <TransitionIn delay="0.35s">
+          <IconFrameRight onClick={(event) => {
+              onDelete()
+              event.stopPropagation()
+            }}>
+            <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
+          </IconFrameRight>
+        </TransitionIn>
 
-        <AddButtonContainer>
-            <AddButton>
+        <AddButtonTransitionContainer delay="0.45s">
+            <AddButton onClick={(event) => event.stopPropagation()}>
               <MaterialIcon icon="add" fontSize="24px" color={"white"} />
             </AddButton>
-        </AddButtonContainer>
+        </AddButtonTransitionContainer>
       </ActionsContainer>
     );
   }
