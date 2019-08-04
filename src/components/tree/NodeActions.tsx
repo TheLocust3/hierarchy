@@ -65,11 +65,13 @@ const IconFrame = styled('div')`
   border: 1px solid ${colors.lightBlack};
   border-radius: 50%;
 
+  transform: scale(1);
   background-color: white;
   box-shadow: 1px 2px 5px ${colors.actionShadow};
-  transition: background-color 0.4s;
+  transition: background-color 0.4s, transform 0.4s;
 
   &:hover {
+    transform: scale(1.1);
     background-color: ${colors.actionHover};
   }
 `
@@ -106,10 +108,12 @@ const AddButton = styled('div')`
   border-radius: 3px;
   box-shadow: 1px 2px 5px ${colors.actionShadow};
 
+  transform: scale(1);
   background-color: ${colors.addGreen};
-  transition: background-color 0.4s;
+  transition: background-color 0.4s, transform 0.4s;
 
   &:hover {
+    transform: scale(1.1);
     background-color: ${colors.addGreenHover};
   }
 `

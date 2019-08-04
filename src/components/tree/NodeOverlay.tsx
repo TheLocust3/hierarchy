@@ -3,16 +3,17 @@ import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
 import { Data } from '../../models/tree/tree-base';
-
-import MiddleCenter from '../common/MiddleCenter';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 
+import MiddleCenter from '../common/MiddleCenter';
+import EditableNode from './EditableNode';
+
 const Overlay = styled('div')`
-  position: absolute;
+  position: fixed; // a hack to allow the overlay to overflow past its parent
   left: 0;
+  right: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 0;
 
   z-index: 10;
   transition: background-color 0.25s;
@@ -49,9 +50,7 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
       >
         <MiddleCenter style={{ zIndex: 10 }}>
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
-              <h3>{data.title}</h3>
-
-              <p>{data.body}</p>
+              <EditableNode uuid={uuid} data={data} />
           </OverlayContainer>
         </MiddleCenter>
       </Overlay>
