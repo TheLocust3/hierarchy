@@ -29,8 +29,11 @@ const TreeApi: TreeApiStructure = {
   async createLeaf(data: Data, parentUuid: String): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data, parentUuid: parentUuid })
     });
+    console.log(await response)
+
     const json: TreeSuccessResponse = await response.json();
 
     return json.success;
@@ -39,8 +42,10 @@ const TreeApi: TreeApiStructure = {
   async updateTree(uuid: String, data: Data): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, {
       method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data })
     });
+
     const json: TreeSuccessResponse = await response.json();
 
     return json.success;

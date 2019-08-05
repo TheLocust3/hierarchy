@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { colors } from '../../constants';
 import { Data } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
-import TreeApi from '../../api/tree-api';
 
 import LineTo from '../common/LineTo';
 import NodeActions from './NodeActions';
@@ -64,14 +63,6 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
     this.state = { x: 0, y: 0 };
   }
 
-  deleteNode() {
-    TreeApi.deleteTree(this.props.uuid).then((success) => {
-      console.log(success)
-      
-      window.location.reload()
-    })
-  }
-
   renderLine(viewport: Viewport, parentX?: number, parentY?: number) {
     if (parentX == null || parentY == null) return; // root tree doesn't have any parents and no line
 
@@ -103,7 +94,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
-          <NodeActions uuid={uuid} onDelete={() => this.deleteNode()} overlay={overlay} />
+          <NodeActions uuid={uuid} overlay={overlay} />
           <h3>{data.title}</h3>
 
           <p>{data.body}</p>

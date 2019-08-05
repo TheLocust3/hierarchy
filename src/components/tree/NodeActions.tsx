@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import { colors, history } from '../../constants';
 import { TreeOverlay } from '../../reducers/tree-reducer';
+import TreeApi from '../../api/tree-api';
 
 import MaterialIcon from '../common/MaterialIcon';
 
@@ -120,13 +121,29 @@ const AddButton = styled('div')`
 
 interface NodeActionsProps {
   uuid: string;
-  onDelete: () => void;
   overlay: TreeOverlay;
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
+  
+  deleteNode() {
+    TreeApi.deleteTree(this.props.uuid).then((success) => {
+      console.log(success)
+      
+      window.location.reload()
+    })
+  }
+
+  createLeaf() {
+    TreeApi.createLeaf({ title: "Title", body: "Description" }, this.props.uuid).then((success) => {
+      console.log(success)
+      
+      window.location.reload()
+    })
+  }
+
   render() {
-    const { uuid, onDelete, overlay } = this.props;
+    const { uuid, overlay } = this.props;
 
     return (
       <ActionsContainer className={overlay.open ? noHover : ""}>
@@ -141,7 +158,7 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
 
         <TransitionIn delay="0.35s">
           <IconFrameRight onClick={(event) => {
-              onDelete()
+              this.deleteNode()
               event.stopPropagation()
             }}>
             <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
@@ -149,7 +166,10 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
         </TransitionIn>
 
         <AddButtonTransitionContainer delay="0.45s">
-            <AddButton onClick={(event) => event.stopPropagation()}>
+            <AddButton onClick={(event) => {
+              this.createLeaf()
+              event.stopPropagation()
+            }}>
               <MaterialIcon icon="add" fontSize="24px" color={"white"} />
             </AddButton>
         </AddButtonTransitionContainer>
