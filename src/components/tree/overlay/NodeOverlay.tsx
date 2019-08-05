@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors } from '../../constants';
-import { Data } from '../../models/tree/tree-base';
-import { TreeOverlay } from '../../reducers/tree-reducer';
+import { colors } from '../../../constants';
+import { Data } from '../../../models/tree/tree-base';
+import { TreeOverlay } from '../../../reducers/tree-reducer';
 
-import MiddleCenter from '../common/MiddleCenter';
+import MiddleCenter from '../../common/MiddleCenter';
 import EditableNode from './EditableNode';
 
 const Overlay = styled('div')`

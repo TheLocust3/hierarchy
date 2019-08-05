@@ -7,7 +7,7 @@ import Tree from '../../models/tree/tree';
 import Leaf from '../../models/tree/leaf';
 
 import NodeComponent from './NodeComponent';
-import NodeOverlay from './NodeOverlay';
+import NodeOverlay from './overlay/NodeOverlay';
 import LeafComponent from './LeafComponent';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 

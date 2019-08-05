@@ -3,7 +3,7 @@ import React from 'react';
 import { Data } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 import NodeComponent from './NodeComponent';
-import NodeOverlay from './NodeOverlay';
+import NodeOverlay from './overlay/NodeOverlay';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 
 interface LeafProps {

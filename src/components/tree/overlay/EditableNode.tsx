@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors } from '../../constants';
-import { Data } from '../../models/tree/tree-base';
+import { colors } from '../../../constants';
+import { Data } from '../../../models/tree/tree-base';
+import TreeApi from '../../../api/tree-api';
 
-import Divider from '../common/Divider';
-import ColumnLayout from '../common/ColumnLayout';
+import Divider from '../../common/Divider';
+import ColumnLayout from '../../common/ColumnLayout';
+import Button from '../../common/Button';
 
 const Container = styled(ColumnLayout)`
   height: 500px;
@@ -50,7 +52,7 @@ const ActionTitle = styled('h3')`
 `;
 
 const ActionsInner = styled('div')`
-  margin-left: 5%;
+  margin-left: 10%;
 `;
 
 interface EditableNodeProps {
@@ -60,8 +62,16 @@ interface EditableNodeProps {
 
 class EditableNode extends React.Component<EditableNodeProps> {
 
+  deleteNode() {
+    TreeApi.deleteTree(this.props.uuid).then((success) => {
+      console.log(success)
+      
+      window.location.reload()
+    })
+  }
+
   render() {
-    const { uuid, data } = this.props;
+    const { data } = this.props;
 
     return (
       <Container>
@@ -80,7 +90,15 @@ class EditableNode extends React.Component<EditableNodeProps> {
           <Divider marginTop="3%" marginBottom="5%" />
 
           <ActionsInner>
-            Test
+            <Button
+              color={colors.deleteRed}
+              hoverColor={colors.deleteRedHover}
+              activeColor={colors.deleteRedActive}
+              textColor="white"
+              onClick={(event: any) => this.deleteNode()}
+            >
+                Delete
+            </Button>
           </ActionsInner>
         </RightColumn>
       </Container>

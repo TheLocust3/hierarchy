@@ -9,6 +9,8 @@ export const colors = {
   actionHover: '#e0e0e0',
   actionShadow: '#bdbdbd',
   deleteRed: '#f44336',
+  deleteRedHover: '#d32f2f',
+  deleteRedActive: '#ab000d',
   viewBlue: '#64b5f6',
   addGreen: '#a5d6a7',
   addGreenHover: '#81c784',
