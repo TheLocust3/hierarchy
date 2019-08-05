@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors } from '../../../constants';
+import { colors, fonts } from '../../../constants';
 import { Data } from '../../../models/tree/tree-base';
 import TreeApi from '../../../api/tree-api';
 
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
 import Button from '../../common/Button';
+import EditableTextField from '../../common/EditableTextField';
+import EditableTextArea from '../../common/EditableTextArea';
 
 const Container = styled(ColumnLayout)`
   height: 500px;
@@ -62,6 +64,18 @@ interface EditableNodeProps {
 
 class EditableNode extends React.Component<EditableNodeProps> {
 
+  updateTitle(title: string) {
+    TreeApi.updateTree(this.props.uuid, { ...this.props.data, title: title }).then((success) => {
+      console.log(success);
+    })
+  }
+
+  updateBody(body: string) {
+    TreeApi.updateTree(this.props.uuid, { ...this.props.data, body: body }).then((success) => {
+      console.log(success);
+    })
+  }
+
   deleteNode() {
     TreeApi.deleteTree(this.props.uuid).then((success) => {
       console.log(success)
@@ -76,11 +90,27 @@ class EditableNode extends React.Component<EditableNodeProps> {
     return (
       <Container>
         <LeftColumn>
-          <Title>{data.title}</Title>
+          <Title>
+            <EditableTextField
+              onUnfocus={(value) => this.updateTitle(value)}
+              fontSize="26px"
+              fontFamily={fonts.title}
+              backgroundColor={colors.nodeBackground}
+            >
+              {data.title}
+            </EditableTextField>
+          </Title>
           <Divider marginTop="3%" marginBottom="5%" />
 
           <Body>
-            {data.body}
+            <EditableTextArea
+              onUnfocus={(value) => this.updateBody(value)}
+              fontSize="16px"
+              fontFamily={fonts.body}
+              backgroundColor={colors.nodeBackground}
+            >
+              {data.body}
+            </EditableTextArea>
           </Body>
         </LeftColumn>
 

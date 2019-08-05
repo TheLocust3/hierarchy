@@ -19,6 +19,11 @@ export const colors = {
   nodeBackgroundHover: '#eeeeee'
 };
 
+export const fonts = {
+  title: "'Roboto Slab', serif",
+  body: "'Roboto', sans-serif"
+}
+
 export const MAX_MOBILE_WIDTH = '768px';
 export const MAX_MOBILE_WIDTH_NUMBER = 768;
 

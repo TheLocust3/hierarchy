@@ -61,9 +61,28 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   }
 
   componentDidMount() {
-    this.updateViewport();
-
     window.addEventListener('resize', () => this.updateViewport());
+  }
+
+  componentDidUpdate() {
+    this.updateViewport();
+  }
+
+  renderTree() {
+    if (!this.props.isReady) return;
+
+    return (
+      <TreeViewport ref={this.viewportRef}>
+        <TreeComponent
+          uuid={this.props.tree.uuid}
+          viewport={this.state.viewport}
+          data={this.props.tree.data}
+          nodes={this.props.tree.nodes}
+          overlay={this.props.overlay}
+          setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
+        />
+      </TreeViewport>
+    );
   }
 
   render() {
@@ -79,16 +98,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
         <div>
           <h1>{title} Tree</h1>
 
-          <TreeViewport ref={this.viewportRef}>
-            <TreeComponent
-              uuid={this.props.tree.uuid}
-              viewport={this.state.viewport}
-              data={this.props.tree.data}
-              nodes={this.props.tree.nodes}
-              overlay={this.props.overlay}
-              setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
-            />
-          </TreeViewport>
+          {this.renderTree()}
         </div>
       </div>
     );
