@@ -58,26 +58,26 @@ const ActionsInner = styled('div')`
 `;
 
 interface EditableNodeProps {
-  uuid: string;
+  id: string;
   data: Data;
 }
 
 class EditableNode extends React.Component<EditableNodeProps> {
 
   updateTitle(title: string) {
-    TreeApi.updateTree(this.props.uuid, { ...this.props.data, title: title }).then((success) => {
+    TreeApi.updateTree(this.props.id, { ...this.props.data, title: title }).then((success) => {
       console.log(success);
     })
   }
 
   updateBody(body: string) {
-    TreeApi.updateTree(this.props.uuid, { ...this.props.data, body: body }).then((success) => {
+    TreeApi.updateTree(this.props.id, { ...this.props.data, body: body }).then((success) => {
       console.log(success);
     })
   }
 
   deleteNode() {
-    TreeApi.deleteTree(this.props.uuid).then((success) => {
+    TreeApi.deleteTree(this.props.id).then((success) => {
       console.log(success)
       
       window.location.reload()

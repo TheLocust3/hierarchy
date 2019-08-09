@@ -120,14 +120,14 @@ const AddButton = styled('div')`
 `
 
 interface NodeActionsProps {
-  uuid: string;
+  id: string;
   overlay: TreeOverlay;
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
   
   deleteNode() {
-    TreeApi.deleteTree(this.props.uuid).then((success) => {
+    TreeApi.deleteTree(this.props.id).then((success) => {
       console.log(success)
       
       window.location.reload()
@@ -135,7 +135,7 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
   }
 
   createLeaf() {
-    TreeApi.createLeaf({ title: "Title", body: "Description" }, this.props.uuid).then((success) => {
+    TreeApi.createLeaf({ title: "Title", body: "Description" }, this.props.id).then((success) => {
       console.log(success)
       
       window.location.reload()
@@ -143,13 +143,13 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
   }
 
   render() {
-    const { uuid, overlay } = this.props;
+    const { id, overlay } = this.props;
 
     return (
       <ActionsContainer className={overlay.open ? noHover : ""}>
         <TransitionIn delay="0.25s">
           <IconFrame onClick={(event) => {
-              history.push(`/tree/${uuid}`)
+              history.push(`/tree/${id}`)
               event.stopPropagation()
             }}>
             <MaterialIcon icon="visibility" fontSize="15px" color={colors.viewBlue} />

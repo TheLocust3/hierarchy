@@ -31,7 +31,7 @@ const OverlayContainer = styled('div')`
 `;
 
 interface NodeOverlayProps {
-  uuid: string;
+  id: string;
   data: Data;
   currentOverlay: TreeOverlay;
 }
@@ -39,18 +39,18 @@ interface NodeOverlayProps {
 class NodeOverlay extends React.Component<NodeOverlayProps> {
 
   render() {
-    const { uuid, data, currentOverlay } = this.props;
+    const { id, data, currentOverlay } = this.props;
 
     return (
       <Overlay
         style={{
-          display: currentOverlay.uuid === uuid && currentOverlay.open ? "initial" : "none",
+          display: currentOverlay.id === id && currentOverlay.open ? "initial" : "none",
           backgroundColor: "rgba(0, 0, 0, 0.3)"
         }}
       >
         <MiddleCenter style={{ zIndex: 10 }}>
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
-              <EditableNode uuid={uuid} data={data} />
+              <EditableNode id={id} data={data} />
           </OverlayContainer>
         </MiddleCenter>
       </Overlay>

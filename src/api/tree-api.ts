@@ -5,10 +5,10 @@ import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../model
 
 export interface TreeApiStructure {
   getAllTrees(): Promise<ReadonlyArray<ITree>>;
-  getTree(uuid: String): Promise<ITree>;
-  createLeaf(data: Data, parentUuid: String): Promise<String>;
-  updateTree(uuid: String, data: Data): Promise<String>;
-  deleteTree(uuid: String): Promise<String>;
+  getTree(id: String): Promise<ITree>;
+  createLeaf(data: Data, parentid: String): Promise<String>;
+  updateTree(id: String, data: Data): Promise<String>;
+  deleteTree(id: String): Promise<String>;
 }
 
 const TreeApi: TreeApiStructure = {
@@ -19,18 +19,18 @@ const TreeApi: TreeApiStructure = {
     return json.trees.map((tree) => Tree.fromJSON(tree));
   },
 
-  async getTree(uuid: String): Promise<ITree> {
-    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, { method: 'GET' });
+  async getTree(id: String): Promise<ITree> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${id}`, { method: 'GET' });
     const json: TreeResponse = await response.json();
 
     return Tree.fromJSON(json.tree);
   },
 
-  async createLeaf(data: Data, parentUuid: String): Promise<String> {
+  async createLeaf(data: Data, parentid: String): Promise<String> {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: data, parentUuid: parentUuid })
+      body: JSON.stringify({ data: data, parentid: parentid })
     });
     console.log(await response)
 
@@ -39,8 +39,8 @@ const TreeApi: TreeApiStructure = {
     return json.success;
   },
 
-  async updateTree(uuid: String, data: Data): Promise<String> {
-    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, {
+  async updateTree(id: String, data: Data): Promise<String> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data })
@@ -51,8 +51,8 @@ const TreeApi: TreeApiStructure = {
     return json.success;
   },
 
-  async deleteTree(uuid: String): Promise<String> {
-    const response = await fetch(`${API_ENDPOINT}/tree/${uuid}`, { method: 'DELETE' });
+  async deleteTree(id: String): Promise<String> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${id}`, { method: 'DELETE' });
     const json: TreeSuccessResponse = await response.json();
 
     return json.success;

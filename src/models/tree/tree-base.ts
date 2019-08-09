@@ -15,7 +15,7 @@ export class Data {
 }
 
 export interface ITree {
-  uuid: string;
+  id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
 }

@@ -7,7 +7,7 @@ import NodeOverlay from './overlay/NodeOverlay';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 
 interface LeafProps {
-  uuid: string;
+  id: string;
   data: Data;
   overlay: TreeOverlay;
   parentX: number;
@@ -19,20 +19,20 @@ interface LeafProps {
 class LeafComponent extends React.Component<LeafProps> {
 
   componentDidMount() {
-    window.addEventListener('click', () => { // TOOD: bind this only when uuid is selected
-      if (this.props.overlay.uuid === this.props.uuid && this.props.overlay.open) {
-        this.props.setOverlay({ uuid: this.props.uuid, open: false })
+    window.addEventListener('click', () => { // TOOD: bind this only when id is selected
+      if (this.props.overlay.id === this.props.id && this.props.overlay.open) {
+        this.props.setOverlay({ id: this.props.id, open: false })
       }
     });
   }
 
   render() {
-    const { uuid, data, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <div>
         <NodeComponent
-          uuid={uuid}
+          id={id}
           data={data}
           parentX={parentX}
           parentY={parentY}
@@ -40,14 +40,14 @@ class LeafComponent extends React.Component<LeafProps> {
           overlay={overlay}
           onClick={(event) => {
             if (!overlay.open) {
-              this.props.setOverlay({ uuid: uuid, open: true })
+              this.props.setOverlay({ id: id, open: true })
               event.stopPropagation()
             }
           }}
         />
 
         <NodeOverlay
-          uuid={uuid}
+          id={id}
           data={data}
           currentOverlay={overlay}
         />

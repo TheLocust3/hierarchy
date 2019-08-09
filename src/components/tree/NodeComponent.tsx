@@ -41,7 +41,7 @@ const NodeInner = styled('div')`
 `;
 
 interface NodeProps {
-  uuid: string;
+  id: string;
   data: Data;
   overlay: TreeOverlay;
   parentX?: number;
@@ -78,7 +78,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
   }
 
   render() {
-    const { uuid, data, parentX, parentY, viewport, onClick, overlay } = this.props;
+    const { id, data, parentX, parentY, viewport, onClick, overlay } = this.props;
     const getXY = this.props.getXY == null ? (x: number, y: number) => {} : this.props.getXY
 
     return (
@@ -94,7 +94,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
-          <NodeActions uuid={uuid} overlay={overlay} />
+          <NodeActions id={id} overlay={overlay} />
           <h3>{data.title}</h3>
 
           <p>{data.body}</p>

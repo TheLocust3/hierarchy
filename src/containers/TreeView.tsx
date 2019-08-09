@@ -31,7 +31,7 @@ const TreeViewport = styled('div')`
 `;
 
 interface TreeViewParams extends RouterParams {
-  uuid: string;
+  id: string;
 }
 
 interface TreeViewProps {
@@ -57,7 +57,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   }
 
   componentWillMount() {
-    this.props.dispatch(getTree(this.props.match.params.uuid));
+    this.props.dispatch(getTree(this.props.match.params.id));
   }
 
   componentDidMount() {
@@ -74,7 +74,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
     return (
       <TreeViewport ref={this.viewportRef}>
         <TreeComponent
-          uuid={this.props.tree.uuid}
+          id={this.props.tree.id}
           viewport={this.state.viewport}
           data={this.props.tree.data}
           nodes={this.props.tree.nodes}

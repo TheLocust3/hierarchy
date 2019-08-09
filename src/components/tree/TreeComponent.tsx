@@ -20,7 +20,7 @@ const Nodes = styled('div')`
 `;
 
 interface TreeProps {
-  uuid: string;
+  id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
   overlay: TreeOverlay;
@@ -43,20 +43,20 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   componentDidMount() {
-    window.addEventListener('click', () => { // TOOD: bind this only when uuid is selected
-      if (this.props.overlay.uuid === this.props.uuid && this.props.overlay.open) {
-        this.props.setOverlay({ uuid: this.props.uuid, open: false })
+    window.addEventListener('click', () => { // TOOD: bind this only when id is selected
+      if (this.props.overlay.id === this.props.id && this.props.overlay.open) {
+        this.props.setOverlay({ id: this.props.id, open: false })
       }
     });
   }
 
   render() {
-    const { uuid, data, nodes, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, nodes, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
         <NodeComponent
-          uuid={uuid}
+          id={id}
           data={data}
           overlay={overlay}
           parentX={parentX}
@@ -65,14 +65,14 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           viewport={viewport}
           onClick={(event) => {
             if (!overlay.open) {
-              this.props.setOverlay({ uuid: uuid, open: true })
+              this.props.setOverlay({ id: id, open: true })
               event.stopPropagation()
             }
           }}
         />
 
         <NodeOverlay
-          uuid={uuid}
+          id={id}
           data={data}
           currentOverlay={overlay}
         />
@@ -88,9 +88,9 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
     switch (node.constructor) {
       case Tree:
         return (
-          <div key={node.uuid}>
+          <div key={node.id}>
             <TreeComponent
-              uuid={node.uuid}
+              id={node.id}
               data={node.data}
               nodes={node.nodes}
               overlay={this.props.overlay}
@@ -103,9 +103,9 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
         );
       case Leaf:
         return (
-          <div key={node.uuid}>
+          <div key={node.id}>
             <LeafComponent
-              uuid={node.uuid}
+              id={node.id}
               data={node.data}
               overlay={this.props.overlay}
               parentX={this.state.x}

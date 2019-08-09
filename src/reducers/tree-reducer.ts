@@ -3,7 +3,7 @@ import Leaf from '../models/tree/leaf';
 import { TreeActionTypes } from '../actions/tree-actions';
 
 export interface TreeOverlay {
-  uuid: string;
+  id: string;
   open: boolean;
 }
 
@@ -18,7 +18,7 @@ const defaultTreeState: TreeState = {
   tree: new Leaf('', { title: '', body: '' }),
   trees: [],
   isReady: false,
-  overlay: { uuid: '', open: false }
+  overlay: { id: '', open: false }
 };
 
 export function treeReducer(

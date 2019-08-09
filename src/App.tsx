@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <div>
           <Switch>
             <Route exact path="/" component={Index} />
-            <Route exact path="/tree/:uuid" component={TreeView} />
+            <Route exact path="/tree/:id" component={TreeView} />
 
             <Route component={NotFound} />
           </Switch>

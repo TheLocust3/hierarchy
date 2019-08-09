@@ -85,11 +85,11 @@ export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes
   };
 };
 
-export function getTree(uuid: String): ThunkAction<void, AppState, null, TreeActionTypes> {
+export function getTree(id: String): ThunkAction<void, AppState, null, TreeActionTypes> {
   return async (dispatch) => {
     dispatch(requestTree());
 
-    const tree = await TreeApi.getTree(uuid);
+    const tree = await TreeApi.getTree(id);
     dispatch(receiveTree(tree));
   };
 }

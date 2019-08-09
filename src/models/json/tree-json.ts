@@ -4,7 +4,7 @@ export interface DataJSON {
 }
 
 export interface TreeJSON {
-  uuid: string;
+  id: string;
   data: DataJSON;
   nodes?: ReadonlyArray<TreeJSON>;
   type: string;
