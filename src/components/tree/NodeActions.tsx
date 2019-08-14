@@ -18,7 +18,7 @@ const ActionsContainer = styled('div')`
 
 type TransitionInProps = {
   delay: string;
-}
+};
 
 const transitionIn = keyframes`
   0% {
@@ -32,7 +32,7 @@ const transitionIn = keyframes`
   100% {
     transform: scale(1);
   }
-`
+`;
 
 const TransitionIn = styled('div')<TransitionInProps>`
   display: inline-block;
@@ -46,7 +46,7 @@ const TransitionIn = styled('div')<TransitionInProps>`
     animation: ${transitionIn} 0.3s ease-in-out;
     animation-delay: ${(props: TransitionInProps) => props.delay};
   }
-`
+`;
 
 const IconFrame = styled('div')`
   position: relative;
@@ -75,14 +75,14 @@ const IconFrame = styled('div')`
     transform: scale(1.1);
     background-color: ${colors.actionHover};
   }
-`
+`;
 
 const IconFrameRight = styled(IconFrame)`
   float: right;
   margin-left: 60px;
   margin-right: -17px;
   margin-top: -7px;
-`
+`;
 
 const noHover = css`
   &:hover {
@@ -94,7 +94,7 @@ const AddButtonTransitionContainer = styled(TransitionIn)`
   position: absolute;
   bottom: -5px;
   left: 25px;
-`
+`;
 
 const AddButton = styled('div')`
   position: relative;
@@ -117,7 +117,7 @@ const AddButton = styled('div')`
     transform: scale(1.1);
     background-color: ${colors.addGreenHover};
   }
-`
+`;
 
 interface NodeActionsProps {
   id: string;
@@ -125,53 +125,55 @@ interface NodeActionsProps {
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
-  
   deleteNode() {
     TreeApi.deleteTree(this.props.id).then((success) => {
-      console.log(success)
-      
-      window.location.reload()
-    })
+      console.log(success);
+
+      window.location.reload();
+    });
   }
 
   createLeaf() {
-    TreeApi.createLeaf({ title: "Title", body: "Description" }, this.props.id).then((success) => {
-      console.log(success)
-      
-      window.location.reload()
-    })
+    TreeApi.createLeaf({ title: 'Title', body: 'Description' }, this.props.id).then((success) => {
+      console.log(success);
+
+      window.location.reload();
+    });
   }
 
   render() {
     const { id, overlay } = this.props;
 
     return (
-      <ActionsContainer className={overlay.open ? noHover : ""}>
+      <ActionsContainer className={overlay.open ? noHover : ''}>
         <TransitionIn delay="0.25s">
-          <IconFrame onClick={(event) => {
-              history.push(`/tree/${id}`)
-              event.stopPropagation()
+          <IconFrame
+            onClick={(event) => {
+              window.location.href = `/tree/${id}`;
+              event.stopPropagation();
             }}>
             <MaterialIcon icon="visibility" fontSize="15px" color={colors.viewBlue} />
           </IconFrame>
         </TransitionIn>
 
         <TransitionIn delay="0.35s">
-          <IconFrameRight onClick={(event) => {
-              this.deleteNode()
-              event.stopPropagation()
+          <IconFrameRight
+            onClick={(event) => {
+              this.deleteNode();
+              event.stopPropagation();
             }}>
             <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />
           </IconFrameRight>
         </TransitionIn>
 
         <AddButtonTransitionContainer delay="0.45s">
-            <AddButton onClick={(event) => {
-              this.createLeaf()
-              event.stopPropagation()
+          <AddButton
+            onClick={(event) => {
+              this.createLeaf();
+              event.stopPropagation();
             }}>
-              <MaterialIcon icon="add" fontSize="24px" color={"white"} />
-            </AddButton>
+            <MaterialIcon icon="add" fontSize="24px" color={'white'} />
+          </AddButton>
         </AddButtonTransitionContainer>
       </ActionsContainer>
     );
