@@ -30,9 +30,8 @@ const TreeApi: TreeApiStructure = {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: data, parentid: parentid })
+      body: JSON.stringify({ data: data, parentId: parentid })
     });
-    console.log(await response)
 
     const json: TreeSuccessResponse = await response.json();
 

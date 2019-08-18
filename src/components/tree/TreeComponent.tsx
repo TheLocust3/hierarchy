@@ -27,31 +27,35 @@ interface TreeProps {
   parentX?: number;
   parentY?: number;
   viewport: Viewport;
-  setOverlay: (overlay: TreeOverlay) => void
+  setOverlay: (overlay: TreeOverlay) => void;
 }
 
 interface TreeState {
   x: number;
   y: number;
+  data: Data;
 }
 
 class TreeComponent extends React.Component<TreeProps, TreeState> {
   constructor(props: TreeProps) {
     super(props);
 
-    this.state = { x: 0, y: 0 };
+    this.state = { x: 0, y: 0, data: this.props.data };
   }
 
   componentDidMount() {
-    window.addEventListener('click', () => { // TOOD: bind this only when id is selected
+    window.addEventListener('click', () => {
+      // TOOD: bind this only when id is selected
       if (this.props.overlay.id === this.props.id && this.props.overlay.open) {
-        this.props.setOverlay({ id: this.props.id, open: false })
+        this.props.setOverlay({ id: this.props.id, open: false });
       }
     });
   }
 
   render() {
-    const { id, data, nodes, overlay, parentX, parentY, viewport } = this.props;
+    const { id, nodes, overlay, parentX, parentY, viewport } = this.props;
+
+    const data = this.state.data;
 
     return (
       <TreeContainer>
@@ -65,8 +69,8 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           viewport={viewport}
           onClick={(event) => {
             if (!overlay.open) {
-              this.props.setOverlay({ id: id, open: true })
-              event.stopPropagation()
+              this.props.setOverlay({ id: id, open: true });
+              event.stopPropagation();
             }
           }}
         />
@@ -75,11 +79,10 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           id={id}
           data={data}
           currentOverlay={overlay}
+          updateData={(data: Data) => this.setState({ data: data })}
         />
 
-        <Nodes>
-          {nodes.map((node) => this.renderNode(node, viewport))}
-        </Nodes>
+        <Nodes>{nodes.map((node) => this.renderNode(node, viewport))}</Nodes>
       </TreeContainer>
     );
   }

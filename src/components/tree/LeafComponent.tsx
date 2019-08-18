@@ -13,21 +13,32 @@ interface LeafProps {
   parentX: number;
   parentY: number;
   viewport: Viewport;
-  setOverlay: (overlay: TreeOverlay) => void
+  setOverlay: (overlay: TreeOverlay) => void;
 }
 
-class LeafComponent extends React.Component<LeafProps> {
+interface LeafState {
+  data: Data;
+}
+
+class LeafComponent extends React.Component<LeafProps, LeafState> {
+  constructor(props: LeafProps) {
+    super(props);
+
+    this.state = { data: this.props.data };
+  }
 
   componentDidMount() {
-    window.addEventListener('click', () => { // TOOD: bind this only when id is selected
+    window.addEventListener('click', () => {
+      // TOOD: bind this only when id is selected
       if (this.props.overlay.id === this.props.id && this.props.overlay.open) {
-        this.props.setOverlay({ id: this.props.id, open: false })
+        this.props.setOverlay({ id: this.props.id, open: false });
       }
     });
   }
 
   render() {
-    const { id, data, overlay, parentX, parentY, viewport } = this.props;
+    const { id, overlay, parentX, parentY, viewport } = this.props;
+    const data = this.state.data;
 
     return (
       <div>
@@ -40,8 +51,8 @@ class LeafComponent extends React.Component<LeafProps> {
           overlay={overlay}
           onClick={(event) => {
             if (!overlay.open) {
-              this.props.setOverlay({ id: id, open: true })
-              event.stopPropagation()
+              this.props.setOverlay({ id: id, open: true });
+              event.stopPropagation();
             }
           }}
         />
@@ -50,6 +61,7 @@ class LeafComponent extends React.Component<LeafProps> {
           id={id}
           data={data}
           currentOverlay={overlay}
+          updateData={(data: Data) => this.setState({ data: data })}
         />
       </div>
     );

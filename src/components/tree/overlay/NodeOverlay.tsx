@@ -17,7 +17,7 @@ const Overlay = styled('div')`
 
   z-index: 10;
   transition: background-color 0.25s;
-`
+`;
 
 const OverlayContainer = styled('div')`
   display: block;
@@ -27,30 +27,29 @@ const OverlayContainer = styled('div')`
   border: 1px solid ${colors.black};
   border-radius: 10px;
 
-  background-color: ${colors.nodeBackground}
+  background-color: ${colors.nodeBackground};
 `;
 
 interface NodeOverlayProps {
   id: string;
   data: Data;
   currentOverlay: TreeOverlay;
+  updateData: (data: Data) => void;
 }
 
 class NodeOverlay extends React.Component<NodeOverlayProps> {
-
   render() {
-    const { id, data, currentOverlay } = this.props;
+    const { id, data, currentOverlay, updateData } = this.props;
 
     return (
       <Overlay
         style={{
-          display: currentOverlay.id === id && currentOverlay.open ? "initial" : "none",
-          backgroundColor: "rgba(0, 0, 0, 0.3)"
-        }}
-      >
+          display: currentOverlay.id === id && currentOverlay.open ? 'initial' : 'none',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)'
+        }}>
         <MiddleCenter style={{ zIndex: 10 }}>
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
-              <EditableNode id={id} data={data} />
+            <EditableNode id={id} data={data} updateData={updateData} />
           </OverlayContainer>
         </MiddleCenter>
       </Overlay>
