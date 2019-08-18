@@ -35,7 +35,6 @@ interface TreeViewParams extends RouterParams {
 }
 
 interface TreeViewProps {
-  setOverlay: typeof setOverlay;
   tree: ITree;
   isReady: boolean;
   overlay: TreeOverlay;
@@ -56,11 +55,9 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
     this.state = { viewport: { width: 0, height: 0, x: 0, y: 0 } };
   }
 
-  componentWillMount() {
-    this.props.dispatch(getTree(this.props.match.params.id));
-  }
-
   componentDidMount() {
+    this.props.dispatch(getTree(this.props.match.params.id));
+
     window.addEventListener('resize', () => this.updateViewport());
   }
 
@@ -86,12 +83,14 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
   }
 
   render() {
-    const title = this.props.tree.data.title
+    const title = this.props.tree.data.title;
 
     return (
       <div>
         <Helmet>
-          <title>{TITLE} - {title} Tree</title>
+          <title>
+            {TITLE} - {title} Tree
+          </title>
           <meta name="description" content="Tree View" />
         </Helmet>
 
