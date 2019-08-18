@@ -12,6 +12,8 @@ export const colors = {
   deleteRedHover: '#d32f2f',
   deleteRedActive: '#ab000d',
   viewBlue: '#64b5f6',
+  viewBlueHover: '#42a5f5',
+  viewBlueActive: '#2286c3',
   addGreen: '#a5d6a7',
   addGreenHover: '#81c784',
 
@@ -22,7 +24,7 @@ export const colors = {
 export const fonts = {
   title: "'Roboto Slab', serif",
   body: "'Roboto', sans-serif"
-}
+};
 
 export const MAX_MOBILE_WIDTH = '768px';
 export const MAX_MOBILE_WIDTH_NUMBER = 768;
