@@ -122,17 +122,10 @@ const AddButton = styled('div')`
 interface NodeActionsProps {
   id: string;
   overlay: TreeOverlay;
+  deleteNode: () => void;
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
-  deleteNode() {
-    TreeApi.deleteTree(this.props.id).then((success) => {
-      console.log(success);
-
-      window.location.reload();
-    });
-  }
-
   createLeaf() {
     TreeApi.createLeaf({ title: 'Title', body: 'Description' }, this.props.id).then((success) => {
       console.log(success);
@@ -142,7 +135,7 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
   }
 
   render() {
-    const { id, overlay } = this.props;
+    const { id, overlay, deleteNode } = this.props;
 
     return (
       <ActionsContainer className={overlay.open ? noHover : ''}>
@@ -159,7 +152,7 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
         <TransitionIn delay="0.35s">
           <IconFrameRight
             onClick={(event) => {
-              this.deleteNode();
+              deleteNode();
               event.stopPropagation();
             }}>
             <MaterialIcon icon="delete" fontSize="15px" color={colors.deleteRed} />

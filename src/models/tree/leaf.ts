@@ -21,4 +21,16 @@ export default class Leaf implements ITree {
   get nodes() {
     return this._nodes;
   }
+
+  updateNodeById(id: string, data: Data): ITree {
+    if (this.id === id) {
+      return new Leaf(this.id, data);
+    }
+
+    return new Leaf(this.id, this.data);
+  }
+
+  deleteNodeById(id: string): ITree {
+    return this;
+  }
 }

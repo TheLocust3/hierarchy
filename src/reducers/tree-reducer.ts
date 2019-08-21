@@ -48,7 +48,17 @@ export function treeReducer(
       return {
         ...state,
         overlay: action.payload
-      }
+      };
+    case 'SET_NODE':
+      return {
+        ...state,
+        tree: state.tree.updateNodeById(action.id, action.payload)
+      };
+    case 'DELETE_NODE':
+      return {
+        ...state,
+        tree: state.tree.deleteNodeById(action.id)
+      };
     default:
       return state;
   }

@@ -34,12 +34,13 @@ interface NodeOverlayProps {
   id: string;
   data: Data;
   currentOverlay: TreeOverlay;
-  updateData: (data: Data) => void;
+  updateNode: (data: Data) => void;
+  deleteNode: () => void;
 }
 
 class NodeOverlay extends React.Component<NodeOverlayProps> {
   render() {
-    const { id, data, currentOverlay, updateData } = this.props;
+    const { id, data, currentOverlay, updateNode, deleteNode } = this.props;
 
     return (
       <Overlay
@@ -49,7 +50,7 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
         }}>
         <MiddleCenter style={{ zIndex: 10 }}>
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
-            <EditableNode id={id} data={data} updateData={updateData} />
+            <EditableNode id={id} data={data} updateNode={updateNode} deleteNode={deleteNode} />
           </OverlayContainer>
         </MiddleCenter>
       </Overlay>

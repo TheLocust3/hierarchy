@@ -28,19 +28,20 @@ interface TreeProps {
   parentY?: number;
   viewport: Viewport;
   setOverlay: (overlay: TreeOverlay) => void;
+  updateNode: (id: string, data: Data) => void;
+  deleteNode: (id: string) => void;
 }
 
 interface TreeState {
   x: number;
   y: number;
-  data: Data;
 }
 
 class TreeComponent extends React.Component<TreeProps, TreeState> {
   constructor(props: TreeProps) {
     super(props);
 
-    this.state = { x: 0, y: 0, data: this.props.data };
+    this.state = { x: 0, y: 0 };
   }
 
   componentDidMount() {
@@ -53,9 +54,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   render() {
-    const { id, nodes, overlay, parentX, parentY, viewport } = this.props;
-
-    const data = this.state.data;
+    const { id, data, nodes, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
@@ -73,13 +72,15 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               event.stopPropagation();
             }
           }}
+          deleteNode={() => this.props.deleteNode(id)}
         />
 
         <NodeOverlay
           id={id}
           data={data}
           currentOverlay={overlay}
-          updateData={(data: Data) => this.setState({ data: data })}
+          updateNode={(data: Data) => this.props.updateNode(id, data)}
+          deleteNode={() => this.props.deleteNode(id)}
         />
 
         <Nodes>{nodes.map((node) => this.renderNode(node, viewport))}</Nodes>
@@ -101,6 +102,8 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               parentY={this.state.y}
               viewport={viewport}
               setOverlay={this.props.setOverlay}
+              updateNode={this.props.updateNode}
+              deleteNode={this.props.deleteNode}
             />
           </div>
         );
@@ -115,10 +118,13 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               parentY={this.state.y}
               viewport={viewport}
               setOverlay={this.props.setOverlay}
+              updateNode={this.props.updateNode}
+              deleteNode={this.props.deleteNode}
             />
           </div>
         );
       default:
+        console.log(node);
         return <div />;
     }
   }

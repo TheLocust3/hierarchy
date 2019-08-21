@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 import { colors, fonts } from '../../../constants';
 import { Data } from '../../../models/tree/tree-base';
-import TreeApi from '../../../api/tree-api';
 
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
@@ -60,36 +59,11 @@ const ActionsInner = styled('div')`
 interface EditableNodeProps {
   id: string;
   data: Data;
-  updateData: (data: Data) => void;
+  updateNode: (data: Data) => void;
+  deleteNode: () => void;
 }
 
 class EditableNode extends React.Component<EditableNodeProps> {
-  updateTitle(title: string) {
-    const newData = { ...this.props.data, title: title };
-    TreeApi.updateTree(this.props.id, newData).then((success) => {
-      console.log(success);
-
-      this.props.updateData(newData);
-    });
-  }
-
-  updateBody(body: string) {
-    const newData = { ...this.props.data, body: body };
-    TreeApi.updateTree(this.props.id, { ...this.props.data, body: body }).then((success) => {
-      console.log(success);
-
-      this.props.updateData(newData);
-    });
-  }
-
-  deleteNode() {
-    TreeApi.deleteTree(this.props.id).then((success) => {
-      console.log(success);
-
-      window.location.reload();
-    });
-  }
-
   render() {
     const { id, data } = this.props;
 
@@ -98,7 +72,7 @@ class EditableNode extends React.Component<EditableNodeProps> {
         <LeftColumn>
           <Title>
             <EditableTextField
-              onUnfocus={(value) => this.updateTitle(value)}
+              onUnfocus={(value) => this.props.updateNode({ ...this.props.data, title: value })}
               fontSize="26px"
               fontFamily={fonts.title}
               backgroundColor={colors.nodeBackground}>
@@ -109,7 +83,7 @@ class EditableNode extends React.Component<EditableNodeProps> {
 
           <Body>
             <EditableTextArea
-              onUnfocus={(value) => this.updateBody(value)}
+              onUnfocus={(value) => this.props.updateNode({ ...this.props.data, body: value })}
               fontSize="16px"
               fontFamily={fonts.body}
               backgroundColor={colors.nodeBackground}>
@@ -138,7 +112,7 @@ class EditableNode extends React.Component<EditableNodeProps> {
               hoverColor={colors.deleteRedHover}
               activeColor={colors.deleteRedActive}
               textColor="white"
-              onClick={(event: any) => this.deleteNode()}>
+              onClick={(event: any) => this.props.deleteNode()}>
               Delete
             </Button>
           </ActionsInner>

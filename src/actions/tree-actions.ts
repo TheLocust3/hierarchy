@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 
 import { AppState } from '../types';
 import { TreeOverlay } from '../reducers/tree-reducer';
-import { ITree } from '../models/tree/tree-base';
+import { ITree, Data } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
 
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
@@ -12,6 +12,9 @@ export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
 
 export const SET_OVERLAY = 'SET_OVERLAY';
+
+export const SET_NODE = 'SET_NODE';
+export const DELETE_NODE = 'DELETE_NODE';
 
 interface RequestAllTreesAction {
   type: typeof REQUEST_ALL_TREES;
@@ -31,9 +34,20 @@ interface ReceiveTreeAction {
   payload: ITree;
 }
 
-interface SetOverlay {
+interface SetOverlayAction {
   type: typeof SET_OVERLAY;
   payload: TreeOverlay;
+}
+
+interface SetNodeAction {
+  type: typeof SET_NODE;
+  id: string;
+  payload: Data;
+}
+
+interface DeleteNodeAction {
+  type: typeof DELETE_NODE;
+  id: string;
 }
 
 export type TreeActionTypes =
@@ -41,55 +55,97 @@ export type TreeActionTypes =
   | ReceiveAllTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
-  | SetOverlay;
+  | SetOverlayAction
+  | SetNodeAction
+  | DeleteNodeAction;
 
-function requestAllTrees(): TreeActionTypes {
-  return {
-    type: REQUEST_ALL_TREES
-  };
-}
+const InternalActions = {
+  requestAllTrees(): TreeActionTypes {
+    return {
+      type: REQUEST_ALL_TREES
+    };
+  },
 
-function receiveAllTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
-  return {
-    type: RECEIVE_ALL_TREES,
-    payload: trees
-  };
-}
+  receiveAllTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
+    return {
+      type: RECEIVE_ALL_TREES,
+      payload: trees
+    };
+  },
 
-function requestTree(): TreeActionTypes {
-  return {
-    type: REQUEST_TREE
-  };
-}
+  requestTree(): TreeActionTypes {
+    return {
+      type: REQUEST_TREE
+    };
+  },
 
-function receiveTree(tree: ITree): TreeActionTypes {
-  return {
-    type: RECEIVE_TREE,
-    payload: tree
-  };
-}
+  receiveTree(tree: ITree): TreeActionTypes {
+    return {
+      type: RECEIVE_TREE,
+      payload: tree
+    };
+  },
+
+  setNodeById(id: string, data: Data): TreeActionTypes {
+    return {
+      type: SET_NODE,
+      id: id,
+      payload: data
+    };
+  },
+
+  deleteNodeById(id: string): TreeActionTypes {
+    return {
+      type: DELETE_NODE,
+      id: id
+    };
+  }
+};
 
 export function setOverlay(overlay: TreeOverlay): TreeActionTypes {
   return {
     type: SET_OVERLAY,
     payload: overlay
-  }
+  };
 }
 
 export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(requestAllTrees());
+    dispatch(InternalActions.requestAllTrees());
 
     const trees = await TreeApi.getAllTrees();
-    dispatch(receiveAllTrees(trees));
+    dispatch(InternalActions.receiveAllTrees(trees));
   };
 };
 
 export function getTree(id: String): ThunkAction<void, AppState, null, TreeActionTypes> {
   return async (dispatch) => {
-    dispatch(requestTree());
+    dispatch(InternalActions.requestTree());
 
     const tree = await TreeApi.getTree(id);
-    dispatch(receiveTree(tree));
+    dispatch(InternalActions.receiveTree(tree));
   };
 }
+
+export const updateNode = (
+  id: string,
+  data: Data
+): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.setNodeById(id, data));
+
+    TreeApi.updateTree(id, data).then((success) => {
+      console.log(success);
+    });
+  };
+};
+
+export const deleteNode = (id: string): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.deleteNodeById(id));
+
+    TreeApi.deleteTree(id).then((success) => {
+      console.log(success);
+    });
+  };
+};

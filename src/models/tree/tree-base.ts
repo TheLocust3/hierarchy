@@ -18,4 +18,7 @@ export interface ITree {
   id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
+
+  updateNodeById: (id: string, data: Data) => ITree;
+  deleteNodeById: (id: string) => ITree;
 }

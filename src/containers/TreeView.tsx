@@ -7,10 +7,10 @@ import styled from '@emotion/styled';
 import { colors, TITLE } from '../constants';
 import { AppState, Dispatch, RouterMatch, RouterParams } from '../types';
 
-import { ITree } from '../models/tree/tree-base';
+import { ITree, Data } from '../models/tree/tree-base';
 import Viewport from '../models/viewport';
 import TreeComponent from '../components/tree/TreeComponent';
-import { getTree, setOverlay } from '../actions/tree-actions';
+import { getTree, setOverlay, updateNode, deleteNode } from '../actions/tree-actions';
 import { TreeOverlay } from '../reducers/tree-reducer';
 
 const TreeViewport = styled('div')`
@@ -77,6 +77,8 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           nodes={this.props.tree.nodes}
           overlay={this.props.overlay}
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
+          updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
+          deleteNode={(id: string) => this.props.dispatch(deleteNode(id))}
         />
       </TreeViewport>
     );

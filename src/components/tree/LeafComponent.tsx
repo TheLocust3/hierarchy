@@ -14,19 +14,11 @@ interface LeafProps {
   parentY: number;
   viewport: Viewport;
   setOverlay: (overlay: TreeOverlay) => void;
+  updateNode: (id: string, data: Data) => void;
+  deleteNode: (id: string) => void;
 }
 
-interface LeafState {
-  data: Data;
-}
-
-class LeafComponent extends React.Component<LeafProps, LeafState> {
-  constructor(props: LeafProps) {
-    super(props);
-
-    this.state = { data: this.props.data };
-  }
-
+class LeafComponent extends React.Component<LeafProps> {
   componentDidMount() {
     window.addEventListener('click', () => {
       // TOOD: bind this only when id is selected
@@ -37,8 +29,7 @@ class LeafComponent extends React.Component<LeafProps, LeafState> {
   }
 
   render() {
-    const { id, overlay, parentX, parentY, viewport } = this.props;
-    const data = this.state.data;
+    const { id, data, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <div>
@@ -55,13 +46,15 @@ class LeafComponent extends React.Component<LeafProps, LeafState> {
               event.stopPropagation();
             }
           }}
+          deleteNode={() => this.props.deleteNode(id)}
         />
 
         <NodeOverlay
           id={id}
           data={data}
           currentOverlay={overlay}
-          updateData={(data: Data) => this.setState({ data: data })}
+          updateNode={(data: Data) => this.props.updateNode(id, data)}
+          deleteNode={() => this.props.deleteNode(id)}
         />
       </div>
     );
