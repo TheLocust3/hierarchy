@@ -123,19 +123,12 @@ interface NodeActionsProps {
   id: string;
   overlay: TreeOverlay;
   deleteNode: () => void;
+  createLeaf: () => void;
 }
 
 class NodeActions extends React.Component<NodeActionsProps, {}> {
-  createLeaf() {
-    TreeApi.createLeaf({ title: 'Title', body: 'Description' }, this.props.id).then((success) => {
-      console.log(success);
-
-      window.location.reload();
-    });
-  }
-
   render() {
-    const { id, overlay, deleteNode } = this.props;
+    const { id, overlay, deleteNode, createLeaf } = this.props;
 
     return (
       <ActionsContainer className={overlay.open ? noHover : ''}>
@@ -162,7 +155,7 @@ class NodeActions extends React.Component<NodeActionsProps, {}> {
         <AddButtonTransitionContainer delay="0.45s">
           <AddButton
             onClick={(event) => {
-              this.createLeaf();
+              createLeaf();
               event.stopPropagation();
             }}>
             <MaterialIcon icon="add" fontSize="24px" color={'white'} />

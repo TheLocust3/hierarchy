@@ -1,4 +1,4 @@
-import { ITree } from '../models/tree/tree-base';
+import { ITree, Data } from '../models/tree/tree-base';
 import Leaf from '../models/tree/leaf';
 import { TreeActionTypes } from '../actions/tree-actions';
 
@@ -15,7 +15,7 @@ export interface TreeState {
 }
 
 const defaultTreeState: TreeState = {
-  tree: new Leaf('', { title: '', body: '' }),
+  tree: new Leaf('', Data.empty()),
   trees: [],
   isReady: false,
   overlay: { id: '', open: false }
@@ -49,10 +49,15 @@ export function treeReducer(
         ...state,
         overlay: action.payload
       };
-    case 'SET_NODE':
+    case 'CREATE_LEAF':
       return {
         ...state,
-        tree: state.tree.updateNodeById(action.id, action.payload)
+        tree: state.tree.insertNodeByParentId(action.parentId, action.leaf)
+      };
+    case 'UPDATE_NODE':
+      return {
+        ...state,
+        tree: state.tree.updateNodeById(action.id, action.data)
       };
     case 'DELETE_NODE':
       return {

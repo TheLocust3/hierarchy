@@ -6,7 +6,7 @@ import SentinelNode from './sentinel-node';
 export default class Tree implements ITree {
   private _id: string = '';
   private _nodes: ReadonlyArray<ITree> = [];
-  private _data: Data = { title: '', body: '' };
+  private _data: Data = Data.empty();
 
   static fromJSON(json: TreeJSON): ITree {
     return new SentinelNode(this.fromJSONInner(json));
@@ -42,6 +42,18 @@ export default class Tree implements ITree {
     return this._data;
   }
 
+  insertNodeByParentId(parentId: string, tree: ITree): ITree {
+    if (this.id === parentId) {
+      return new Tree(this.id, this.data, this.nodes.concat(tree));
+    }
+
+    return new Tree(
+      this.id,
+      this.data,
+      this.nodes.map((node) => node.insertNodeByParentId(parentId, tree))
+    );
+  }
+
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
       return new Tree(this.id, data, this.nodes);
@@ -56,9 +68,6 @@ export default class Tree implements ITree {
       this.data,
       this.nodes
         .filter((node) => {
-          console.log(node.data.title);
-          console.log(id);
-          console.log(node.id !== id);
           return node.id !== id;
         })
         .map((node) => node.deleteNodeById(id))

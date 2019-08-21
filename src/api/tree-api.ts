@@ -5,10 +5,10 @@ import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../model
 
 export interface TreeApiStructure {
   getAllTrees(): Promise<ReadonlyArray<ITree>>;
-  getTree(id: String): Promise<ITree>;
-  createLeaf(data: Data, parentid: String): Promise<String>;
-  updateTree(id: String, data: Data): Promise<String>;
-  deleteTree(id: String): Promise<String>;
+  getTree(id: string): Promise<ITree>;
+  createLeaf(parentId: string, data: Data): Promise<string>;
+  updateTree(id: string, data: Data): Promise<string>;
+  deleteTree(id: string): Promise<string>;
 }
 
 const TreeApi: TreeApiStructure = {
@@ -19,18 +19,18 @@ const TreeApi: TreeApiStructure = {
     return json.trees.map((tree) => Tree.fromJSON(tree));
   },
 
-  async getTree(id: String): Promise<ITree> {
+  async getTree(id: string): Promise<ITree> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, { method: 'GET' });
     const json: TreeResponse = await response.json();
 
     return Tree.fromJSON(json.tree);
   },
 
-  async createLeaf(data: Data, parentid: String): Promise<String> {
+  async createLeaf(parentId: string, data: Data): Promise<string> {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: data, parentId: parentid })
+      body: JSON.stringify({ data: data, parentId: parentId })
     });
 
     const json: TreeSuccessResponse = await response.json();
@@ -38,7 +38,7 @@ const TreeApi: TreeApiStructure = {
     return json.success;
   },
 
-  async updateTree(id: String, data: Data): Promise<String> {
+  async updateTree(id: string, data: Data): Promise<string> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -50,7 +50,7 @@ const TreeApi: TreeApiStructure = {
     return json.success;
   },
 
-  async deleteTree(id: String): Promise<String> {
+  async deleteTree(id: string): Promise<string> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, { method: 'DELETE' });
     const json: TreeSuccessResponse = await response.json();
 

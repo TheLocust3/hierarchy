@@ -1,9 +1,11 @@
 import { ThunkAction } from 'redux-thunk';
+import uuid from 'uuid/v4';
 
 import { AppState } from '../types';
 import { TreeOverlay } from '../reducers/tree-reducer';
 import { ITree, Data } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
+import Leaf from '../models/tree/leaf';
 
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
@@ -13,7 +15,8 @@ export const RECEIVE_TREE = 'RECEIVE_TREE';
 
 export const SET_OVERLAY = 'SET_OVERLAY';
 
-export const SET_NODE = 'SET_NODE';
+export const CREATE_LEAF = 'CREATE_LEAF';
+export const UPDATE_NODE = 'UPDATE_NODE';
 export const DELETE_NODE = 'DELETE_NODE';
 
 interface RequestAllTreesAction {
@@ -39,10 +42,16 @@ interface SetOverlayAction {
   payload: TreeOverlay;
 }
 
-interface SetNodeAction {
-  type: typeof SET_NODE;
+interface CreateLeafAction {
+  type: typeof CREATE_LEAF;
+  parentId: string;
+  leaf: Leaf;
+}
+
+interface UpdateNodeAction {
+  type: typeof UPDATE_NODE;
   id: string;
-  payload: Data;
+  data: Data;
 }
 
 interface DeleteNodeAction {
@@ -56,7 +65,8 @@ export type TreeActionTypes =
   | RequestTreeAction
   | ReceiveTreeAction
   | SetOverlayAction
-  | SetNodeAction
+  | CreateLeafAction
+  | UpdateNodeAction
   | DeleteNodeAction;
 
 const InternalActions = {
@@ -86,11 +96,19 @@ const InternalActions = {
     };
   },
 
-  setNodeById(id: string, data: Data): TreeActionTypes {
+  createLeaf(parentId: string, data: Data): TreeActionTypes {
     return {
-      type: SET_NODE,
+      type: CREATE_LEAF,
+      parentId: parentId,
+      leaf: new Leaf(uuid(), data)
+    };
+  },
+
+  updateNodeById(id: string, data: Data): TreeActionTypes {
+    return {
+      type: UPDATE_NODE,
       id: id,
-      payload: data
+      data: data
     };
   },
 
@@ -118,7 +136,7 @@ export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes
   };
 };
 
-export function getTree(id: String): ThunkAction<void, AppState, null, TreeActionTypes> {
+export function getTree(id: string): ThunkAction<void, AppState, null, TreeActionTypes> {
   return async (dispatch) => {
     dispatch(InternalActions.requestTree());
 
@@ -127,12 +145,24 @@ export function getTree(id: String): ThunkAction<void, AppState, null, TreeActio
   };
 }
 
+export const createLeaf = (
+  parentId: string
+): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.createLeaf(parentId, Data.default()));
+
+    TreeApi.createLeaf(parentId, Data.default()).then((success) => {
+      console.log(success);
+    });
+  };
+};
+
 export const updateNode = (
   id: string,
   data: Data
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.setNodeById(id, data));
+    dispatch(InternalActions.updateNodeById(id, data));
 
     TreeApi.updateTree(id, data).then((success) => {
       console.log(success);

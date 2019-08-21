@@ -10,7 +10,7 @@ import { AppState, Dispatch, RouterMatch, RouterParams } from '../types';
 import { ITree, Data } from '../models/tree/tree-base';
 import Viewport from '../models/viewport';
 import TreeComponent from '../components/tree/TreeComponent';
-import { getTree, setOverlay, updateNode, deleteNode } from '../actions/tree-actions';
+import { getTree, setOverlay, updateNode, deleteNode, createLeaf } from '../actions/tree-actions';
 import { TreeOverlay } from '../reducers/tree-reducer';
 
 const TreeViewport = styled('div')`
@@ -79,6 +79,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
           updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
           deleteNode={(id: string) => this.props.dispatch(deleteNode(id))}
+          createLeaf={(id: string) => this.props.dispatch(createLeaf(id))}
         />
       </TreeViewport>
     );

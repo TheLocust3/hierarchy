@@ -1,8 +1,9 @@
 import { Data, ITree } from './tree-base';
+import Tree from './tree';
 
 export default class Leaf implements ITree {
   private _id: string = '';
-  private _data: Data = { title: '', body: '' };
+  private _data: Data = Data.empty();
   private _nodes: ReadonlyArray<ITree> = [];
 
   constructor(id: string, data: Data) {
@@ -20,6 +21,14 @@ export default class Leaf implements ITree {
 
   get nodes() {
     return this._nodes;
+  }
+
+  insertNodeByParentId(parentId: string, tree: ITree): ITree {
+    if (this.id === parentId) {
+      return new Tree(this.id, this.data, this.nodes.concat(tree));
+    }
+
+    return new Leaf(this.id, this.data);
   }
 
   updateNodeById(id: string, data: Data): ITree {

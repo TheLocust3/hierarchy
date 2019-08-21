@@ -18,7 +18,7 @@ export default class SentinelNode implements ITree {
 
   get data() {
     if (this._tree === undefined) {
-      return { title: '', body: '' };
+      return Data.empty();
     }
 
     return this._tree.data;
@@ -32,12 +32,20 @@ export default class SentinelNode implements ITree {
     return this._tree.nodes;
   }
 
+  insertNodeByParentId(parentId: string, tree: ITree): ITree {
+    if (this._tree === undefined) {
+      return new SentinelNode();
+    }
+
+    return new SentinelNode(this._tree.insertNodeByParentId(parentId, tree));
+  }
+
   updateNodeById(id: string, data: Data): ITree {
     if (this._tree === undefined) {
       return new SentinelNode();
     }
 
-    return this._tree.updateNodeById(id, data);
+    return new SentinelNode(this._tree.updateNodeById(id, data));
   }
 
   deleteNodeById(id: string): ITree {

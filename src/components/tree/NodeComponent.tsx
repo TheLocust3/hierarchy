@@ -50,6 +50,7 @@ interface NodeProps {
   viewport: Viewport;
   onClick: (event: any) => void;
   deleteNode: () => void;
+  createLeaf: () => void;
 }
 
 interface NodeState {
@@ -79,7 +80,17 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
   }
 
   render() {
-    const { id, data, parentX, parentY, viewport, onClick, overlay, deleteNode } = this.props;
+    const {
+      id,
+      data,
+      parentX,
+      parentY,
+      viewport,
+      onClick,
+      overlay,
+      deleteNode,
+      createLeaf
+    } = this.props;
     const getXY = this.props.getXY == null ? (x: number, y: number) => {} : this.props.getXY;
 
     return (
@@ -95,7 +106,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
-          <NodeActions id={id} overlay={overlay} deleteNode={deleteNode} />
+          <NodeActions id={id} overlay={overlay} deleteNode={deleteNode} createLeaf={createLeaf} />
           <h3>{data.title}</h3>
 
           <p>{data.body}</p>

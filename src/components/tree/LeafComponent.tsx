@@ -16,6 +16,7 @@ interface LeafProps {
   setOverlay: (overlay: TreeOverlay) => void;
   updateNode: (id: string, data: Data) => void;
   deleteNode: (id: string) => void;
+  createLeaf: (parentId: string) => void;
 }
 
 class LeafComponent extends React.Component<LeafProps> {
@@ -47,6 +48,7 @@ class LeafComponent extends React.Component<LeafProps> {
             }
           }}
           deleteNode={() => this.props.deleteNode(id)}
+          createLeaf={() => this.props.createLeaf(id)}
         />
 
         <NodeOverlay
