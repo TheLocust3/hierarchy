@@ -28,6 +28,7 @@ export interface ITree {
   nodes: ReadonlyArray<ITree>;
 
   insertNodeByParentId: (parentId: string, tree: ITree) => ITree;
+  replaceNodeById: (id: string, node: ITree) => ITree;
   updateNodeById: (id: string, data: Data) => ITree;
   deleteNodeById: (id: string) => ITree;
 }

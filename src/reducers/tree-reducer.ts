@@ -64,6 +64,11 @@ export function treeReducer(
         ...state,
         tree: state.tree.deleteNodeById(action.id)
       };
+    case 'REPLACE_NODE':
+      return {
+        ...state,
+        tree: state.tree.replaceNodeById(action.id, action.node)
+      };
     default:
       return state;
   }

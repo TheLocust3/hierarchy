@@ -6,8 +6,8 @@ import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../model
 export interface TreeApiStructure {
   getAllTrees(): Promise<ReadonlyArray<ITree>>;
   getTree(id: string): Promise<ITree>;
-  createLeaf(parentId: string, data: Data): Promise<string>;
-  updateTree(id: string, data: Data): Promise<string>;
+  createLeaf(parentId: string, data: Data): Promise<ITree>;
+  updateTree(id: string, data: Data): Promise<ITree>;
   deleteTree(id: string): Promise<string>;
 }
 
@@ -26,28 +26,28 @@ const TreeApi: TreeApiStructure = {
     return Tree.fromJSON(json.tree);
   },
 
-  async createLeaf(parentId: string, data: Data): Promise<string> {
+  async createLeaf(parentId: string, data: Data): Promise<ITree> {
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data, parentId: parentId })
     });
 
-    const json: TreeSuccessResponse = await response.json();
+    const json: TreeResponse = await response.json();
 
-    return json.success;
+    return Tree.fromJSONInner(json.tree);
   },
 
-  async updateTree(id: string, data: Data): Promise<string> {
+  async updateTree(id: string, data: Data): Promise<ITree> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data })
     });
 
-    const json: TreeSuccessResponse = await response.json();
+    const json: TreeResponse = await response.json();
 
-    return json.success;
+    return Tree.fromJSONInner(json.tree);
   },
 
   async deleteTree(id: string): Promise<string> {

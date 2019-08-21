@@ -31,6 +31,14 @@ export default class Leaf implements ITree {
     return new Leaf(this.id, this.data);
   }
 
+  replaceNodeById(id: string, node: ITree): ITree {
+    if (this.id === id) {
+      return node;
+    }
+
+    return new Leaf(this.id, this.data);
+  }
+
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
       return new Leaf(this.id, data);

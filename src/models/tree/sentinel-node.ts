@@ -40,6 +40,14 @@ export default class SentinelNode implements ITree {
     return new SentinelNode(this._tree.insertNodeByParentId(parentId, tree));
   }
 
+  replaceNodeById(id: string, node: ITree): ITree {
+    if (this._tree === undefined) {
+      return new SentinelNode();
+    }
+
+    return new SentinelNode(this._tree.replaceNodeById(id, node));
+  }
+
   updateNodeById(id: string, data: Data): ITree {
     if (this._tree === undefined) {
       return new SentinelNode();

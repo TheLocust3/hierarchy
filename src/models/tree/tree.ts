@@ -54,6 +54,14 @@ export default class Tree implements ITree {
     );
   }
 
+  replaceNodeById(id: string, node: ITree): ITree {
+    if (this.id === id) {
+      return node;
+    }
+
+    return new Tree(this.id, this.data, this.nodes.map((n) => n.replaceNodeById(id, node)));
+  }
+
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
       return new Tree(this.id, data, this.nodes);

@@ -18,6 +18,7 @@ export const SET_OVERLAY = 'SET_OVERLAY';
 export const CREATE_LEAF = 'CREATE_LEAF';
 export const UPDATE_NODE = 'UPDATE_NODE';
 export const DELETE_NODE = 'DELETE_NODE';
+export const REPLACE_NODE = 'REPLACE_NODE';
 
 interface RequestAllTreesAction {
   type: typeof REQUEST_ALL_TREES;
@@ -59,6 +60,12 @@ interface DeleteNodeAction {
   id: string;
 }
 
+interface ReplaceNodeAction {
+  type: typeof REPLACE_NODE;
+  id: string;
+  node: ITree;
+}
+
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
@@ -67,7 +74,8 @@ export type TreeActionTypes =
   | SetOverlayAction
   | CreateLeafAction
   | UpdateNodeAction
-  | DeleteNodeAction;
+  | DeleteNodeAction
+  | ReplaceNodeAction;
 
 const InternalActions = {
   requestAllTrees(): TreeActionTypes {
@@ -96,11 +104,11 @@ const InternalActions = {
     };
   },
 
-  createLeaf(parentId: string, data: Data): TreeActionTypes {
+  createLeaf(parentId: string, leaf: Leaf): TreeActionTypes {
     return {
       type: CREATE_LEAF,
       parentId: parentId,
-      leaf: new Leaf(uuid(), data)
+      leaf: leaf
     };
   },
 
@@ -116,6 +124,14 @@ const InternalActions = {
     return {
       type: DELETE_NODE,
       id: id
+    };
+  },
+
+  replaceNodeById(id: string, node: ITree): TreeActionTypes {
+    return {
+      type: REPLACE_NODE,
+      id: id,
+      node: node
     };
   }
 };
@@ -149,11 +165,11 @@ export const createLeaf = (
   parentId: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.createLeaf(parentId, Data.default()));
+    const leaf = new Leaf(uuid(), Data.default());
+    dispatch(InternalActions.createLeaf(parentId, leaf));
 
-    TreeApi.createLeaf(parentId, Data.default()).then((success) => {
-      console.log(success);
-    });
+    const node = await TreeApi.createLeaf(parentId, Data.default());
+    dispatch(InternalActions.replaceNodeById(leaf.id, node));
   };
 };
 
@@ -164,9 +180,8 @@ export const updateNode = (
   return async (dispatch) => {
     dispatch(InternalActions.updateNodeById(id, data));
 
-    TreeApi.updateTree(id, data).then((success) => {
-      console.log(success);
-    });
+    const node = await TreeApi.updateTree(id, data);
+    dispatch(InternalActions.replaceNodeById(node.id, node));
   };
 };
 
