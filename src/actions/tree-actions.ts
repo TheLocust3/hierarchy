@@ -189,8 +189,6 @@ export const deleteNode = (id: string): ThunkAction<void, AppState, null, TreeAc
   return async (dispatch) => {
     dispatch(InternalActions.deleteNodeById(id));
 
-    TreeApi.deleteTree(id).then((success) => {
-      console.log(success);
-    });
+    await TreeApi.deleteTree(id);
   };
 };
