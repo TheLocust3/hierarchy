@@ -20,7 +20,7 @@ export default class Tree implements ITree {
         json.nodes.map((node) => this.fromJSONInner(node))
       );
     } else {
-      return new Leaf(json.id, Data.fromJSON(json.data));
+      return Leaf.fromJSON(json);
     }
   }
 

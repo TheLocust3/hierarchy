@@ -2,10 +2,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
-import { AppState, Dispatch } from '../types';
+import { AppState, Dispatch } from '../../types';
 
-import { ITree } from '../models/tree/tree-base';
-import { getAllTrees } from '../actions/tree-actions';
+import { ITree } from '../../models/tree/tree-base';
+import { getAllTrees } from '../../actions/tree-actions';
 import { Link } from 'react-router-dom';
 
 interface RootTreeViewProps {

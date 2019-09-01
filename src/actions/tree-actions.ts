@@ -13,6 +13,9 @@ export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
 
+export const REQUEST_TREE_AS_LIST = 'REQUEST_TREE_AS_LIST';
+export const RECEIVE_TREE_AS_LIST = 'RECEIVE_TREE_AS_LIST';
+
 export const SET_OVERLAY = 'SET_OVERLAY';
 
 export const CREATE_LEAF = 'CREATE_LEAF';
@@ -36,6 +39,15 @@ interface RequestTreeAction {
 interface ReceiveTreeAction {
   type: typeof RECEIVE_TREE;
   payload: ITree;
+}
+
+interface RequestTreeAsListAction {
+  type: typeof REQUEST_TREE_AS_LIST;
+}
+
+interface ReceiveTreeAsListAction {
+  type: typeof RECEIVE_TREE_AS_LIST;
+  payload: ReadonlyArray<Leaf>;
 }
 
 interface SetOverlayAction {
@@ -71,6 +83,8 @@ export type TreeActionTypes =
   | ReceiveAllTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
+  | RequestTreeAsListAction
+  | ReceiveTreeAsListAction
   | SetOverlayAction
   | CreateLeafAction
   | UpdateNodeAction
@@ -101,6 +115,19 @@ const InternalActions = {
     return {
       type: RECEIVE_TREE,
       payload: tree
+    };
+  },
+
+  requestTreeAsList(): TreeActionTypes {
+    return {
+      type: REQUEST_TREE_AS_LIST
+    };
+  },
+
+  receiveTreeAsList(leaves: ReadonlyArray<Leaf>): TreeActionTypes {
+    return {
+      type: RECEIVE_TREE_AS_LIST,
+      payload: leaves
     };
   },
 
@@ -158,6 +185,15 @@ export function getTree(id: string): ThunkAction<void, AppState, null, TreeActio
 
     const tree = await TreeApi.getTree(id);
     dispatch(InternalActions.receiveTree(tree));
+  };
+}
+
+export function getTreeAsList(rootId: string): ThunkAction<void, AppState, null, TreeActionTypes> {
+  return async (dispatch) => {
+    dispatch(InternalActions.requestTreeAsList());
+
+    const leaves = await TreeApi.getTreeAsList(rootId);
+    dispatch(InternalActions.receiveTreeAsList(leaves));
   };
 }
 

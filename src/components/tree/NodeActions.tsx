@@ -2,9 +2,8 @@ import React from 'react';
 import { css, keyframes } from 'emotion';
 import styled from '@emotion/styled';
 
-import { colors, history } from '../../constants';
+import { colors } from '../../constants';
 import { TreeOverlay } from '../../reducers/tree-reducer';
-import TreeApi from '../../api/tree-api';
 
 import MaterialIcon from '../common/MaterialIcon';
 

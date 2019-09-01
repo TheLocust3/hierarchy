@@ -4,14 +4,20 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
-import { colors, TITLE } from '../constants';
-import { AppState, Dispatch, RouterMatch, RouterParams } from '../types';
+import { colors, TITLE } from '../../constants';
+import { AppState, Dispatch, RouterMatch, RouterParams } from '../../types';
 
-import { ITree, Data } from '../models/tree/tree-base';
-import Viewport from '../models/viewport';
-import TreeComponent from '../components/tree/TreeComponent';
-import { getTree, setOverlay, updateNode, deleteNode, createLeaf } from '../actions/tree-actions';
-import { TreeOverlay } from '../reducers/tree-reducer';
+import { ITree, Data } from '../../models/tree/tree-base';
+import Viewport from '../../models/viewport';
+import TreeComponent from '../../components/tree/TreeComponent';
+import {
+  getTree,
+  setOverlay,
+  updateNode,
+  deleteNode,
+  createLeaf
+} from '../../actions/tree-actions';
+import { TreeOverlay } from '../../reducers/tree-reducer';
 
 const TreeViewport = styled('div')`
   position: relative;

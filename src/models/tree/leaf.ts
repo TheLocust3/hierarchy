@@ -1,10 +1,15 @@
 import { Data, ITree } from './tree-base';
 import Tree from './tree';
+import { TreeJSON } from '../json/tree-json';
 
 export default class Leaf implements ITree {
   private _id: string = '';
   private _data: Data = Data.empty();
   private _nodes: ReadonlyArray<ITree> = [];
+
+  static fromJSON(json: TreeJSON) {
+    return new Leaf(json.id, Data.fromJSON(json.data));
+  }
 
   constructor(id: string, data: Data) {
     this._id = id;

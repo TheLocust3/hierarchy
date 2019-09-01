@@ -10,8 +10,9 @@ import './global-styles';
 import reducer from './reducers/root-reducer';
 
 import Index from './containers/Index';
-import RootTreeView from './containers/RootTreeView';
-import TreeView from './containers/TreeView';
+import RootTreeView from './containers/tree/RootTreeView';
+import TreeView from './containers/tree/TreeView';
+import ListView from './containers/tree/list/ListView';
 import NotFound from './containers/NotFound';
 
 const store = createStore(
@@ -28,6 +29,7 @@ const App: React.FC = () => {
             <Route exact path="/" component={Index} />
             <Route exact path="/tree" component={RootTreeView} />
             <Route exact path="/tree/:id" component={TreeView} />
+            <Route exact path="/tree/:id/list" component={ListView} />
 
             <Route component={NotFound} />
           </Switch>

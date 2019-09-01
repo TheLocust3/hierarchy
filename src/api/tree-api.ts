@@ -2,16 +2,9 @@ import { API_ENDPOINT } from '../constants';
 import { ITree, Data } from '../models/tree/tree-base';
 import Tree from '../models/tree/tree';
 import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../models/json/tree-json';
+import Leaf from '../models/tree/leaf';
 
-export interface TreeApiStructure {
-  getAllTrees(): Promise<ReadonlyArray<ITree>>;
-  getTree(id: string): Promise<ITree>;
-  createLeaf(parentId: string, data: Data): Promise<ITree>;
-  updateTree(id: string, data: Data): Promise<ITree>;
-  deleteTree(id: string): Promise<string>;
-}
-
-const TreeApi: TreeApiStructure = {
+const TreeApi = {
   async getAllTrees(): Promise<ReadonlyArray<ITree>> {
     const response = await fetch(`${API_ENDPOINT}/tree`, { method: 'GET' });
     const json: ListOfTreesResponse = await response.json();
@@ -24,6 +17,17 @@ const TreeApi: TreeApiStructure = {
     const json: TreeResponse = await response.json();
 
     return Tree.fromJSON(json.tree);
+  },
+
+  async getTreeAsList(rootId: string): Promise<ReadonlyArray<Leaf>> {
+    // const response = await fetch(`${API_ENDPOINT}/tree/${rootId}/list`, { method: 'GET' });
+    // const json: ListOfTreesResponse = await response.json();
+    const mockResponse = {
+      trees: [{ id: 'test', data: { title: 'task 1', body: 'description' }, type: 'leaf' }]
+    };
+    const json = mockResponse;
+
+    return json.trees.map((leaf) => Leaf.fromJSON(leaf));
   },
 
   async createLeaf(parentId: string, data: Data): Promise<ITree> {
