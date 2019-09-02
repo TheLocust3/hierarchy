@@ -3,22 +3,24 @@ import { DataJSON } from '../json/tree-json';
 export class Data {
   title: string = '';
   body: string = '';
+  status: string = '';
 
   static fromJSON(json: DataJSON): Data {
-    return new Data(json.title, json.body);
+    return new Data(json.title, json.body, json.status);
   }
 
   static empty(): Data {
-    return new Data('', '');
+    return new Data('', '', 'none');
   }
 
   static default(): Data {
-    return new Data('Title', 'Description');
+    return new Data('Title', 'Description', 'none');
   }
 
-  constructor(title: string, body: string) {
+  constructor(title: string, body: string, status: string) {
     this.title = title;
     this.body = body;
+    this.status = status;
   }
 }
 

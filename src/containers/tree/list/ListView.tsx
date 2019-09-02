@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
-import { getTreeAsList } from '../../../actions/tree-actions';
-import Leaf from '../../../models/tree/leaf';
+import { getCardsRootedAt } from '../../../actions/list-actions';
+import Column from '../../../models/card/column';
 
 interface ListViewParams extends RouterParams {
   id: string;
@@ -13,14 +13,14 @@ interface ListViewParams extends RouterParams {
 
 interface ListViewProps {
   isReady: boolean;
-  nodes: ReadonlyArray<Leaf>;
+  list: ReadonlyArray<Column>;
   dispatch: Dispatch;
   match: RouterMatch<ListViewParams>;
 }
 
 class ListView extends React.Component<ListViewProps> {
   componentDidMount() {
-    this.props.dispatch(getTreeAsList(this.props.match.params.id));
+    this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
   }
 
   render() {
@@ -40,8 +40,8 @@ class ListView extends React.Component<ListViewProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  nodes: state.tree.nodes,
-  isReady: state.tree.isReady
+  nodes: state.list.list,
+  isReady: state.list.isReady
 });
 
 export default connect(mapStateToProps)(ListView);

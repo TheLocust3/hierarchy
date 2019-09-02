@@ -1,6 +1,7 @@
 export interface DataJSON {
   title: string;
   body: string;
+  status: string;
 }
 
 export interface TreeJSON {

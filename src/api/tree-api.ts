@@ -20,12 +20,8 @@ const TreeApi = {
   },
 
   async getTreeAsList(rootId: string): Promise<ReadonlyArray<Leaf>> {
-    // const response = await fetch(`${API_ENDPOINT}/tree/${rootId}/list`, { method: 'GET' });
-    // const json: ListOfTreesResponse = await response.json();
-    const mockResponse = {
-      trees: [{ id: 'test', data: { title: 'task 1', body: 'description' }, type: 'leaf' }]
-    };
-    const json = mockResponse;
+    const response = await fetch(`${API_ENDPOINT}/tree/${rootId}/list`, { method: 'GET' });
+    const json: ListOfTreesResponse = await response.json();
 
     return json.trees.map((leaf) => Leaf.fromJSON(leaf));
   },

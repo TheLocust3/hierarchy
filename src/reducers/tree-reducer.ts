@@ -10,9 +10,7 @@ import {
   CREATE_LEAF,
   UPDATE_NODE,
   DELETE_NODE,
-  REPLACE_NODE,
-  REQUEST_TREE_AS_LIST,
-  RECEIVE_TREE_AS_LIST
+  REPLACE_NODE
 } from '../actions/tree-actions';
 
 export interface TreeOverlay {
@@ -23,7 +21,6 @@ export interface TreeOverlay {
 export interface TreeState {
   tree: ITree;
   trees: ReadonlyArray<ITree>;
-  nodes: ReadonlyArray<Leaf>;
   isReady: boolean;
   overlay: TreeOverlay;
 }
@@ -31,7 +28,6 @@ export interface TreeState {
 const defaultTreeState: TreeState = {
   tree: new Leaf('', Data.empty()),
   trees: [],
-  nodes: [],
   isReady: false,
   overlay: { id: '', open: false }
 };
@@ -43,7 +39,6 @@ export function treeReducer(
   switch (action.type) {
     case REQUEST_ALL_TREES:
     case REQUEST_TREE:
-    case REQUEST_TREE_AS_LIST:
       return {
         ...state,
         isReady: false
@@ -58,12 +53,6 @@ export function treeReducer(
       return {
         ...state,
         tree: action.payload,
-        isReady: true
-      };
-    case RECEIVE_TREE_AS_LIST:
-      return {
-        ...state,
-        nodes: action.payload,
         isReady: true
       };
     case SET_OVERLAY:
