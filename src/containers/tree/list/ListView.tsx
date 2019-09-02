@@ -40,7 +40,7 @@ class ListView extends React.Component<ListViewProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  nodes: state.list.list,
+  list: state.list.list,
   isReady: state.list.isReady
 });
 
