@@ -27,10 +27,15 @@ const TreeApi = {
   },
 
   async createLeaf(parentId: string, data: Data): Promise<ITree> {
+    let payload: any = { data: data };
+    if (parentId) {
+      payload.parentId = parentId;
+    }
+
     const response = await fetch(`${API_ENDPOINT}/tree`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: data, parentId: parentId })
+      body: JSON.stringify(payload)
     });
 
     const json: TreeResponse = await response.json();

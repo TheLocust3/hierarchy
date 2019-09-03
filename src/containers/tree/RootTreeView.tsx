@@ -1,12 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { AppState, Dispatch } from '../../types';
-
 import { ITree } from '../../models/tree/tree-base';
-import { getAllTrees } from '../../actions/tree-actions';
-import { Link } from 'react-router-dom';
+import { getAllTrees, createRootLeaf } from '../../actions/tree-actions';
+
+import FloatingActionButton from '../../components/common/FloatingActionButton';
+import { colors } from '../../constants';
 
 interface RootTreeViewProps {
   trees: ReadonlyArray<ITree>;
@@ -49,6 +51,18 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
 
           {this.renderRootTrees()}
         </div>
+
+        <FloatingActionButton
+          icon="add"
+          backgroundColor={colors.addGreen}
+          backgroundColorHover={colors.addGreenHover}
+          color="white"
+          onClick={() => {
+            this.props.dispatch(createRootLeaf());
+
+            window.location.reload();
+          }}
+        />
       </div>
     );
   }

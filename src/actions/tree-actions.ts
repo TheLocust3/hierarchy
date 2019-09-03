@@ -161,6 +161,10 @@ export function getTree(id: string): ThunkAction<void, AppState, null, TreeActio
   };
 }
 
+export const createRootLeaf = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return createLeaf('');
+};
+
 export const createLeaf = (
   parentId: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {

@@ -6,6 +6,7 @@ import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
 import { getCardsRootedAt } from '../../../actions/list-actions';
 import Column from '../../../models/card/column';
+import ListColumn from '../../../components/tree/list/ListColumn';
 
 interface ListViewParams extends RouterParams {
   id: string;
@@ -31,9 +32,25 @@ class ListView extends React.Component<ListViewProps> {
           <meta name="description" content="Index" />
         </Helmet>
 
-        <div>
-          <h1>List View</h1>
-        </div>
+        {this.renderInner()}
+      </div>
+    );
+  }
+
+  private renderInner() {
+    const { isReady, list } = this.props;
+
+    if (!isReady) return;
+
+    return (
+      <div>
+        <h1>List View</h1>
+
+        {list.map((column) => (
+          <span key={column.id}>
+            <ListColumn column={column} />
+          </span>
+        ))}
       </div>
     );
   }

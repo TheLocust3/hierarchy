@@ -28,6 +28,10 @@ export default class Leaf implements ITree {
     return this._nodes;
   }
 
+  isEmpty() {
+    return false;
+  }
+
   insertNodeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
       return new Tree(this.id, this.data, this.nodes.concat(tree));
