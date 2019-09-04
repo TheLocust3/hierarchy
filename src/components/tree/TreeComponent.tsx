@@ -23,6 +23,7 @@ interface TreeProps {
   id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
+  labelTrees: ReadonlyArray<ITree>;
   overlay: TreeOverlay;
   parentX?: number;
   parentY?: number;
@@ -55,7 +56,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   render() {
-    const { id, data, nodes, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, nodes, labelTrees, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
@@ -80,6 +81,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
         <NodeOverlay
           id={id}
           data={data}
+          labelTrees={labelTrees}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
@@ -99,6 +101,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               id={node.id}
               data={node.data}
               nodes={node.nodes}
+              labelTrees={this.props.labelTrees}
               overlay={this.props.overlay}
               parentX={this.state.x}
               parentY={this.state.y}
@@ -116,6 +119,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
             <LeafComponent
               id={node.id}
               data={node.data}
+              labelTrees={this.props.labelTrees}
               overlay={this.props.overlay}
               parentX={this.state.x}
               parentY={this.state.y}

@@ -36,6 +36,10 @@ export default class SentinelNode implements ITree {
     return this._tree === undefined || this._tree === null || this._tree instanceof SentinelNode;
   }
 
+  containsITree(id: string) {
+    return this._tree !== undefined && this._tree.containsITree(id);
+  }
+
   insertNodeByParentId(parentId: string, tree: ITree): ITree {
     if (this._tree === undefined) {
       return new SentinelNode();

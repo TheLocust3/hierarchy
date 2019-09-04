@@ -10,6 +10,9 @@ import Leaf from '../models/tree/leaf';
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 
+export const REQUEST_ALL_LABEL_TREES = 'REQUEST_ALL_LABEL_TREES';
+export const RECEIVE_ALL_LABEL_TREES = 'RECEIVE_ALL_LABEL_TREES';
+
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
 
@@ -26,6 +29,15 @@ interface RequestAllTreesAction {
 
 interface ReceiveAllTreesAction {
   type: typeof RECEIVE_ALL_TREES;
+  payload: ReadonlyArray<ITree>;
+}
+
+interface RequestAllLabelTreesAction {
+  type: typeof REQUEST_ALL_LABEL_TREES;
+}
+
+interface ReceiveAllLabelTreesAction {
+  type: typeof RECEIVE_ALL_LABEL_TREES;
   payload: ReadonlyArray<ITree>;
 }
 
@@ -69,6 +81,8 @@ interface ReplaceNodeAction {
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
+  | RequestAllLabelTreesAction
+  | ReceiveAllLabelTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
   | SetOverlayAction
@@ -87,6 +101,19 @@ const InternalActions = {
   receiveAllTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
     return {
       type: RECEIVE_ALL_TREES,
+      payload: trees
+    };
+  },
+
+  requestAllLabelTrees(): TreeActionTypes {
+    return {
+      type: REQUEST_ALL_LABEL_TREES
+    };
+  },
+
+  receiveAllLabelTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
+    return {
+      type: RECEIVE_ALL_LABEL_TREES,
       payload: trees
     };
   },
@@ -149,6 +176,15 @@ export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes
 
     const trees = await TreeApi.getAllTrees();
     dispatch(InternalActions.receiveAllTrees(trees));
+  };
+};
+
+export const getAllLabelTrees = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.requestAllLabelTrees());
+
+    const trees = await TreeApi.getAllLabelTrees();
+    dispatch(InternalActions.receiveAllLabelTrees(trees));
   };
 };
 

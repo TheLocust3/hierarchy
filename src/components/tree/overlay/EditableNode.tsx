@@ -2,12 +2,13 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors, fonts } from '../../../constants';
-import { Data } from '../../../models/tree/tree-base';
+import { Data, ITree } from '../../../models/tree/tree-base';
 
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
 import Button from '../../common/Button';
 import Spacer from '../../common/Spacer';
+import SideMargin from '../../common/SideMargin';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
 
@@ -60,6 +61,7 @@ const ActionsInner = styled('div')`
 interface EditableNodeProps {
   id: string;
   data: Data;
+  labelTrees: ReadonlyArray<ITree>;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
 }
@@ -80,7 +82,14 @@ class EditableNode extends React.Component<EditableNodeProps> {
               {data.title}
             </EditableTextField>
           </Title>
-          <Divider marginTop="3%" marginBottom="5%" />
+          <Divider marginTop="3%" marginBottom="3%" />
+
+          <SideMargin margin="5%">
+            <h3>Labels</h3>
+            {this.renderLabels()}
+          </SideMargin>
+
+          <Spacer space="5%" />
 
           <Body>
             <EditableTextArea
@@ -121,6 +130,19 @@ class EditableNode extends React.Component<EditableNodeProps> {
           </ActionsInner>
         </RightColumn>
       </Container>
+    );
+  }
+
+  private renderLabels() {
+    const labels = this.props.labelTrees.filter((tree: ITree) => tree.containsITree(this.props.id));
+    if (labels.length === 0) return <SideMargin margin="2.5%">None</SideMargin>;
+
+    return (
+      <SideMargin margin="2.5%">
+        {labels.map((labelTree: ITree) => {
+          return <div>{labelTree.data.title}</div>;
+        })}
+      </SideMargin>
     );
   }
 }

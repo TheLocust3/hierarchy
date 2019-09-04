@@ -34,6 +34,7 @@ export interface ITree {
   nodes: ReadonlyArray<ITree>;
 
   isEmpty: () => boolean;
+  containsITree: (id: string) => boolean;
 
   insertNodeByParentId: (parentId: string, tree: ITree) => ITree;
   replaceNodeById: (id: string, node: ITree) => ITree;

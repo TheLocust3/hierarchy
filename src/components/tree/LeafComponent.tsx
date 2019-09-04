@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Data } from '../../models/tree/tree-base';
+import { Data, ITree } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 import NodeComponent from './NodeComponent';
 import NodeOverlay from './overlay/NodeOverlay';
@@ -9,6 +9,7 @@ import { TreeOverlay } from '../../reducers/tree-reducer';
 interface LeafProps {
   id: string;
   data: Data;
+  labelTrees: ReadonlyArray<ITree>;
   overlay: TreeOverlay;
   parentX: number;
   parentY: number;
@@ -30,7 +31,7 @@ class LeafComponent extends React.Component<LeafProps> {
   }
 
   render() {
-    const { id, data, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, labelTrees, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <div>
@@ -54,6 +55,7 @@ class LeafComponent extends React.Component<LeafProps> {
         <NodeOverlay
           id={id}
           data={data}
+          labelTrees={labelTrees}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}

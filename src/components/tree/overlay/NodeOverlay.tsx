@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
-import { Data } from '../../../models/tree/tree-base';
+import { Data, ITree } from '../../../models/tree/tree-base';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import MiddleCenter from '../../common/MiddleCenter';
@@ -33,6 +33,7 @@ const OverlayContainer = styled('div')`
 interface NodeOverlayProps {
   id: string;
   data: Data;
+  labelTrees: ReadonlyArray<ITree>;
   currentOverlay: TreeOverlay;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
@@ -40,7 +41,7 @@ interface NodeOverlayProps {
 
 class NodeOverlay extends React.Component<NodeOverlayProps> {
   render() {
-    const { id, data, currentOverlay, updateNode, deleteNode } = this.props;
+    const { id, data, labelTrees, currentOverlay, updateNode, deleteNode } = this.props;
 
     return (
       <Overlay
@@ -50,7 +51,13 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
         }}>
         <MiddleCenter style={{ zIndex: 10 }}>
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
-            <EditableNode id={id} data={data} updateNode={updateNode} deleteNode={deleteNode} />
+            <EditableNode
+              id={id}
+              data={data}
+              labelTrees={labelTrees}
+              updateNode={updateNode}
+              deleteNode={deleteNode}
+            />
           </OverlayContainer>
         </MiddleCenter>
       </Overlay>

@@ -3,8 +3,10 @@ import Leaf from '../models/tree/leaf';
 import {
   TreeActionTypes,
   REQUEST_ALL_TREES,
+  REQUEST_ALL_LABEL_TREES,
   REQUEST_TREE,
   RECEIVE_ALL_TREES,
+  RECEIVE_ALL_LABEL_TREES,
   RECEIVE_TREE,
   SET_OVERLAY,
   CREATE_LEAF,
@@ -21,6 +23,7 @@ export interface TreeOverlay {
 export interface TreeState {
   tree: ITree;
   trees: ReadonlyArray<ITree>;
+  labelTrees: ReadonlyArray<ITree>;
   isReady: boolean;
   overlay: TreeOverlay;
 }
@@ -28,6 +31,7 @@ export interface TreeState {
 const defaultTreeState: TreeState = {
   tree: new Leaf('', Data.empty()),
   trees: [],
+  labelTrees: [],
   isReady: false,
   overlay: { id: '', open: false }
 };
@@ -38,6 +42,7 @@ export function treeReducer(
 ): TreeState {
   switch (action.type) {
     case REQUEST_ALL_TREES:
+    case REQUEST_ALL_LABEL_TREES:
     case REQUEST_TREE:
       return {
         ...state,
@@ -47,6 +52,12 @@ export function treeReducer(
       return {
         ...state,
         trees: action.payload,
+        isReady: true
+      };
+    case RECEIVE_ALL_LABEL_TREES:
+      return {
+        ...state,
+        labelTrees: action.payload,
         isReady: true
       };
     case RECEIVE_TREE:

@@ -11,6 +11,7 @@ import { ITree, Data } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 import TreeComponent from '../../components/tree/TreeComponent';
 import {
+  getAllLabelTrees,
   getTree,
   setOverlay,
   updateNode,
@@ -42,6 +43,7 @@ interface TreeViewParams extends RouterParams {
 
 interface TreeViewProps {
   tree: ITree;
+  labelTrees: ReadonlyArray<ITree>;
   isReady: boolean;
   overlay: TreeOverlay;
   dispatch: Dispatch;
@@ -63,6 +65,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
   componentDidMount() {
     this.props.dispatch(getTree(this.props.match.params.id));
+    this.props.dispatch(getAllLabelTrees());
 
     window.addEventListener('resize', () => this.updateViewport());
   }
@@ -85,6 +88,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           viewport={this.state.viewport}
           data={this.props.tree.data}
           nodes={this.props.tree.nodes}
+          labelTrees={this.props.labelTrees}
           overlay={this.props.overlay}
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
           updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
@@ -137,6 +141,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
 const mapStateToProps = (state: AppState) => ({
   tree: state.tree.tree,
+  labelTrees: state.tree.labelTrees,
   isReady: state.tree.isReady,
   overlay: state.tree.overlay
 });

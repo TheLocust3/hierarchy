@@ -46,6 +46,13 @@ export default class Tree implements ITree {
     return false;
   }
 
+  containsITree(id: string) {
+    return (
+      this.id === id ||
+      this.nodes.reduce((acc: boolean, t: ITree) => t.containsITree(id) || acc, false)
+    );
+  }
+
   insertNodeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
       return new Tree(this.id, this.data, this.nodes.concat(tree));
