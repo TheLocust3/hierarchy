@@ -16,6 +16,7 @@ export const colors = {
   viewBlueActive: '#2286c3',
   addGreen: '#a5d6a7',
   addGreenHover: '#81c784',
+  addGreenActive: '#66bb6a',
 
   nodeBackground: '#fafafa',
   nodeBackgroundHover: '#eeeeee'

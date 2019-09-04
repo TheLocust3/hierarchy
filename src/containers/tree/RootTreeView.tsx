@@ -2,13 +2,34 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 import { AppState, Dispatch } from '../../types';
 import { ITree } from '../../models/tree/tree-base';
 import { getAllTrees, createRootLeaf } from '../../actions/tree-actions';
 
-import FloatingActionButton from '../../components/common/FloatingActionButton';
-import { colors } from '../../constants';
+import AddButton from '../../components/tree/AddButton';
+
+const ListContainer = styled('div')`
+  margin-top: 0.5%;
+  margin-left: 1%;
+`;
+
+const TreeList = styled('div')`
+  margin-top: 1%;
+  margin-left: 1.5%;
+`;
+
+const TreeListHeader = styled('div')`
+  width: 110px;
+  position: relative;
+`;
+
+const AddButtonContaine = styled('div')`
+  position: absolute;
+  top: -1px;
+  right: 0;
+`;
 
 interface RootTreeViewProps {
   trees: ReadonlyArray<ITree>;
@@ -21,22 +42,6 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
     this.props.dispatch(getAllTrees());
   }
 
-  renderRootTrees() {
-    if (!this.props.isReady) return;
-
-    return (
-      <div>
-        {this.props.trees.map((tree, i) => {
-          return (
-            <div key={i}>
-              <Link to={`/tree/${tree.id}`}>{tree.data.title}</Link>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-
   render() {
     return (
       <div>
@@ -44,26 +49,67 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           <title>All Trees</title>
           <meta name="description" content="All trees" />
         </Helmet>
-
         <div>
           <h1>All Trees</h1>
           <br />
 
           {this.renderRootTrees()}
         </div>
-
-        <FloatingActionButton
-          icon="add"
-          backgroundColor={colors.addGreen}
-          backgroundColorHover={colors.addGreenHover}
-          color="white"
-          onClick={() => {
-            this.props.dispatch(createRootLeaf());
-
-            window.location.reload();
-          }}
-        />
       </div>
+    );
+  }
+
+  private renderRootTrees() {
+    if (!this.props.isReady) return;
+
+    return (
+      <ListContainer>
+        <TreeListHeader>
+          Label Trees
+          <AddButtonContaine>
+            <AddButton
+              onClick={() => {
+                this.props.dispatch(createRootLeaf('label'));
+                window.location.reload();
+              }}
+            />
+          </AddButtonContaine>
+        </TreeListHeader>
+
+        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'label'))}
+        <br />
+        <br />
+
+        <TreeListHeader>
+          Task Trees
+          <AddButtonContaine>
+            <AddButton
+              onClick={() => {
+                this.props.dispatch(createRootLeaf('card'));
+                window.location.reload();
+              }}
+            />
+          </AddButtonContaine>
+        </TreeListHeader>
+
+        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'card'))}
+      </ListContainer>
+    );
+  }
+
+  private renderTreeList(trees: ReadonlyArray<ITree>) {
+    if (trees.length === 0) return <TreeList>None</TreeList>;
+
+    return (
+      <TreeList>
+        {trees.map((tree, i) => {
+          return (
+            <div key={i}>
+              <Link to={`/tree/${tree.id}`}>{tree.data.title}</Link>
+            </div>
+          );
+        })}
+      </TreeList>
     );
   }
 }

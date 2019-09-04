@@ -27,6 +27,7 @@ const TreeApi = {
   },
 
   async createLeaf(parentId: string, data: Data): Promise<ITree> {
+    console.log(data);
     let payload: any = { data: data };
     if (parentId) {
       payload.parentId = parentId;

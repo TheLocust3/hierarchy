@@ -161,8 +161,16 @@ export function getTree(id: string): ThunkAction<void, AppState, null, TreeActio
   };
 }
 
-export const createRootLeaf = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
-  return createLeaf('');
+export const createRootLeaf = (
+  type: string
+): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    const leaf = new Leaf(uuid(), Data.defaultWithType(type));
+    dispatch(InternalActions.createLeaf('', leaf));
+
+    const node = await TreeApi.createLeaf('', leaf.data);
+    dispatch(InternalActions.replaceNodeById(leaf.id, node));
+  };
 };
 
 export const createLeaf = (
@@ -172,7 +180,7 @@ export const createLeaf = (
     const leaf = new Leaf(uuid(), Data.default());
     dispatch(InternalActions.createLeaf(parentId, leaf));
 
-    const node = await TreeApi.createLeaf(parentId, Data.default());
+    const node = await TreeApi.createLeaf(parentId, leaf.data);
     dispatch(InternalActions.replaceNodeById(leaf.id, node));
   };
 };

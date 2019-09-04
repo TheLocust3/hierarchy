@@ -7,6 +7,7 @@ import { Data } from '../../../models/tree/tree-base';
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
 import Button from '../../common/Button';
+import Spacer from '../../common/Spacer';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
 
@@ -98,6 +99,7 @@ class EditableNode extends React.Component<EditableNodeProps> {
           <Divider marginTop="3%" marginBottom="5%" />
 
           <ActionsInner>
+            <Spacer space="10%" />
             <Button
               color={colors.viewBlue}
               hoverColor={colors.viewBlueHover}
@@ -106,6 +108,7 @@ class EditableNode extends React.Component<EditableNodeProps> {
               onClick={(event: any) => (window.location.href = `/tree/${id}`)}>
               Show
             </Button>
+            <Spacer space="10%" />
 
             <Button
               color={colors.deleteRed}

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
-import { colors, TITLE, history } from '../../constants';
+import { colors, TITLE } from '../../constants';
 import { AppState, Dispatch, RouterMatch, RouterParams } from '../../types';
 
 import { ITree, Data } from '../../models/tree/tree-base';

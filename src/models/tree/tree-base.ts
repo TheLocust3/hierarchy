@@ -14,7 +14,11 @@ export class Data {
   }
 
   static default(): Data {
-    return new Data('Title', 'Description', 'card');
+    return this.defaultWithType('card');
+  }
+
+  static defaultWithType(type: string): Data {
+    return new Data('Title', 'Description', type);
   }
 
   constructor(title: string, body: string, type: string) {

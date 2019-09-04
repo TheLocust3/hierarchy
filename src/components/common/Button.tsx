@@ -10,16 +10,16 @@ interface ButtonComponentProps {
   hoverColor: string;
   activeColor: string;
   textColor: string;
+  width: string;
+  height: string;
 }
 
 const ButtonComponent = styled('div')<ButtonComponentProps>`
   position: relative;
+  display: inline-block;
 
-  width: 80px;
-  height: 25px;
-
-  margin-top: 10%;
-  margin-bottom: 10%;
+  width: ${(props: ButtonComponentProps) => props.width};
+  height: ${(props: ButtonComponentProps) => props.height};
 
   cursor: pointer;
 
@@ -39,21 +39,24 @@ const ButtonComponent = styled('div')<ButtonComponentProps>`
   &:active {
     background-color: ${(props: ButtonComponentProps) => props.activeColor};
   }
-`
+`;
 
 interface ButtonProps {
-  children: string;
+  children: any;
   color: string;
   hoverColor: string;
   activeColor: string;
   textColor: string;
   onClick: (event: any) => void;
+  width?: string;
+  height?: string;
 }
 
 class Button extends React.Component<ButtonProps> {
-
   render() {
     const { children, color, hoverColor, activeColor, textColor, onClick } = this.props;
+    const width = this.props.width === undefined ? '80px' : this.props.width;
+    const height = this.props.height === undefined ? '25px' : this.props.height;
 
     return (
       <ButtonComponent
@@ -62,10 +65,9 @@ class Button extends React.Component<ButtonProps> {
         activeColor={activeColor}
         textColor={textColor}
         onClick={(event) => onClick(event)}
-      >
-        <MiddleCenter>
-          {children}
-        </MiddleCenter>
+        width={width}
+        height={height}>
+        <MiddleCenter>{children}</MiddleCenter>
       </ButtonComponent>
     );
   }
