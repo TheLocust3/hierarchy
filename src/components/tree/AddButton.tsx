@@ -24,7 +24,11 @@ class AddButton extends React.Component<AddButtonProps> {
         hoverColor={colors.addGreenHover}
         activeColor={colors.addGreenActive}
         textColor="white"
-        onClick={(event: any) => onClick()}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          onClick();
+        }}
         width="18px"
         height="18px">
         <ButtonInner>

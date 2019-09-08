@@ -32,6 +32,7 @@ interface TreeProps {
   updateNode: (id: string, data: Data) => void;
   deleteNode: (id: string) => void;
   createLeaf: (parentId: string) => void;
+  createRelationship: (parentId: string, childId: string) => void;
 }
 
 interface TreeState {
@@ -85,6 +86,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
+          addLabel={(labelId: string) => this.props.createRelationship(labelId, id)}
         />
 
         <Nodes>{nodes.map((node) => this.renderNode(node, viewport))}</Nodes>
@@ -110,6 +112,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               updateNode={this.props.updateNode}
               deleteNode={this.props.deleteNode}
               createLeaf={this.props.createLeaf}
+              createRelationship={this.props.createRelationship}
             />
           </div>
         );
@@ -128,6 +131,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               updateNode={this.props.updateNode}
               deleteNode={this.props.deleteNode}
               createLeaf={this.props.createLeaf}
+              createRelationship={this.props.createRelationship}
             />
           </div>
         );

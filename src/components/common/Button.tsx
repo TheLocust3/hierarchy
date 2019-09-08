@@ -32,6 +32,8 @@ const ButtonComponent = styled('div')<ButtonComponentProps>`
   background-color: ${(props: ButtonComponentProps) => props.color};
   transition: background-color 0.4s;
 
+  user-select: none;
+
   &:hover {
     background-color: ${(props: ButtonComponentProps) => props.hoverColor};
   }

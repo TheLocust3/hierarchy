@@ -36,6 +36,12 @@ export default class Leaf implements ITree {
     return this.id === id;
   }
 
+  getNodeById(id: string): ITree | undefined {
+    if (this.id === id) return this;
+
+    return undefined;
+  }
+
   insertNodeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
       return new Tree(this.id, this.data, this.nodes.concat(tree));

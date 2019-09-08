@@ -53,6 +53,15 @@ export default class Tree implements ITree {
     );
   }
 
+  getNodeById(id: string): ITree | undefined {
+    const nodes = this.nodes
+      .flatMap((node) => node.getNodeById(id))
+      .filter((node) => node !== undefined);
+    if (nodes.length === 0) return undefined;
+
+    return nodes[0];
+  }
+
   insertNodeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
       return new Tree(this.id, this.data, this.nodes.concat(tree));

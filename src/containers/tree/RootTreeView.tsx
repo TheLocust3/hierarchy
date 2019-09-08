@@ -25,7 +25,7 @@ const TreeListHeader = styled('div')`
   position: relative;
 `;
 
-const AddButtonContaine = styled('div')`
+const AddButtonContainer = styled('div')`
   position: absolute;
   top: -1px;
   right: 0;
@@ -66,14 +66,14 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
       <ListContainer>
         <TreeListHeader>
           Label Trees
-          <AddButtonContaine>
+          <AddButtonContainer>
             <AddButton
               onClick={() => {
                 this.props.dispatch(createRootLeaf('label'));
                 window.location.reload();
               }}
             />
-          </AddButtonContaine>
+          </AddButtonContainer>
         </TreeListHeader>
 
         {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'label'))}
@@ -82,14 +82,14 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
 
         <TreeListHeader>
           Task Trees
-          <AddButtonContaine>
+          <AddButtonContainer>
             <AddButton
               onClick={() => {
                 this.props.dispatch(createRootLeaf('card'));
                 window.location.reload();
               }}
             />
-          </AddButtonContaine>
+          </AddButtonContainer>
         </TreeListHeader>
 
         {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'card'))}

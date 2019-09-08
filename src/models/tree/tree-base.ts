@@ -36,6 +36,7 @@ export interface ITree {
   isEmpty: () => boolean;
   containsITree: (id: string) => boolean;
 
+  getNodeById: (id: string) => ITree | undefined;
   insertNodeByParentId: (parentId: string, tree: ITree) => ITree;
   replaceNodeById: (id: string, node: ITree) => ITree;
   updateNodeById: (id: string, data: Data) => ITree;

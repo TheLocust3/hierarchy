@@ -67,6 +67,13 @@ const TreeApi = {
     const json: TreeSuccessResponse = await response.json();
 
     return json.success;
+  },
+
+  async createRelationship(parentId: string, childId: string): Promise<ITree> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${parentId}/${childId}`, { method: 'POST' });
+    const json: TreeResponse = await response.json();
+
+    return Tree.fromJSONInner(json.tree);
   }
 };
 

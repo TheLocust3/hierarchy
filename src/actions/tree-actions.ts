@@ -23,6 +23,8 @@ export const UPDATE_NODE = 'UPDATE_NODE';
 export const DELETE_NODE = 'DELETE_NODE';
 export const REPLACE_NODE = 'REPLACE_NODE';
 
+export const CREATE_RELATIONSHIP = 'CREATE_RELATIONSHIP';
+
 interface RequestAllTreesAction {
   type: typeof REQUEST_ALL_TREES;
 }
@@ -78,6 +80,12 @@ interface ReplaceNodeAction {
   node: ITree;
 }
 
+interface CreateRelationshipAction {
+  type: typeof CREATE_RELATIONSHIP;
+  parentId: string;
+  childId: string;
+}
+
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
@@ -89,7 +97,8 @@ export type TreeActionTypes =
   | CreateLeafAction
   | UpdateNodeAction
   | DeleteNodeAction
-  | ReplaceNodeAction;
+  | ReplaceNodeAction
+  | CreateRelationshipAction;
 
 const InternalActions = {
   requestAllTrees(): TreeActionTypes {
@@ -159,6 +168,14 @@ const InternalActions = {
       type: REPLACE_NODE,
       id: id,
       node: node
+    };
+  },
+
+  createRelationship(parentId: string, childId: string): TreeActionTypes {
+    return {
+      type: CREATE_RELATIONSHIP,
+      parentId: parentId,
+      childId: childId
     };
   }
 };
@@ -238,5 +255,18 @@ export const deleteNode = (id: string): ThunkAction<void, AppState, null, TreeAc
     dispatch(InternalActions.deleteNodeById(id));
 
     await TreeApi.deleteTree(id);
+  };
+};
+
+export const createRelationship = (
+  parentId: string,
+  childId: string
+): ThunkAction<void, AppState, null, TreeActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.createRelationship(parentId, childId));
+
+    const node = await TreeApi.createRelationship(parentId, childId);
+    dispatch(InternalActions.replaceNodeById(node.id, node));
+    // TODO: Make the update more relevant (pull latest label trees and such)
   };
 };

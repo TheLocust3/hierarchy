@@ -18,6 +18,7 @@ interface LeafProps {
   updateNode: (id: string, data: Data) => void;
   deleteNode: (id: string) => void;
   createLeaf: (parentId: string) => void;
+  createRelationship: (parentId: string, childId: string) => void;
 }
 
 class LeafComponent extends React.Component<LeafProps> {
@@ -59,6 +60,7 @@ class LeafComponent extends React.Component<LeafProps> {
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
+          addLabel={(labelId: string) => this.props.createRelationship(labelId, id)}
         />
       </div>
     );

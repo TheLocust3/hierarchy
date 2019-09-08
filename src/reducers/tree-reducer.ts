@@ -12,7 +12,8 @@ import {
   CREATE_LEAF,
   UPDATE_NODE,
   DELETE_NODE,
-  REPLACE_NODE
+  REPLACE_NODE,
+  CREATE_RELATIONSHIP
 } from '../actions/tree-actions';
 
 export interface TreeOverlay {
@@ -90,6 +91,17 @@ export function treeReducer(
       return {
         ...state,
         tree: state.tree.replaceNodeById(action.id, action.node)
+      };
+    case CREATE_RELATIONSHIP:
+      const childNode = state.tree.getNodeById(action.childId);
+      if (childNode === undefined) return state;
+
+      return {
+        ...state,
+        tree: state.tree.insertNodeByParentId(action.parentId, childNode),
+        labelTrees: state.labelTrees.map((tree) =>
+          tree.insertNodeByParentId(action.parentId, childNode)
+        )
       };
     default:
       return state;

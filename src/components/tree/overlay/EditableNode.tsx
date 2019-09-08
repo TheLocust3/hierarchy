@@ -11,6 +11,9 @@ import Spacer from '../../common/Spacer';
 import SideMargin from '../../common/SideMargin';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
+import AddButton from '../AddButton';
+import LabelDropdown from './LabelDropdown';
+import Label from './Label';
 
 const Container = styled(ColumnLayout)`
   height: 500px;
@@ -58,20 +61,54 @@ const ActionsInner = styled('div')`
   margin-left: 10%;
 `;
 
+const LabelsHeader = styled('div')`
+  width: 70px;
+  position: relative;
+`;
+
+const AddButtonContainer = styled('div')`
+  position: absolute;
+  top: -1px;
+  right: 0;
+`;
+
+const LabelContainer = styled('span')`
+  margin-left: 5px;
+  margin-right: 5px;
+`;
+
 interface EditableNodeProps {
   id: string;
   data: Data;
+  overlayOpen: boolean;
   labelTrees: ReadonlyArray<ITree>;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
+  addLabel: (labelId: string) => void;
 }
 
-class EditableNode extends React.Component<EditableNodeProps> {
+interface EditableNodeState {
+  dropdownShown: boolean;
+}
+
+class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
+  constructor(props: EditableNodeProps) {
+    super(props);
+
+    this.state = { dropdownShown: false };
+  }
+
+  componentWillReceiveProps(nextProps: EditableNodeProps) {
+    if (!nextProps.overlayOpen) {
+      this.setState({ dropdownShown: false });
+    }
+  }
+
   render() {
-    const { id, data } = this.props;
+    const { id, data, addLabel } = this.props;
 
     return (
-      <Container>
+      <Container onClick={() => this.setState({ dropdownShown: false })}>
         <LeftColumn>
           <Title>
             <EditableTextField
@@ -85,7 +122,26 @@ class EditableNode extends React.Component<EditableNodeProps> {
           <Divider marginTop="3%" marginBottom="3%" />
 
           <SideMargin margin="5%">
-            <h3>Labels</h3>
+            <LabelsHeader>
+              Labels
+              <AddButtonContainer>
+                <AddButton
+                  onClick={() => this.setState({ dropdownShown: !this.state.dropdownShown })}
+                />
+              </AddButtonContainer>
+              <LabelDropdown
+                labels={this.props.labelTrees.map((tree: ITree) => {
+                  return { id: tree.id, name: tree.data.title };
+                })}
+                isVisible={this.state.dropdownShown}
+                onSelect={(id: string) => {
+                  addLabel(id);
+                  this.setState({ dropdownShown: false });
+                }}
+              />
+            </LabelsHeader>
+            <Spacer space="2%" />
+
             {this.renderLabels()}
           </SideMargin>
 
@@ -140,7 +196,11 @@ class EditableNode extends React.Component<EditableNodeProps> {
     return (
       <SideMargin margin="2.5%">
         {labels.map((labelTree: ITree) => {
-          return <div>{labelTree.data.title}</div>;
+          return (
+            <LabelContainer key={labelTree.id}>
+              <Label labelTree={labelTree} />
+            </LabelContainer>
+          );
         })}
       </SideMargin>
     );

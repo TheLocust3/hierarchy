@@ -37,11 +37,12 @@ interface NodeOverlayProps {
   currentOverlay: TreeOverlay;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
+  addLabel: (labelId: string) => void;
 }
 
 class NodeOverlay extends React.Component<NodeOverlayProps> {
   render() {
-    const { id, data, labelTrees, currentOverlay, updateNode, deleteNode } = this.props;
+    const { id, data, labelTrees, currentOverlay, updateNode, deleteNode, addLabel } = this.props;
 
     return (
       <Overlay
@@ -54,9 +55,11 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
             <EditableNode
               id={id}
               data={data}
+              overlayOpen={currentOverlay.open}
               labelTrees={labelTrees}
               updateNode={updateNode}
               deleteNode={deleteNode}
+              addLabel={addLabel}
             />
           </OverlayContainer>
         </MiddleCenter>

@@ -19,7 +19,8 @@ export const colors = {
   addGreenActive: '#66bb6a',
 
   nodeBackground: '#fafafa',
-  nodeBackgroundHover: '#eeeeee'
+  nodeBackgroundHover: '#eeeeee',
+  dropdownHover: '#dddddd'
 };
 
 export const fonts = {
