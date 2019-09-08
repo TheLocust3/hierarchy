@@ -13,7 +13,8 @@ import {
   UPDATE_NODE,
   DELETE_NODE,
   REPLACE_NODE,
-  CREATE_RELATIONSHIP
+  CREATE_RELATIONSHIP,
+  DELETE_RELATIONSHIP
 } from '../actions/tree-actions';
 
 export interface TreeOverlay {
@@ -99,8 +100,19 @@ export function treeReducer(
       return {
         ...state,
         tree: state.tree.insertNodeByParentId(action.parentId, childNode),
+        trees: state.trees.map((tree) => tree.insertNodeByParentId(action.parentId, childNode)),
         labelTrees: state.labelTrees.map((tree) =>
           tree.insertNodeByParentId(action.parentId, childNode)
+        )
+      };
+    case DELETE_RELATIONSHIP:
+      return {
+        ...state,
+        trees: state.trees.map((tree) =>
+          tree.id === action.parentId ? tree.deleteNodeById(action.childId) : tree
+        ),
+        labelTrees: state.labelTrees.map((tree) =>
+          tree.id === action.parentId ? tree.deleteNodeById(action.childId) : tree
         )
       };
     default:

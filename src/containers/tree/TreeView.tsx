@@ -17,7 +17,8 @@ import {
   updateNode,
   deleteNode,
   createLeaf,
-  createRelationship
+  createRelationship,
+  deleteRelationship
 } from '../../actions/tree-actions';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 
@@ -97,6 +98,9 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           createLeaf={(id: string) => this.props.dispatch(createLeaf(id))}
           createRelationship={(parentId: string, childId: string) =>
             this.props.dispatch(createRelationship(parentId, childId))
+          }
+          deleteRelationship={(parentId: string, childId: string) =>
+            this.props.dispatch(deleteRelationship(parentId, childId))
           }
         />
       </TreeViewport>

@@ -20,6 +20,8 @@ const DropdownContainer = styled('div')`
   overflow: hidden;
 
   background-color: ${colors.nodeBackgroundHover};
+
+  transition: visibility 200ms, opacity 200ms;
 `;
 
 const DropdownItem = styled('div')`
@@ -45,7 +47,8 @@ class LabelDropdown extends React.Component<LabelDropdownProps> {
     const { labels, isVisible, onSelect } = this.props;
 
     return (
-      <DropdownContainer style={{ display: isVisible ? 'initial' : 'none' }}>
+      <DropdownContainer
+        style={{ visibility: isVisible ? 'visible' : 'hidden', opacity: isVisible ? 1 : 0 }}>
         {labels.map((label) => (
           <DropdownItem
             key={label.id}

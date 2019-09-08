@@ -85,6 +85,7 @@ interface EditableNodeProps {
   updateNode: (data: Data) => void;
   deleteNode: () => void;
   addLabel: (labelId: string) => void;
+  deleteLabel: (labelId: string) => void;
 }
 
 interface EditableNodeState {
@@ -198,7 +199,7 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
         {labels.map((labelTree: ITree) => {
           return (
             <LabelContainer key={labelTree.id}>
-              <Label labelTree={labelTree} />
+              <Label labelTree={labelTree} onClick={() => this.props.deleteLabel(labelTree.id)} />
             </LabelContainer>
           );
         })}

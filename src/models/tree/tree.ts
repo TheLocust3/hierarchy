@@ -56,6 +56,7 @@ export default class Tree implements ITree {
   getNodeById(id: string): ITree | undefined {
     const nodes = this.nodes
       .flatMap((node) => node.getNodeById(id))
+      .concat(this.id === id ? this : undefined)
       .filter((node) => node !== undefined);
     if (nodes.length === 0) return undefined;
 

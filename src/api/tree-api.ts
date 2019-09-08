@@ -74,6 +74,15 @@ const TreeApi = {
     const json: TreeResponse = await response.json();
 
     return Tree.fromJSONInner(json.tree);
+  },
+
+  async deleteRelationship(parentId: string, childId: string): Promise<string> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${parentId}/${childId}`, {
+      method: 'DELETE'
+    });
+    const json: TreeSuccessResponse = await response.json();
+
+    return json.success;
   }
 };
 

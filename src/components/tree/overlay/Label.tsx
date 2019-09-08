@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 import { ITree } from '../../../models/tree/tree-base';
 import { colors } from '../../../constants';
 
-import UnstyledLink from '../../common/UnstyledLink';
-
 const LabelContainer = styled('div')`
   display: inline-block;
 
@@ -17,22 +15,26 @@ const LabelContainer = styled('div')`
   border: 1px solid ${colors.black};
   border-radius: 5px;
 
-  cursor: pointer;
+  transition: background-color 400ms, white 400ms;
+
+  &:hover {
+    cursor: pointer;
+
+    color: white;
+    background-color: ${colors.deleteRed};
+  }
 `;
 
 interface LabelProps {
   labelTree: ITree;
+  onClick: () => void;
 }
 
 class Label extends React.Component<LabelProps> {
   render() {
-    const { labelTree } = this.props;
+    const { labelTree, onClick } = this.props;
 
-    return (
-      <UnstyledLink to={`/tree/${labelTree.id}`}>
-        <LabelContainer>{labelTree.data.title}</LabelContainer>
-      </UnstyledLink>
-    );
+    return <LabelContainer onClick={onClick}>{labelTree.data.title}</LabelContainer>;
   }
 }
 
