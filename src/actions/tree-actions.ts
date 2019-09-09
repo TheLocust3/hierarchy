@@ -10,8 +10,8 @@ import Leaf from '../models/tree/leaf';
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 
-export const REQUEST_ALL_LABEL_TREES = 'REQUEST_ALL_LABEL_TREES';
-export const RECEIVE_ALL_LABEL_TREES = 'RECEIVE_ALL_LABEL_TREES';
+export const REQUEST_ALL_SPECIAL_TREES = 'REQUEST_ALL_SPECIAL_TREES';
+export const RECEIVE_ALL_SPECIAL_TREES = 'RECEIVE_ALL_SPECIAL_TREES';
 
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
@@ -35,12 +35,12 @@ interface ReceiveAllTreesAction {
   payload: ReadonlyArray<ITree>;
 }
 
-interface RequestAllLabelTreesAction {
-  type: typeof REQUEST_ALL_LABEL_TREES;
+interface RequestAllSpecialTreesAction {
+  type: typeof REQUEST_ALL_SPECIAL_TREES;
 }
 
-interface ReceiveAllLabelTreesAction {
-  type: typeof RECEIVE_ALL_LABEL_TREES;
+interface ReceiveAllSpecialTreesAction {
+  type: typeof RECEIVE_ALL_SPECIAL_TREES;
   payload: ReadonlyArray<ITree>;
 }
 
@@ -96,8 +96,8 @@ interface DeleteRelationshipAction {
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
-  | RequestAllLabelTreesAction
-  | ReceiveAllLabelTreesAction
+  | RequestAllSpecialTreesAction
+  | ReceiveAllSpecialTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
   | SetOverlayAction
@@ -122,15 +122,15 @@ const InternalActions = {
     };
   },
 
-  requestAllLabelTrees(): TreeActionTypes {
+  requestAllSpecialTrees(): TreeActionTypes {
     return {
-      type: REQUEST_ALL_LABEL_TREES
+      type: REQUEST_ALL_SPECIAL_TREES
     };
   },
 
-  receiveAllLabelTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
+  receiveAllSpecialTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
     return {
-      type: RECEIVE_ALL_LABEL_TREES,
+      type: RECEIVE_ALL_SPECIAL_TREES,
       payload: trees
     };
   },
@@ -214,10 +214,10 @@ export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes
 
 export const getAllLabelTrees = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.requestAllLabelTrees());
+    dispatch(InternalActions.requestAllSpecialTrees());
 
-    const trees = await TreeApi.getAllLabelTrees();
-    dispatch(InternalActions.receiveAllLabelTrees(trees));
+    const trees = await TreeApi.getAllSpecialTrees();
+    dispatch(InternalActions.receiveAllSpecialTrees(trees));
   };
 };
 

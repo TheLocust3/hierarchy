@@ -33,12 +33,13 @@ const OverlayContainer = styled('div')`
 interface NodeOverlayProps {
   id: string;
   data: Data;
-  labelTrees: ReadonlyArray<ITree>;
+  specialTrees: ReadonlyArray<ITree>;
   currentOverlay: TreeOverlay;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
   addLabel: (labelId: string) => void;
   deleteLabel: (labelId: string) => void;
+  setStatus: (oldStatusId: string, statusId: string) => void;
 }
 
 class NodeOverlay extends React.Component<NodeOverlayProps> {
@@ -46,12 +47,13 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
     const {
       id,
       data,
-      labelTrees,
+      specialTrees,
       currentOverlay,
       updateNode,
       deleteNode,
       addLabel,
-      deleteLabel
+      deleteLabel,
+      setStatus
     } = this.props;
 
     return (
@@ -66,11 +68,12 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
               id={id}
               data={data}
               overlayOpen={currentOverlay.open}
-              labelTrees={labelTrees}
+              specialTrees={specialTrees}
               updateNode={updateNode}
               deleteNode={deleteNode}
               addLabel={addLabel}
               deleteLabel={deleteLabel}
+              setStatus={setStatus}
             />
           </OverlayContainer>
         </MiddleCenter>

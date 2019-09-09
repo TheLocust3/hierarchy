@@ -8,12 +8,10 @@ import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
 import Button from '../../common/Button';
 import Spacer from '../../common/Spacer';
-import SideMargin from '../../common/SideMargin';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
-import AddButton from '../AddButton';
-import LabelDropdown from './LabelDropdown';
-import Label from './Label';
+import LabelSection from './LabelSection';
+import StatusSection from './StatusSection';
 
 const Container = styled(ColumnLayout)`
   height: 500px;
@@ -61,55 +59,24 @@ const ActionsInner = styled('div')`
   margin-left: 10%;
 `;
 
-const LabelsHeader = styled('div')`
-  width: 70px;
-  position: relative;
-`;
-
-const AddButtonContainer = styled('div')`
-  position: absolute;
-  top: -1px;
-  right: 0;
-`;
-
-const LabelContainer = styled('span')`
-  margin-left: 5px;
-  margin-right: 5px;
-`;
-
 interface EditableNodeProps {
   id: string;
   data: Data;
   overlayOpen: boolean;
-  labelTrees: ReadonlyArray<ITree>;
+  specialTrees: ReadonlyArray<ITree>;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
   addLabel: (labelId: string) => void;
   deleteLabel: (labelId: string) => void;
+  setStatus: (oldStatusId: string, statusId: string) => void;
 }
 
-interface EditableNodeState {
-  dropdownShown: boolean;
-}
-
-class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
-  constructor(props: EditableNodeProps) {
-    super(props);
-
-    this.state = { dropdownShown: false };
-  }
-
-  componentWillReceiveProps(nextProps: EditableNodeProps) {
-    if (!nextProps.overlayOpen) {
-      this.setState({ dropdownShown: false });
-    }
-  }
-
+class EditableNode extends React.Component<EditableNodeProps> {
   render() {
-    const { id, data, addLabel } = this.props;
+    const { id, data, overlayOpen, specialTrees, addLabel, deleteLabel, setStatus } = this.props;
 
     return (
-      <Container onClick={() => this.setState({ dropdownShown: false })}>
+      <Container>
         <LeftColumn>
           <Title>
             <EditableTextField
@@ -122,29 +89,21 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
           </Title>
           <Divider marginTop="3%" marginBottom="3%" />
 
-          <SideMargin margin="5%">
-            <LabelsHeader>
-              Labels
-              <AddButtonContainer>
-                <AddButton
-                  onClick={() => this.setState({ dropdownShown: !this.state.dropdownShown })}
-                />
-              </AddButtonContainer>
-              <LabelDropdown
-                labels={this.props.labelTrees.map((tree: ITree) => {
-                  return { id: tree.id, name: tree.data.title };
-                })}
-                isVisible={this.state.dropdownShown}
-                onSelect={(id: string) => {
-                  addLabel(id);
-                  this.setState({ dropdownShown: false });
-                }}
-              />
-            </LabelsHeader>
-            <Spacer space="2%" />
+          <LabelSection
+            id={id}
+            overlayOpen={overlayOpen}
+            specialTrees={specialTrees}
+            addLabel={addLabel}
+            deleteLabel={deleteLabel}
+          />
+          <br />
 
-            {this.renderLabels()}
-          </SideMargin>
+          <StatusSection
+            id={id}
+            overlayOpen={overlayOpen}
+            specialTrees={specialTrees}
+            setStatus={setStatus}
+          />
 
           <Spacer space="5%" />
 
@@ -187,23 +146,6 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
           </ActionsInner>
         </RightColumn>
       </Container>
-    );
-  }
-
-  private renderLabels() {
-    const labels = this.props.labelTrees.filter((tree: ITree) => tree.containsITree(this.props.id));
-    if (labels.length === 0) return <SideMargin margin="2.5%">None</SideMargin>;
-
-    return (
-      <SideMargin margin="2.5%">
-        {labels.map((labelTree: ITree) => {
-          return (
-            <LabelContainer key={labelTree.id}>
-              <Label labelTree={labelTree} onClick={() => this.props.deleteLabel(labelTree.id)} />
-            </LabelContainer>
-          );
-        })}
-      </SideMargin>
     );
   }
 }

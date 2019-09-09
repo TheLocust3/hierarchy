@@ -23,7 +23,7 @@ interface TreeProps {
   id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
-  labelTrees: ReadonlyArray<ITree>;
+  specialTrees: ReadonlyArray<ITree>;
   overlay: TreeOverlay;
   parentX?: number;
   parentY?: number;
@@ -58,7 +58,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
   }
 
   render() {
-    const { id, data, nodes, labelTrees, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, nodes, specialTrees, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <TreeContainer>
@@ -83,12 +83,19 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
         <NodeOverlay
           id={id}
           data={data}
-          labelTrees={labelTrees}
+          specialTrees={specialTrees}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
           addLabel={(labelId: string) => this.props.createRelationship(labelId, id)}
           deleteLabel={(labelId: string) => this.props.deleteRelationship(labelId, id)}
+          setStatus={(oldStatusId: string, statusId: string) => {
+            if (oldStatusId !== '') {
+              this.props.deleteRelationship(oldStatusId, id);
+            }
+
+            this.props.createRelationship(statusId, id);
+          }}
         />
 
         <Nodes>{nodes.map((node) => this.renderNode(node, viewport))}</Nodes>
@@ -105,7 +112,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
               id={node.id}
               data={node.data}
               nodes={node.nodes}
-              labelTrees={this.props.labelTrees}
+              specialTrees={this.props.specialTrees}
               overlay={this.props.overlay}
               parentX={this.state.x}
               parentY={this.state.y}
@@ -125,7 +132,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
             <LeafComponent
               id={node.id}
               data={node.data}
-              labelTrees={this.props.labelTrees}
+              specialTrees={this.props.specialTrees}
               overlay={this.props.overlay}
               parentX={this.state.x}
               parentY={this.state.y}

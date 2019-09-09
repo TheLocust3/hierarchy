@@ -65,6 +65,22 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
     return (
       <ListContainer>
         <TreeListHeader>
+          Status Trees
+          <AddButtonContainer>
+            <AddButton
+              onClick={() => {
+                this.props.dispatch(createRootLeaf('status'));
+                window.location.reload();
+              }}
+            />
+          </AddButtonContainer>
+        </TreeListHeader>
+
+        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'status'))}
+        <br />
+        <br />
+
+        <TreeListHeader>
           Label Trees
           <AddButtonContainer>
             <AddButton

@@ -12,8 +12,8 @@ const TreeApi = {
     return json.trees.map((tree) => Tree.fromJSON(tree));
   },
 
-  async getAllLabelTrees(): Promise<ReadonlyArray<ITree>> {
-    const response = await fetch(`${API_ENDPOINT}/tree/labels`, { method: 'GET' });
+  async getAllSpecialTrees(): Promise<ReadonlyArray<ITree>> {
+    const response = await fetch(`${API_ENDPOINT}/tree/special`, { method: 'GET' });
     const json: ListOfTreesResponse = await response.json();
 
     return json.trees.map((tree) => Tree.fromJSON(tree));

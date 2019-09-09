@@ -9,7 +9,7 @@ import { TreeOverlay } from '../../reducers/tree-reducer';
 interface LeafProps {
   id: string;
   data: Data;
-  labelTrees: ReadonlyArray<ITree>;
+  specialTrees: ReadonlyArray<ITree>;
   overlay: TreeOverlay;
   parentX: number;
   parentY: number;
@@ -33,7 +33,7 @@ class LeafComponent extends React.Component<LeafProps> {
   }
 
   render() {
-    const { id, data, labelTrees, overlay, parentX, parentY, viewport } = this.props;
+    const { id, data, specialTrees, overlay, parentX, parentY, viewport } = this.props;
 
     return (
       <div>
@@ -57,12 +57,19 @@ class LeafComponent extends React.Component<LeafProps> {
         <NodeOverlay
           id={id}
           data={data}
-          labelTrees={labelTrees}
+          specialTrees={specialTrees}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
           addLabel={(labelId: string) => this.props.createRelationship(labelId, id)}
           deleteLabel={(labelId: string) => this.props.deleteRelationship(labelId, id)}
+          setStatus={(oldStatusId: string, statusId: string) => {
+            if (oldStatusId !== '') {
+              this.props.deleteRelationship(oldStatusId, id);
+            }
+
+            this.props.createRelationship(statusId, id);
+          }}
         />
       </div>
     );

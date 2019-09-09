@@ -45,7 +45,7 @@ interface TreeViewParams extends RouterParams {
 
 interface TreeViewProps {
   tree: ITree;
-  labelTrees: ReadonlyArray<ITree>;
+  specialTrees: ReadonlyArray<ITree>;
   isReady: boolean;
   overlay: TreeOverlay;
   dispatch: Dispatch;
@@ -90,7 +90,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           viewport={this.state.viewport}
           data={this.props.tree.data}
           nodes={this.props.tree.nodes}
-          labelTrees={this.props.labelTrees}
+          specialTrees={this.props.specialTrees}
           overlay={this.props.overlay}
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
           updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
@@ -149,7 +149,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
 const mapStateToProps = (state: AppState) => ({
   tree: state.tree.tree,
-  labelTrees: state.tree.labelTrees,
+  specialTrees: state.tree.specialTrees,
   isReady: state.tree.isReady,
   overlay: state.tree.overlay
 });
