@@ -71,12 +71,24 @@ interface EditableNodeProps {
   setStatus: (oldStatusId: string, statusId: string) => void;
 }
 
-class EditableNode extends React.Component<EditableNodeProps> {
+interface EditableNodeState {
+  labelDropdownShown: boolean;
+  statusDropdownShown: boolean;
+}
+
+class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
+  constructor(props: EditableNodeProps) {
+    super(props);
+
+    this.state = { labelDropdownShown: false, statusDropdownShown: false };
+  }
+
   render() {
     const { id, data, overlayOpen, specialTrees, addLabel, deleteLabel, setStatus } = this.props;
 
     return (
-      <Container>
+      <Container
+        onClick={() => this.setState({ labelDropdownShown: false, statusDropdownShown: false })}>
         <LeftColumn>
           <Title>
             <EditableTextField
@@ -91,7 +103,14 @@ class EditableNode extends React.Component<EditableNodeProps> {
 
           <LabelSection
             id={id}
-            overlayOpen={overlayOpen}
+            dropdownShown={this.state.labelDropdownShown}
+            dropdownToggle={() =>
+              this.setState({
+                labelDropdownShown: !this.state.labelDropdownShown,
+                statusDropdownShown: false
+              })
+            }
+            dropdownHide={() => this.setState({ labelDropdownShown: false })}
             specialTrees={specialTrees}
             addLabel={addLabel}
             deleteLabel={deleteLabel}
@@ -100,7 +119,14 @@ class EditableNode extends React.Component<EditableNodeProps> {
 
           <StatusSection
             id={id}
-            overlayOpen={overlayOpen}
+            dropdownShown={this.state.statusDropdownShown}
+            dropdownToggle={() =>
+              this.setState({
+                labelDropdownShown: false,
+                statusDropdownShown: !this.state.statusDropdownShown
+              })
+            }
+            dropdownHide={() => this.setState({ statusDropdownShown: false })}
             specialTrees={specialTrees}
             setStatus={setStatus}
           />

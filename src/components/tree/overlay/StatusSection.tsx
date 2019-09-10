@@ -21,30 +21,16 @@ const AddButtonContainer = styled('div')`
 
 interface StatusSectionProps {
   id: string;
-  overlayOpen: boolean;
+  dropdownShown: boolean;
+  dropdownToggle: () => void;
+  dropdownHide: () => void;
   specialTrees: ReadonlyArray<ITree>;
   setStatus: (oldStatusId: string, statusId: string) => void;
 }
 
-interface StatusSectionState {
-  dropdownShown: boolean;
-}
-
-class StatusSection extends React.Component<StatusSectionProps, StatusSectionState> {
-  constructor(props: StatusSectionProps) {
-    super(props);
-
-    this.state = { dropdownShown: false };
-  }
-
-  componentWillReceiveProps(nextProps: StatusSectionProps) {
-    if (!nextProps.overlayOpen) {
-      this.setState({ dropdownShown: false });
-    }
-  }
-
+class StatusSection extends React.Component<StatusSectionProps> {
   render() {
-    const { specialTrees, setStatus } = this.props;
+    const { dropdownShown, dropdownToggle, dropdownHide, setStatus } = this.props;
 
     const status = this.props.specialTrees.find(
       (tree: ITree) => tree.data.type === 'status' && tree.containsITree(this.props.id)
@@ -55,9 +41,7 @@ class StatusSection extends React.Component<StatusSectionProps, StatusSectionSta
         <LabelsHeader>
           Status
           <AddButtonContainer>
-            <AddButton
-              onClick={() => this.setState({ dropdownShown: !this.state.dropdownShown })}
-            />
+            <AddButton onClick={dropdownToggle} />
           </AddButtonContainer>
           <LabelDropdown
             labels={this.props.specialTrees
@@ -65,10 +49,10 @@ class StatusSection extends React.Component<StatusSectionProps, StatusSectionSta
               .map((tree: ITree) => {
                 return { id: tree.id, name: tree.data.title };
               })}
-            isVisible={this.state.dropdownShown}
+            isVisible={dropdownShown}
             onSelect={(id: string) => {
               setStatus(status === undefined ? '' : status.id, id);
-              this.setState({ dropdownShown: false });
+              dropdownHide();
             }}
           />
         </LabelsHeader>

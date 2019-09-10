@@ -11,7 +11,7 @@ interface Label {
 const DropdownContainer = styled('div')`
   position: absolute;
   top: 15px;
-  right: -75px;
+  margin-left: 60px;
 
   padding: 0;
 
@@ -22,6 +22,8 @@ const DropdownContainer = styled('div')`
   background-color: ${colors.nodeBackgroundHover};
 
   transition: visibility 200ms, opacity 200ms;
+
+  z-index: 10;
 `;
 
 const DropdownItem = styled('div')`

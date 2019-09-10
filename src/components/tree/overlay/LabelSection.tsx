@@ -27,40 +27,24 @@ const LabelContainer = styled('span')`
 
 interface LabelSectionProps {
   id: string;
-  overlayOpen: boolean;
+  dropdownShown: boolean;
+  dropdownToggle: () => void;
+  dropdownHide: () => void;
   specialTrees: ReadonlyArray<ITree>;
   addLabel: (labelId: string) => void;
   deleteLabel: (labelId: string) => void;
 }
 
-interface LabelSectionState {
-  dropdownShown: boolean;
-}
-
-class LabelSection extends React.Component<LabelSectionProps, LabelSectionState> {
-  constructor(props: LabelSectionProps) {
-    super(props);
-
-    this.state = { dropdownShown: false };
-  }
-
-  componentWillReceiveProps(nextProps: LabelSectionProps) {
-    if (!nextProps.overlayOpen) {
-      this.setState({ dropdownShown: false });
-    }
-  }
-
+class LabelSection extends React.Component<LabelSectionProps> {
   render() {
-    const { addLabel } = this.props;
+    const { dropdownShown, dropdownToggle, dropdownHide, addLabel } = this.props;
 
     return (
       <SideMargin margin="5%">
         <LabelsHeader>
           Labels
           <AddButtonContainer>
-            <AddButton
-              onClick={() => this.setState({ dropdownShown: !this.state.dropdownShown })}
-            />
+            <AddButton onClick={dropdownToggle} />
           </AddButtonContainer>
           <LabelDropdown
             labels={this.props.specialTrees
@@ -68,10 +52,10 @@ class LabelSection extends React.Component<LabelSectionProps, LabelSectionState>
               .map((tree: ITree) => {
                 return { id: tree.id, name: tree.data.title };
               })}
-            isVisible={this.state.dropdownShown}
+            isVisible={dropdownShown}
             onSelect={(id: string) => {
               addLabel(id);
-              this.setState({ dropdownShown: false });
+              dropdownHide();
             }}
           />
         </LabelsHeader>
