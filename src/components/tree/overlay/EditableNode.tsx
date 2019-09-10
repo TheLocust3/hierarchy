@@ -84,7 +84,7 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
   }
 
   render() {
-    const { id, data, overlayOpen, specialTrees, addLabel, deleteLabel, setStatus } = this.props;
+    const { id, data, specialTrees, addLabel, deleteLabel, setStatus } = this.props;
 
     return (
       <Container

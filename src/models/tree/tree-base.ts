@@ -32,6 +32,7 @@ export interface ITree {
   id: string;
   data: Data;
   nodes: ReadonlyArray<ITree>;
+  createdAt: number;
 
   isEmpty: () => boolean;
   containsITree: (id: string) => boolean;

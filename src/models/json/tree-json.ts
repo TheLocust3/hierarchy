@@ -9,6 +9,7 @@ export interface TreeJSON {
   data: DataJSON;
   nodes?: ReadonlyArray<TreeJSON>;
   type: string;
+  createdAt: number;
 }
 
 export interface TreeResponse {

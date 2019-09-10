@@ -41,6 +41,7 @@ class ListView extends React.Component<ListViewProps> {
     const { isReady, list } = this.props;
 
     if (!isReady) return;
+    console.log(list);
 
     return (
       <div>

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { Data, ITree } from './tree-base';
 import Tree from './tree';
 
@@ -30,6 +32,14 @@ export default class SentinelNode implements ITree {
     }
 
     return this._tree.nodes;
+  }
+
+  get createdAt() {
+    if (this._tree === undefined) {
+      return moment().valueOf();
+    }
+
+    return this._tree.createdAt;
   }
 
   isEmpty() {
@@ -81,7 +91,8 @@ export default class SentinelNode implements ITree {
       new Tree(
         this.id,
         this.data,
-        this.nodes.filter((node) => node.id !== id).map((node) => node.deleteNodeById(id))
+        this.nodes.filter((node) => node.id !== id).map((node) => node.deleteNodeById(id)),
+        this.createdAt
       )
     );
   }
