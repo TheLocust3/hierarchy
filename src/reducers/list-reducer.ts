@@ -28,7 +28,9 @@ export function listReducer(
     case RECEIVE_LIST_ROOTED_AT:
       return {
         ...state,
-        list: action.payload,
+        list: action.payload
+          .slice()
+          .sort((col1: Column, col2: Column) => col1.createdAt - col2.createdAt),
         isReady: true
       };
     default:
