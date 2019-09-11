@@ -11,12 +11,13 @@ export default class Leaf implements ITree {
   private _createdAt: number = moment().valueOf();
 
   static fromJSON(json: TreeJSON) {
-    return new Leaf(json.id, Data.fromJSON(json.data));
+    return new Leaf(json.id, Data.fromJSON(json.data), json.createdAt);
   }
 
-  constructor(id: string, data: Data) {
+  constructor(id: string, data: Data, createdAt: number) {
     this._id = id;
     this._data = data;
+    this._createdAt = createdAt;
   }
 
   get id() {
@@ -54,7 +55,7 @@ export default class Leaf implements ITree {
       return new Tree(this.id, this.data, this.nodes.concat(tree), this.createdAt);
     }
 
-    return new Leaf(this.id, this.data);
+    return new Leaf(this.id, this.data, this.createdAt);
   }
 
   replaceNodeById(id: string, node: ITree): ITree {
@@ -62,15 +63,15 @@ export default class Leaf implements ITree {
       return node;
     }
 
-    return new Leaf(this.id, this.data);
+    return new Leaf(this.id, this.data, this.createdAt);
   }
 
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
-      return new Leaf(this.id, data);
+      return new Leaf(this.id, data, this.createdAt);
     }
 
-    return new Leaf(this.id, this.data);
+    return new Leaf(this.id, this.data, this.createdAt);
   }
 
   deleteNodeById(id: string): ITree {

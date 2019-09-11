@@ -17,4 +17,5 @@ This project is currently in active development.
   - Send down flat list of nodes (array of ids of children)
     - Client puts it into a queryable graph format
   - Ability to add rules to graphs (has one of type, has many of type)
+    - Change state of card when added to tree
   - Define new types that can be added to cards (show up under labels and status)

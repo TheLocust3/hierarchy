@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { ITree, Data } from '../models/tree/tree-base';
 import Leaf from '../models/tree/leaf';
 import {
@@ -31,7 +33,7 @@ export interface TreeState {
 }
 
 const defaultTreeState: TreeState = {
-  tree: new Leaf('', Data.empty()),
+  tree: new Leaf('', Data.empty(), moment().valueOf()),
   trees: [],
   specialTrees: [],
   isReady: false,
@@ -53,7 +55,9 @@ export function treeReducer(
     case RECEIVE_ALL_TREES:
       return {
         ...state,
-        trees: action.payload,
+        trees: action.payload
+          .slice()
+          .sort((tree1: ITree, tree2: ITree) => tree1.createdAt - tree2.createdAt),
         isReady: true
       };
     case RECEIVE_ALL_SPECIAL_TREES:

@@ -1,5 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import uuid from 'uuid/v4';
+import moment from 'moment';
 
 import { AppState } from '../types';
 import { TreeOverlay } from '../reducers/tree-reducer';
@@ -234,7 +235,7 @@ export const createRootLeaf = (
   type: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    const leaf = new Leaf(uuid(), Data.defaultWithType(type));
+    const leaf = new Leaf(uuid(), Data.defaultWithType(type), moment().valueOf());
     dispatch(InternalActions.createLeaf('', leaf));
 
     const node = await TreeApi.createLeaf('', leaf.data);
@@ -246,7 +247,7 @@ export const createLeaf = (
   parentId: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    const leaf = new Leaf(uuid(), Data.default());
+    const leaf = new Leaf(uuid(), Data.default(), moment().valueOf());
     dispatch(InternalActions.createLeaf(parentId, leaf));
 
     const node = await TreeApi.createLeaf(parentId, leaf.data);
