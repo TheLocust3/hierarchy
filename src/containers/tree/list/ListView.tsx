@@ -55,9 +55,9 @@ class ListView extends React.Component<ListViewProps> {
 
         <ColumnContainer>
           {list.map((column) => (
-            <span key={column.id}>
+            <div key={column.id}>
               <ListColumn column={column} />
-            </span>
+            </div>
           ))}
         </ColumnContainer>
       </div>
