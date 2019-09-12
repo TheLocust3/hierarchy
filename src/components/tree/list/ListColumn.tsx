@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { colors } from '../../../constants';
 import Column from '../../../models/card/column';
 import Card from '../../../models/card/card';
+import { ITree } from '../../../models/tree/tree-base';
 
 import CardComponent from './CardComponent';
 
@@ -30,19 +31,26 @@ const ColumnTitle = styled('h3')``;
 
 interface ListColumnProps {
   column: Column;
+  specialTrees: ReadonlyArray<ITree>;
 }
 
 class ListColumn extends React.Component<ListColumnProps> {
   render() {
-    const { column } = this.props;
+    const { column, specialTrees } = this.props;
 
     return (
       <ColumnContainer>
         <ColumnTitle>{column.name}</ColumnTitle>
 
-        {column.cards.map((card: Card, i) => (
+        {column.cards.map((card: Card) => (
           <div key={card.id}>
-            <CardComponent card={card} />
+            <CardComponent
+              card={card}
+              labels={specialTrees.filter(
+                (tree: ITree) =>
+                  tree.data.type === 'label' && tree.getNodeById(card.id) !== undefined
+              )}
+            />
           </div>
         ))}
       </ColumnContainer>

@@ -6,8 +6,10 @@ import styled from '@emotion/styled';
 import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
 import { getCardsRootedAt } from '../../../actions/list-actions';
+import { getAllLabelTrees } from '../../../actions/tree-actions';
 import Column from '../../../models/card/column';
 import ListColumn from '../../../components/tree/list/ListColumn';
+import { ITree } from '../../../models/tree/tree-base';
 
 const ColumnContainer = styled('div')`
   display: flex;
@@ -22,6 +24,8 @@ interface ListViewParams extends RouterParams {
 interface ListViewProps {
   isReady: boolean;
   list: ReadonlyArray<Column>;
+  areTreesReady: boolean;
+  specialTrees: ReadonlyArray<ITree>;
   dispatch: Dispatch;
   match: RouterMatch<ListViewParams>;
 }
@@ -29,6 +33,7 @@ interface ListViewProps {
 class ListView extends React.Component<ListViewProps> {
   componentDidMount() {
     this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
+    this.props.dispatch(getAllLabelTrees());
   }
 
   render() {
@@ -45,9 +50,9 @@ class ListView extends React.Component<ListViewProps> {
   }
 
   private renderInner() {
-    const { isReady, list } = this.props;
+    const { isReady, list, areTreesReady, specialTrees } = this.props;
 
-    if (!isReady) return;
+    if (!isReady || !areTreesReady) return;
 
     return (
       <div>
@@ -56,7 +61,7 @@ class ListView extends React.Component<ListViewProps> {
         <ColumnContainer>
           {list.map((column) => (
             <div key={column.id}>
-              <ListColumn column={column} />
+              <ListColumn column={column} specialTrees={specialTrees} />
             </div>
           ))}
         </ColumnContainer>
@@ -67,7 +72,9 @@ class ListView extends React.Component<ListViewProps> {
 
 const mapStateToProps = (state: AppState) => ({
   list: state.list.list,
-  isReady: state.list.isReady
+  isReady: state.list.isReady,
+  specialTrees: state.tree.specialTrees,
+  areTreesReady: state.tree.isReady
 });
 
 export default connect(mapStateToProps)(ListView);

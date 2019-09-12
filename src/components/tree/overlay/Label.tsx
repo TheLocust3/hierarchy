@@ -4,7 +4,11 @@ import styled from '@emotion/styled';
 import { ITree } from '../../../models/tree/tree-base';
 import { colors } from '../../../constants';
 
-const LabelContainer = styled('div')`
+interface LabelContainerProps {
+  clickable: boolean;
+}
+
+const LabelContainer = styled('div')<LabelContainerProps>`
   display: inline-block;
 
   padding-top: 2px;
@@ -18,23 +22,29 @@ const LabelContainer = styled('div')`
   transition: background-color 400ms, white 400ms;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props: LabelContainerProps) => (props.clickable ? 'pointer' : 'initial')};
 
-    color: white;
-    background-color: ${colors.deleteRed};
+    color: ${(props: LabelContainerProps) => (props.clickable ? 'white' : 'initial')};
+    background-color: ${(props: LabelContainerProps) =>
+      props.clickable ? colors.deleteRed : 'initial'};
   }
 `;
 
 interface LabelProps {
   labelTree: ITree;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 class Label extends React.Component<LabelProps> {
   render() {
-    const { labelTree, onClick } = this.props;
+    const { labelTree } = this.props;
+    const onClick = this.props.onClick === undefined ? () => {} : this.props.onClick;
 
-    return <LabelContainer onClick={onClick}>{labelTree.data.title}</LabelContainer>;
+    return (
+      <LabelContainer clickable={this.props.onClick !== undefined} onClick={onClick}>
+        {labelTree.data.title}
+      </LabelContainer>
+    );
   }
 }
 

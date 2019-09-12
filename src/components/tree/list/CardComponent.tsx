@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
 import Card from '../../../models/card/card';
+import { ITree } from '../../../models/tree/tree-base';
+
+import Label from '../overlay/Label';
+import SideMargin from '../../common/SideMargin';
+import Spacer from '../../common/Spacer';
 
 const CardContainer = styled('div')`
   width: 250px;
@@ -20,15 +25,33 @@ const CardContainer = styled('div')`
   background-color: white;
 `;
 
+const CardHeader = styled('h4')``;
+
 interface CardProps {
   card: Card;
+  labels: ReadonlyArray<ITree>;
 }
 
 class CardComponent extends React.Component<CardProps> {
   render() {
-    const { card } = this.props;
+    const { card, labels } = this.props;
 
-    return <CardContainer>{card.data.title}</CardContainer>;
+    return (
+      <CardContainer>
+        {labels.map((labelTree: ITree) => {
+          return (
+            <div key={labelTree.id}>
+              <Label labelTree={labelTree} />
+            </div>
+          );
+        })}
+        <Spacer space="1%" />
+
+        <SideMargin margin="3%">
+          <CardHeader>{card.data.title}</CardHeader>
+        </SideMargin>
+      </CardContainer>
+    );
   }
 }
 
