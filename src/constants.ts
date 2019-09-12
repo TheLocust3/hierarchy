@@ -8,15 +8,22 @@ export const colors = {
 
   actionHover: '#e0e0e0',
   actionShadow: '#bdbdbd',
+
   deleteRed: '#f44336',
   deleteRedHover: '#d32f2f',
   deleteRedActive: '#ab000d',
+
   viewBlue: '#64b5f6',
   viewBlueHover: '#42a5f5',
   viewBlueActive: '#2286c3',
+
   addGreen: '#a5d6a7',
   addGreenHover: '#81c784',
   addGreenActive: '#66bb6a',
+
+  listPurple: '#ba68c8',
+  listPurpleHover: '#ab47bc',
+  listPurpleActive: '#9c27b0',
 
   nodeBackground: '#fafafa',
   nodeBackgroundHover: '#eeeeee',

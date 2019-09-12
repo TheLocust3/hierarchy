@@ -2,7 +2,6 @@ import moment from 'moment';
 
 import { Data, ITree } from '../tree/tree-base';
 import { CardJSON } from '../json/list-json';
-import Leaf from '../tree/leaf';
 
 export default class Card {
   private _id: string = '';

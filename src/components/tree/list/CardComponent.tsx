@@ -71,7 +71,7 @@ class CardComponent extends React.Component<CardProps> {
 
     return (
       <CardContainer onClick={onClick}>
-        <CardInner>
+        <CardInner draggable={true}>
           {labels.map((labelTree: ITree) => {
             return (
               <LabelContainer key={labelTree.id}>

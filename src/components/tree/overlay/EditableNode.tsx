@@ -162,6 +162,16 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
             <Spacer space="10%" />
 
             <Button
+              color={colors.listPurple}
+              hoverColor={colors.listPurpleHover}
+              activeColor={colors.listPurpleActive}
+              textColor="white"
+              onClick={(event: any) => (window.location.href = `/tree/${id}/list`)}>
+              List View
+            </Button>
+            <Spacer space="10%" />
+
+            <Button
               color={colors.deleteRed}
               hoverColor={colors.deleteRedHover}
               activeColor={colors.deleteRedActive}
