@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 import { colors } from '../../../constants';
 import Column from '../../../models/card/column';
 import Card from '../../../models/card/card';
-import { ITree } from '../../../models/tree/tree-base';
+import { ITree, Data } from '../../../models/tree/tree-base';
+import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import CardComponent from './CardComponent';
 
@@ -32,11 +33,17 @@ const ColumnTitle = styled('h3')``;
 interface ListColumnProps {
   column: Column;
   specialTrees: ReadonlyArray<ITree>;
+  overlay: TreeOverlay;
+  setOverlay: (overlay: TreeOverlay) => void;
+  updateNode: (id: string, data: Data) => void;
+  deleteNode: (id: string) => void;
+  createRelationship: (parentId: string, childId: string) => void;
+  deleteRelationship: (parentId: string, childId: string) => void;
 }
 
 class ListColumn extends React.Component<ListColumnProps> {
   render() {
-    const { column, specialTrees } = this.props;
+    const { column, specialTrees, overlay, setOverlay } = this.props;
 
     return (
       <ColumnContainer>
@@ -50,6 +57,19 @@ class ListColumn extends React.Component<ListColumnProps> {
                 (tree: ITree) =>
                   tree.data.type === 'label' && tree.getNodeById(card.id) !== undefined
               )}
+              onClick={(event: any) => {
+                if (!overlay.open) {
+                  setOverlay({ id: card.id, open: true });
+                  event.stopPropagation();
+                }
+              }}
+              overlay={overlay}
+              setOverlay={setOverlay}
+              specialTrees={specialTrees}
+              updateNode={this.props.updateNode}
+              deleteNode={this.props.deleteNode}
+              createRelationship={this.props.createRelationship}
+              deleteRelationship={this.props.deleteRelationship}
             />
           </div>
         ))}
