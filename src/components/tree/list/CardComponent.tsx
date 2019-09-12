@@ -38,6 +38,10 @@ const CardInner = styled('div')`
 
 const CardHeader = styled('h4')``;
 
+const LabelContainer = styled('span')`
+  margin-right: 5px;
+`;
+
 interface CardProps {
   card: Card;
   labels: ReadonlyArray<ITree>;
@@ -70,9 +74,9 @@ class CardComponent extends React.Component<CardProps> {
         <CardInner>
           {labels.map((labelTree: ITree) => {
             return (
-              <div key={labelTree.id}>
+              <LabelContainer key={labelTree.id}>
                 <Label labelTree={labelTree} />
-              </div>
+              </LabelContainer>
             );
           })}
           <Spacer space="1%" />

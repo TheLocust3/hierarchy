@@ -1,7 +1,8 @@
 import moment from 'moment';
 
-import { Data } from '../tree/tree-base';
+import { Data, ITree } from '../tree/tree-base';
 import { CardJSON } from '../json/list-json';
+import Leaf from '../tree/leaf';
 
 export default class Card {
   private _id: string = '';
@@ -10,6 +11,10 @@ export default class Card {
 
   static fromJSON(json: CardJSON) {
     return new Card(json.id, Data.fromJSON(json.data), json.createdAt);
+  }
+
+  static fromITree(tree: ITree) {
+    return new Card(tree.id, tree.data, tree.createdAt);
   }
 
   constructor(id: string, data: Data, createdAt: number) {

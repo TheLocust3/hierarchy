@@ -7,6 +7,7 @@ import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
 import { getCardsRootedAt } from '../../../actions/list-actions';
 import {
+  getTree,
   getAllLabelTrees,
   setOverlay,
   updateNode,
@@ -43,6 +44,7 @@ interface ListViewProps {
 class ListView extends React.Component<ListViewProps> {
   componentDidMount() {
     this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
+    this.props.dispatch(getTree(this.props.match.params.id));
     this.props.dispatch(getAllLabelTrees());
   }
 

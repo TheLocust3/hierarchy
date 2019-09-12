@@ -40,4 +40,26 @@ export default class Column {
   get createdAt() {
     return this._createdAt;
   }
+
+  addCard(card: Card): Column {
+    return new Column(this.id, this.name, this.cards.concat(card), this.createdAt);
+  }
+
+  replaceCardById(id: string, card: Card): Column {
+    return new Column(
+      this.id,
+      this.name,
+      this.cards.map((c: Card) => (c.id === id ? card : c)),
+      this.createdAt
+    );
+  }
+
+  deleteCardById(id: string): Column {
+    return new Column(
+      this.id,
+      this.name,
+      this.cards.filter((card) => card.id !== id),
+      this.createdAt
+    );
+  }
 }
