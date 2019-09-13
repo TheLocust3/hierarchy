@@ -1,6 +1,7 @@
 export interface DataJSON {
   title: string;
   body: string;
+  dueOn?: number;
   type: string;
 }
 

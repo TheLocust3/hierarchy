@@ -22,4 +22,13 @@ injectGlobal`
         margin: 0;
         font-size: 14px;
     }
+
+    .react-datetime-picker__wrapper {
+        border-radius: 5px;
+
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
 `;

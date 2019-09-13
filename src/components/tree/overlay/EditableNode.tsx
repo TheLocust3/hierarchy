@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import DateTimePicker from 'react-datetime-picker';
 
 import { colors, fonts } from '../../../constants';
 import { Data, ITree } from '../../../models/tree/tree-base';
@@ -8,6 +9,7 @@ import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
 import Button from '../../common/Button';
 import Spacer from '../../common/Spacer';
+import SideMargin from '../../common/SideMargin';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
 import LabelSection from './LabelSection';
@@ -74,13 +76,18 @@ interface EditableNodeProps {
 interface EditableNodeState {
   labelDropdownShown: boolean;
   statusDropdownShown: boolean;
+  dueBy: Date;
 }
 
 class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
   constructor(props: EditableNodeProps) {
     super(props);
 
-    this.state = { labelDropdownShown: false, statusDropdownShown: false };
+    this.state = {
+      labelDropdownShown: false,
+      statusDropdownShown: false,
+      dueBy: new Date()
+    };
   }
 
   render() {
@@ -130,6 +137,19 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
             specialTrees={specialTrees}
             setStatus={setStatus}
           />
+          <br />
+
+          <SideMargin margin="5%">
+            <DateTimePicker
+              onChange={(date: Date) =>
+                this.props.updateNode({ ...this.props.data, dueOn: date.valueOf() })
+              }
+              value={data.dueOn === undefined ? new Date() : new Date(data.dueOn)}
+              clearIcon={null}
+              calendarIcon={null}
+              disableClock={true}
+            />
+          </SideMargin>
 
           <Spacer space="5%" />
 

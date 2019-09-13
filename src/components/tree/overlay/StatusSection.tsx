@@ -46,6 +46,7 @@ class StatusSection extends React.Component<StatusSectionProps> {
           <LabelDropdown
             labels={this.props.specialTrees
               .filter((tree: ITree) => tree.data.type === 'status')
+              .sort((tree1, tree2) => tree1.createdAt - tree2.createdAt)
               .map((tree: ITree) => {
                 return { id: tree.id, name: tree.data.title };
               })}

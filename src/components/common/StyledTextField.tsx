@@ -6,11 +6,11 @@ type TextFieldProps = {
   fontSize: string;
   fontFamily: string;
   backgroundColor: string;
-}
+};
 
 export const StyledTextField = styled('input')<TextFieldProps>`
   width: 100%;
-  
+
   border: none;
 
   background-color: ${(props: TextFieldProps) => props.backgroundColor};
@@ -25,8 +25,8 @@ export const StyledTextField = styled('input')<TextFieldProps>`
 
 export const StyledTextArea = styled('textarea')<TextFieldProps>`
   width: 100%;
-  height: 300px;
-  
+  height: 200px;
+
   border: none;
   resize: none;
 
