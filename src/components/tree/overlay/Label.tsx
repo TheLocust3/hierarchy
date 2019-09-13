@@ -22,7 +22,7 @@ const LabelContainer = styled('div')<LabelContainerProps>`
   transition: background-color 400ms, white 400ms;
 
   &:hover {
-    cursor: ${(props: LabelContainerProps) => (props.clickable ? 'pointer' : 'initial')};
+    cursor: ${(props: LabelContainerProps) => (props.clickable ? 'pointer' : 'inherit')};
 
     color: ${(props: LabelContainerProps) => (props.clickable ? 'white' : 'initial')};
     background-color: ${(props: LabelContainerProps) =>

@@ -41,6 +41,10 @@ export default class Column {
     return this._createdAt;
   }
 
+  getCardById(id: string): Card | undefined {
+    return this.cards.find((card: Card) => card.id === id);
+  }
+
   addCard(card: Card): Column {
     return new Column(this.id, this.name, this.cards.concat(card), this.createdAt);
   }

@@ -157,7 +157,7 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
               activeColor={colors.viewBlueActive}
               textColor="white"
               onClick={(event: any) => (window.location.href = `/tree/${id}`)}>
-              Show
+              Tree View
             </Button>
             <Spacer space="10%" />
 
