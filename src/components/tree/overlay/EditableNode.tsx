@@ -140,15 +140,19 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
           <br />
 
           <SideMargin margin="5%">
-            <DateTimePicker
-              onChange={(date: Date) =>
-                this.props.updateNode({ ...this.props.data, dueOn: date.valueOf() })
-              }
-              value={data.dueOn === undefined ? new Date() : new Date(data.dueOn)}
-              clearIcon={null}
-              calendarIcon={null}
-              disableClock={true}
-            />
+            Due By:
+            <Spacer space="2.5%" />
+            <SideMargin margin="2.5%">
+              <DateTimePicker
+                onChange={(date: Date) =>
+                  this.props.updateNode({ ...this.props.data, dueOn: date.valueOf() })
+                }
+                value={data.dueOn === undefined ? null : new Date(data.dueOn)}
+                clearIcon={null}
+                calendarIcon={null}
+                disableClock={true}
+              />
+            </SideMargin>
           </SideMargin>
 
           <Spacer space="5%" />

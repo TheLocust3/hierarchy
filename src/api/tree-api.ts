@@ -1,39 +1,29 @@
 import { API_ENDPOINT } from '../constants';
-import { ITree, Data } from '../models/tree/tree-base';
+import { ITree, Data, Node } from '../models/tree/tree-base';
 import Tree from '../models/tree/tree';
-import { TreeResponse, ListOfTreesResponse, TreeSuccessResponse } from '../models/json/tree-json';
-import Leaf from '../models/tree/leaf';
+import {
+  TreeResponse,
+  ListOfNodesResponse,
+  TreeSuccessResponse,
+  NodeResponse
+} from '../models/json/tree-json';
 
 const TreeApi = {
-  async getAllTrees(): Promise<ReadonlyArray<ITree>> {
+  async getAllTrees(): Promise<ReadonlyArray<Node>> {
     const response = await fetch(`${API_ENDPOINT}/tree`, { method: 'GET' });
-    const json: ListOfTreesResponse = await response.json();
 
-    return json.trees.map((tree) => Tree.fromJSON(tree));
-  },
-
-  async getAllSpecialTrees(): Promise<ReadonlyArray<ITree>> {
-    const response = await fetch(`${API_ENDPOINT}/tree/special`, { method: 'GET' });
-    const json: ListOfTreesResponse = await response.json();
-
-    return json.trees.map((tree) => Tree.fromJSON(tree));
+    const json: ListOfNodesResponse = await response.json();
+    return json.nodes.map((node) => Node.fromJSON(node));
   },
 
   async getTree(id: string): Promise<ITree> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, { method: 'GET' });
-    const json: TreeResponse = await response.json();
 
+    const json: TreeResponse = await response.json();
     return Tree.fromJSON(json.tree);
   },
 
-  async getTreeAsList(rootId: string): Promise<ReadonlyArray<Leaf>> {
-    const response = await fetch(`${API_ENDPOINT}/tree/${rootId}/list`, { method: 'GET' });
-    const json: ListOfTreesResponse = await response.json();
-
-    return json.trees.map((leaf) => Leaf.fromJSON(leaf));
-  },
-
-  async createLeaf(parentId: string, data: Data): Promise<ITree> {
+  async createLeaf(parentId: string, data: Data): Promise<Node> {
     let payload: any = { data: data };
     if (parentId) {
       payload.parentId = parentId;
@@ -45,21 +35,19 @@ const TreeApi = {
       body: JSON.stringify(payload)
     });
 
-    const json: TreeResponse = await response.json();
-
-    return Tree.fromJSONInner(json.tree);
+    const json: NodeResponse = await response.json();
+    return Node.fromJSON(json.node);
   },
 
-  async updateTree(id: string, data: Data): Promise<ITree> {
+  async updateTree(id: string, data: Data): Promise<Node> {
     const response = await fetch(`${API_ENDPOINT}/tree/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: data })
     });
 
-    const json: TreeResponse = await response.json();
-
-    return Tree.fromJSONInner(json.tree);
+    const json: NodeResponse = await response.json();
+    return Node.fromJSON(json.node);
   },
 
   async deleteTree(id: string): Promise<string> {
@@ -69,11 +57,11 @@ const TreeApi = {
     return json.success;
   },
 
-  async createRelationship(parentId: string, childId: string): Promise<ITree> {
+  async createRelationship(parentId: string, childId: string): Promise<Node> {
     const response = await fetch(`${API_ENDPOINT}/tree/${parentId}/${childId}`, { method: 'POST' });
-    const json: TreeResponse = await response.json();
 
-    return Tree.fromJSONInner(json.tree);
+    const json: NodeResponse = await response.json();
+    return Node.fromJSON(json.node);
   },
 
   async deleteRelationship(parentId: string, childId: string): Promise<string> {

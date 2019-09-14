@@ -1,36 +1,26 @@
-import moment from 'moment';
-
-import { Data, ITree } from '../tree/tree-base';
+import { Data, Node } from '../tree/tree-base';
 import { CardJSON } from '../json/list-json';
 
 export default class Card {
-  private _id: string = '';
-  private _data: Data = Data.empty();
-  private _createdAt: number = moment().valueOf();
+  private _node: Node = Node.empty();
 
   static fromJSON(json: CardJSON) {
-    return new Card(json.id, Data.fromJSON(json.data), json.createdAt);
+    return new Card(new Node(json.id, Data.fromJSON(json.data), json.createdAt));
   }
 
-  static fromITree(tree: ITree) {
-    return new Card(tree.id, tree.data, tree.createdAt);
-  }
-
-  constructor(id: string, data: Data, createdAt: number) {
-    this._id = id;
-    this._data = data;
-    this._createdAt = createdAt;
+  constructor(node: Node) {
+    this._node = node;
   }
 
   get id() {
-    return this._id;
+    return this._node.id;
   }
 
   get data() {
-    return this._data;
+    return this._node.data;
   }
 
   get createdAt() {
-    return this._createdAt;
+    return this._node.createdAt;
   }
 }

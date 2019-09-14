@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import {
   ListActionTypes,
   REQUEST_LIST_ROOTED_AT,
@@ -13,6 +11,7 @@ import {
   CREATE_RELATIONSHIP,
   DELETE_RELATIONSHIP
 } from '../actions/tree-actions';
+import { Node } from '../models/tree/tree-base';
 import Column from '../models/card/column';
 import Card from '../models/card/card';
 
@@ -48,7 +47,7 @@ export function listReducer(
         isReady: true
       };
     case UPDATE_NODE:
-      const newCard = new Card(action.id, action.data, moment().valueOf());
+      const newCard = new Card(Node.empty());
       return {
         ...state,
         list: state.list.map((column: Column) => column.replaceCardById(action.id, newCard)),
@@ -64,11 +63,9 @@ export function listReducer(
       return {
         ...state,
         list: state.list.map((column: Column) =>
-          column.replaceCardById(action.id, Card.fromITree(action.node))
+          column.replaceCardById(action.id, new Card(action.node))
         ),
-        cards: state.cards.map((card) =>
-          card.id === action.id ? Card.fromITree(action.node) : card
-        )
+        cards: state.cards.map((card) => (card.id === action.id ? new Card(action.node) : card))
       };
     case CREATE_RELATIONSHIP:
       const card = state.cards.find((card) => card.id === action.childId);

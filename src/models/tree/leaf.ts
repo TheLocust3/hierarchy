@@ -1,39 +1,28 @@
-import moment from 'moment';
-
-import { Data, ITree } from './tree-base';
+import { Data, ITree, Node } from './tree-base';
 import Tree from './tree';
-import { TreeJSON } from '../json/tree-json';
 
 export default class Leaf implements ITree {
-  private _id: string = '';
-  private _data: Data = Data.empty();
-  private _nodes: ReadonlyArray<ITree> = [];
-  private _createdAt: number = moment().valueOf();
+  private _node: Node = Node.empty();
+  private _children: ReadonlyArray<ITree> = [];
 
-  static fromJSON(json: TreeJSON) {
-    return new Leaf(json.id, Data.fromJSON(json.data), json.createdAt);
-  }
-
-  constructor(id: string, data: Data, createdAt: number) {
-    this._id = id;
-    this._data = data;
-    this._createdAt = createdAt;
+  constructor(node: Node) {
+    this._node = node;
   }
 
   get id() {
-    return this._id;
+    return this._node.id;
   }
 
   get data() {
-    return this._data;
+    return this._node.data;
   }
 
-  get nodes() {
-    return this._nodes;
+  get children() {
+    return this._children;
   }
 
   get createdAt() {
-    return this._createdAt;
+    return this._node.createdAt;
   }
 
   isEmpty() {
@@ -50,28 +39,28 @@ export default class Leaf implements ITree {
     return undefined;
   }
 
-  insertNodeByParentId(parentId: string, tree: ITree): ITree {
+  insertITreeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
-      return new Tree(this.id, this.data, this.nodes.concat(tree), this.createdAt);
+      return new Tree(this._node, this.children.concat(tree));
     }
 
-    return new Leaf(this.id, this.data, this.createdAt);
+    return new Leaf(this._node);
   }
 
-  replaceNodeById(id: string, node: ITree): ITree {
+  replaceNodeById(id: string, node: Node): ITree {
     if (this.id === id) {
-      return node;
+      return new Leaf(node);
     }
 
-    return new Leaf(this.id, this.data, this.createdAt);
+    return new Leaf(this._node);
   }
 
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
-      return new Leaf(this.id, data, this.createdAt);
+      return new Leaf(this._node);
     }
 
-    return new Leaf(this.id, this.data, this.createdAt);
+    return new Leaf(this._node);
   }
 
   deleteNodeById(id: string): ITree {

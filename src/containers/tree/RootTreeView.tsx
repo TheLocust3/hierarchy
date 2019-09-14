@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { AppState, Dispatch } from '../../types';
-import { ITree } from '../../models/tree/tree-base';
+import { Node } from '../../models/tree/tree-base';
 import { getAllTrees, createRootLeaf } from '../../actions/tree-actions';
 
 import AddButton from '../../components/tree/AddButton';
@@ -32,7 +32,7 @@ const AddButtonContainer = styled('div')`
 `;
 
 interface RootTreeViewProps {
-  trees: ReadonlyArray<ITree>;
+  trees: ReadonlyArray<Node>;
   isReady: boolean;
   dispatch: Dispatch;
 }
@@ -113,7 +113,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
     );
   }
 
-  private renderTreeList(trees: ReadonlyArray<ITree>) {
+  private renderTreeList(trees: ReadonlyArray<Node>) {
     if (trees.length === 0) return <TreeList>None</TreeList>;
 
     return (
@@ -131,7 +131,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  trees: state.tree.trees,
+  trees: state.tree.nodes,
   isReady: state.tree.isReady
 });
 

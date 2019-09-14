@@ -1,4 +1,6 @@
-import { DataJSON } from '../json/tree-json';
+import moment from 'moment';
+
+import { DataJSON, NodeJSON } from '../json/tree-json';
 
 export class Data {
   title: string = '';
@@ -30,18 +32,50 @@ export class Data {
   }
 }
 
+export class Node {
+  private _id: string = '';
+  private _data: Data = Data.empty();
+  private _createdAt: number = moment().valueOf();
+
+  static fromJSON(json: NodeJSON) {
+    return new Node(json.id, json.data, json.createdAt);
+  }
+
+  static empty() {
+    return new Node('', Data.empty(), moment().valueOf());
+  }
+
+  constructor(id: string, data: Data, createdAt: number) {
+    this._id = id;
+    this._data = data;
+    this._createdAt = createdAt;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  get createdAt() {
+    return this._createdAt;
+  }
+}
+
 export interface ITree {
   id: string;
   data: Data;
-  nodes: ReadonlyArray<ITree>;
+  children: ReadonlyArray<ITree>;
   createdAt: number;
 
   isEmpty: () => boolean;
   containsITree: (id: string) => boolean;
 
   getNodeById: (id: string) => ITree | undefined;
-  insertNodeByParentId: (parentId: string, tree: ITree) => ITree;
-  replaceNodeById: (id: string, node: ITree) => ITree;
+  insertITreeByParentId: (parentId: string, tree: ITree) => ITree;
+  replaceNodeById: (id: string, node: Node) => ITree;
   updateNodeById: (id: string, data: Data) => ITree;
   deleteNodeById: (id: string) => ITree;
 }

@@ -5,16 +5,33 @@ export interface DataJSON {
   type: string;
 }
 
-export interface TreeJSON {
+export interface NodeJSON {
   id: string;
   data: DataJSON;
-  nodes?: ReadonlyArray<TreeJSON>;
-  type: string;
   createdAt: number;
+}
+
+export interface AdjacencyEntry {
+  parentId: string;
+  childIds: ReadonlyArray<string>;
+}
+
+export interface TreeJSON {
+  rootNodeId: string;
+  nodes: ReadonlyArray<NodeJSON>;
+  adjacencyList: ReadonlyArray<AdjacencyEntry>;
 }
 
 export interface TreeResponse {
   tree: TreeJSON;
+}
+
+export interface NodeResponse {
+  node: NodeJSON;
+}
+
+export interface ListOfNodesResponse {
+  nodes: ReadonlyArray<NodeJSON>;
 }
 
 export interface ListOfTreesResponse {

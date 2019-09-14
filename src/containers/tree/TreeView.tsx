@@ -89,7 +89,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
           id={this.props.tree.id}
           viewport={this.state.viewport}
           data={this.props.tree.data}
-          nodes={this.props.tree.nodes}
+          nodes={this.props.tree.children}
           specialTrees={this.props.specialTrees}
           overlay={this.props.overlay}
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}

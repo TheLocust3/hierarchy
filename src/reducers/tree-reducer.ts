@@ -1,6 +1,4 @@
-import moment from 'moment';
-
-import { ITree, Data } from '../models/tree/tree-base';
+import { ITree, Node } from '../models/tree/tree-base';
 import Leaf from '../models/tree/leaf';
 import {
   TreeActionTypes,
@@ -26,15 +24,15 @@ export interface TreeOverlay {
 
 export interface TreeState {
   tree: ITree;
-  trees: ReadonlyArray<ITree>;
+  nodes: ReadonlyArray<Node>;
   specialTrees: ReadonlyArray<ITree>;
   isReady: boolean;
   overlay: TreeOverlay;
 }
 
 const defaultTreeState: TreeState = {
-  tree: new Leaf('', Data.empty(), moment().valueOf()),
-  trees: [],
+  tree: new Leaf(Node.empty()),
+  nodes: [],
   specialTrees: [],
   isReady: false,
   overlay: { id: '', open: false }
@@ -55,9 +53,9 @@ export function treeReducer(
     case RECEIVE_ALL_TREES:
       return {
         ...state,
-        trees: action.payload
+        nodes: action.payload
           .slice()
-          .sort((tree1: ITree, tree2: ITree) => tree1.createdAt - tree2.createdAt),
+          .sort((tree1: Node, tree2: Node) => tree1.createdAt - tree2.createdAt),
         isReady: true
       };
     case RECEIVE_ALL_SPECIAL_TREES:
@@ -80,7 +78,7 @@ export function treeReducer(
     case CREATE_LEAF:
       return {
         ...state,
-        tree: state.tree.insertNodeByParentId(action.parentId, action.leaf)
+        tree: state.tree.insertITreeByParentId(action.parentId, new Leaf(action.node))
       };
     case UPDATE_NODE:
       return {
@@ -103,18 +101,14 @@ export function treeReducer(
 
       return {
         ...state,
-        tree: state.tree.insertNodeByParentId(action.parentId, childNode),
-        trees: state.trees.map((tree) => tree.insertNodeByParentId(action.parentId, childNode)),
+        tree: state.tree.insertITreeByParentId(action.parentId, childNode),
         specialTrees: state.specialTrees.map((tree) =>
-          tree.insertNodeByParentId(action.parentId, childNode)
+          tree.insertITreeByParentId(action.parentId, childNode)
         )
       };
     case DELETE_RELATIONSHIP:
       return {
         ...state,
-        trees: state.trees.map((tree) =>
-          tree.id === action.parentId ? tree.deleteNodeById(action.childId) : tree
-        ),
         specialTrees: state.specialTrees.map((tree) =>
           tree.id === action.parentId ? tree.deleteNodeById(action.childId) : tree
         )

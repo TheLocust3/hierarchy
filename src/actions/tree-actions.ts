@@ -4,9 +4,8 @@ import moment from 'moment';
 
 import { AppState } from '../types';
 import { TreeOverlay } from '../reducers/tree-reducer';
-import { ITree, Data } from '../models/tree/tree-base';
+import { ITree, Data, Node } from '../models/tree/tree-base';
 import TreeApi from '../api/tree-api';
-import Leaf from '../models/tree/leaf';
 
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
@@ -33,7 +32,7 @@ interface RequestAllTreesAction {
 
 interface ReceiveAllTreesAction {
   type: typeof RECEIVE_ALL_TREES;
-  payload: ReadonlyArray<ITree>;
+  payload: ReadonlyArray<Node>;
 }
 
 interface RequestAllSpecialTreesAction {
@@ -62,7 +61,7 @@ interface SetOverlayAction {
 interface CreateLeafAction {
   type: typeof CREATE_LEAF;
   parentId: string;
-  leaf: Leaf;
+  node: Node;
 }
 
 interface UpdateNodeAction {
@@ -79,7 +78,7 @@ interface DeleteNodeAction {
 interface ReplaceNodeAction {
   type: typeof REPLACE_NODE;
   id: string;
-  node: ITree;
+  node: Node;
 }
 
 interface CreateRelationshipAction {
@@ -116,10 +115,10 @@ const InternalActions = {
     };
   },
 
-  receiveAllTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
+  receiveAllTrees(nodes: ReadonlyArray<Node>): TreeActionTypes {
     return {
       type: RECEIVE_ALL_TREES,
-      payload: trees
+      payload: nodes
     };
   },
 
@@ -149,11 +148,11 @@ const InternalActions = {
     };
   },
 
-  createLeaf(parentId: string, leaf: Leaf): TreeActionTypes {
+  createLeaf(parentId: string, node: Node): TreeActionTypes {
     return {
       type: CREATE_LEAF,
       parentId: parentId,
-      leaf: leaf
+      node: node
     };
   },
 
@@ -172,7 +171,7 @@ const InternalActions = {
     };
   },
 
-  replaceNodeById(id: string, node: ITree): TreeActionTypes {
+  replaceNodeById(id: string, node: Node): TreeActionTypes {
     return {
       type: REPLACE_NODE,
       id: id,
@@ -217,8 +216,7 @@ export const getAllLabelTrees = (): ThunkAction<void, AppState, null, TreeAction
   return async (dispatch) => {
     dispatch(InternalActions.requestAllSpecialTrees());
 
-    const trees = await TreeApi.getAllSpecialTrees();
-    dispatch(InternalActions.receiveAllSpecialTrees(trees));
+    dispatch(InternalActions.receiveAllSpecialTrees([]));
   };
 };
 
@@ -235,11 +233,11 @@ export const createRootLeaf = (
   type: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    const leaf = new Leaf(uuid(), Data.defaultWithType(type), moment().valueOf());
-    dispatch(InternalActions.createLeaf('', leaf));
+    const node = new Node(uuid(), Data.defaultWithType(type), moment().valueOf());
+    dispatch(InternalActions.createLeaf('', node));
 
-    const node = await TreeApi.createLeaf('', leaf.data);
-    dispatch(InternalActions.replaceNodeById(leaf.id, node));
+    const responseNode = await TreeApi.createLeaf('', node.data);
+    dispatch(InternalActions.replaceNodeById(node.id, responseNode));
   };
 };
 
@@ -247,11 +245,11 @@ export const createLeaf = (
   parentId: string
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    const leaf = new Leaf(uuid(), Data.default(), moment().valueOf());
-    dispatch(InternalActions.createLeaf(parentId, leaf));
+    const node = new Node(uuid(), Data.default(), moment().valueOf());
+    dispatch(InternalActions.createLeaf(parentId, node));
 
-    const node = await TreeApi.createLeaf(parentId, leaf.data);
-    dispatch(InternalActions.replaceNodeById(leaf.id, node));
+    const responseNode = await TreeApi.createLeaf(parentId, node.data);
+    dispatch(InternalActions.replaceNodeById(node.id, responseNode));
   };
 };
 

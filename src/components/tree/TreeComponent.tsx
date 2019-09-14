@@ -111,7 +111,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
             <TreeComponent
               id={node.id}
               data={node.data}
-              nodes={node.nodes}
+              nodes={node.children}
               specialTrees={this.props.specialTrees}
               overlay={this.props.overlay}
               parentX={this.state.x}
