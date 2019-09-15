@@ -9,13 +9,13 @@ import Status from '../../../models/status';
 
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
-import Button from '../../common/Button';
 import Spacer from '../../common/Spacer';
 import SideMargin from '../../common/SideMargin';
 import EditableTextField from '../../common/EditableTextField';
 import EditableTextArea from '../../common/EditableTextArea';
 import LabelSection from './LabelSection';
 import StatusSection from './StatusSection';
+import ActionColumn from './ActionColumn';
 
 const Container = styled(ColumnLayout)`
   height: 500px;
@@ -34,17 +34,6 @@ const LeftColumn = styled('div')`
   margin-right: 5%;
 `;
 
-const RightColumn = styled('div')`
-  width: 20%;
-
-  margin-top: 5%;
-  margin-bottom: 5%;
-
-  padding-left: 5%;
-
-  border-left: 1px solid ${colors.lightBlack};
-`;
-
 const Title = styled('h1')`
   margin-left: 2.5%;
   margin-right: 2.5%;
@@ -53,14 +42,6 @@ const Title = styled('h1')`
 const Body = styled('div')`
   margin-left: 5%;
   margin-right: 5%;
-`;
-
-const ActionTitle = styled('h3')`
-  text-align: center;
-`;
-
-const ActionsInner = styled('div')`
-  margin-left: 10%;
 `;
 
 interface EditableNodeProps {
@@ -187,43 +168,7 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
           </Body>
         </LeftColumn>
 
-        <RightColumn>
-          <ActionTitle>Actions</ActionTitle>
-
-          <Divider marginTop="3%" marginBottom="5%" />
-
-          <ActionsInner>
-            <Spacer space="10%" />
-            <Button
-              color={colors.viewBlue}
-              hoverColor={colors.viewBlueHover}
-              activeColor={colors.viewBlueActive}
-              textColor="white"
-              onClick={(event: any) => (window.location.href = `/tree/${id}`)}>
-              Tree View
-            </Button>
-            <Spacer space="10%" />
-
-            <Button
-              color={colors.listPurple}
-              hoverColor={colors.listPurpleHover}
-              activeColor={colors.listPurpleActive}
-              textColor="white"
-              onClick={(event: any) => (window.location.href = `/tree/${id}/list`)}>
-              List View
-            </Button>
-            <Spacer space="10%" />
-
-            <Button
-              color={colors.deleteRed}
-              hoverColor={colors.deleteRedHover}
-              activeColor={colors.deleteRedActive}
-              textColor="white"
-              onClick={(event: any) => this.props.deleteNode()}>
-              Delete
-            </Button>
-          </ActionsInner>
-        </RightColumn>
+        <ActionColumn id={id} deleteNode={this.props.deleteNode} />
       </Container>
     );
   }
