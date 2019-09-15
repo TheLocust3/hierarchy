@@ -1,4 +1,4 @@
-import { Data, ITree, Node } from './tree-base';
+import { ITree, Node } from './tree-base';
 import Tree from './tree';
 
 export default class Leaf implements ITree {
@@ -87,14 +87,6 @@ export default class Leaf implements ITree {
   replaceNodeById(id: string, node: Node): ITree {
     if (this.id === id) {
       return new Leaf(node, this.parents);
-    }
-
-    return new Leaf(this._node, this.parents);
-  }
-
-  updateNodeById(id: string, data: Data): ITree {
-    if (this.id === id) {
-      return new Leaf(this._node, this.parents);
     }
 
     return new Leaf(this._node, this.parents);

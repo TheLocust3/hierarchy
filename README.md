@@ -7,7 +7,6 @@ This project is currently in active development.
 
 - Using back and forward buttons sometimes don't work
 - Create single overlay (instead of a bunch of individual ones)
-- Combine REPLACE_NODE and UPDATE_NODE actions
 - Handle server errors properly
 - Some weird bugs when adding/updating cards quickly
 - Trees of some large height just stop rendering properly

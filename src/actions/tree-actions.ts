@@ -16,7 +16,6 @@ export const RECEIVE_TREE = 'RECEIVE_TREE';
 export const SET_OVERLAY = 'SET_OVERLAY';
 
 export const CREATE_LEAF = 'CREATE_LEAF';
-export const UPDATE_NODE = 'UPDATE_NODE';
 export const DELETE_NODE = 'DELETE_NODE';
 export const REPLACE_NODE = 'REPLACE_NODE';
 
@@ -52,12 +51,6 @@ interface CreateLeafAction {
   node: Node;
 }
 
-interface UpdateNodeAction {
-  type: typeof UPDATE_NODE;
-  id: string;
-  data: Data;
-}
-
 interface DeleteNodeAction {
   type: typeof DELETE_NODE;
   id: string;
@@ -88,7 +81,6 @@ export type TreeActionTypes =
   | ReceiveTreeAction
   | SetOverlayAction
   | CreateLeafAction
-  | UpdateNodeAction
   | DeleteNodeAction
   | ReplaceNodeAction
   | CreateRelationshipAction
@@ -126,14 +118,6 @@ const InternalActions = {
       type: CREATE_LEAF,
       parentId: parentId,
       node: node
-    };
-  },
-
-  updateNodeById(id: string, data: Data): TreeActionTypes {
-    return {
-      type: UPDATE_NODE,
-      id: id,
-      data: data
     };
   },
 
@@ -223,7 +207,7 @@ export const updateNode = (
   data: Data
 ): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.updateNodeById(id, data));
+    dispatch(InternalActions.replaceNodeById(id, new Node(id, data, moment().valueOf())));
 
     const node = await TreeApi.updateTree(id, data);
     dispatch(InternalActions.replaceNodeById(node.id, node));

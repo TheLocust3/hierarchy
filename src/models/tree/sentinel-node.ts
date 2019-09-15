@@ -114,14 +114,6 @@ export default class SentinelNode implements ITree {
     return new SentinelNode(this._tree.replaceNodeById(id, node));
   }
 
-  updateNodeById(id: string, data: Data): ITree {
-    if (this._tree === undefined) {
-      return new SentinelNode();
-    }
-
-    return new SentinelNode(this._tree.updateNodeById(id, data));
-  }
-
   deleteNodeById(id: string): ITree {
     if (this.id === id) {
       return new SentinelNode();

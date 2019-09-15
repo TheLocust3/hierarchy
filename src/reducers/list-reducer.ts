@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import {
   ListActionTypes,
   REQUEST_LIST_ROOTED_AT,
@@ -9,12 +7,10 @@ import {
 } from '../actions/list-actions';
 import {
   TreeActionTypes,
-  UPDATE_NODE,
   DELETE_NODE,
   REPLACE_NODE,
   DELETE_RELATIONSHIP
 } from '../actions/tree-actions';
-import { Node } from '../models/tree/tree-base';
 import Column from '../models/card/column';
 import Card from '../models/card/card';
 
@@ -48,18 +44,6 @@ export function listReducer(
           .sort((col1: Column, col2: Column) => col1.createdAt - col2.createdAt),
         cards: action.payload.flatMap((column: Column) => column.cards),
         isReady: true
-      };
-    case UPDATE_NODE:
-      const newCard = Card.empty();
-      return {
-        ...state,
-        list: state.list.map((column: Column) =>
-          column.replaceCardNodeById(
-            action.id,
-            new Node(action.id, action.data, moment().valueOf())
-          )
-        ),
-        cards: state.cards.map((card: Card) => (card.id === action.id ? newCard : card))
       };
     case DELETE_NODE:
       return {

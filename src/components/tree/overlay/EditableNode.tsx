@@ -164,7 +164,9 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
                 onChange={(date: Date) =>
                   this.props.updateNode({ ...this.props.data, dueOn: date.valueOf() })
                 }
-                value={data.dueOn === undefined ? null : new Date(data.dueOn)}
+                value={
+                  data.dueOn === undefined || data.dueOn === null ? null : new Date(data.dueOn)
+                }
                 clearIcon={null}
                 calendarIcon={null}
                 disableClock={true}

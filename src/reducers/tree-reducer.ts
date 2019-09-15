@@ -8,7 +8,6 @@ import {
   RECEIVE_TREE,
   SET_OVERLAY,
   CREATE_LEAF,
-  UPDATE_NODE,
   DELETE_NODE,
   REPLACE_NODE,
   CREATE_RELATIONSHIP,
@@ -76,11 +75,6 @@ export function treeReducer(
       return {
         ...state,
         tree: state.tree.insertITreeByParentId(action.parentId, new Leaf(action.node))
-      };
-    case UPDATE_NODE:
-      return {
-        ...state,
-        tree: state.tree.updateNodeById(action.id, action.data)
       };
     case DELETE_NODE:
       return {

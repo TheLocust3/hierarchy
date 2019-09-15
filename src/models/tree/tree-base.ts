@@ -83,6 +83,5 @@ export interface ITree {
   getNodeById: (id: string) => ITree | undefined;
   insertITreeByParentId: (parentId: string, tree: ITree) => ITree;
   replaceNodeById: (id: string, node: Node) => ITree;
-  updateNodeById: (id: string, data: Data) => ITree;
   deleteNodeById: (id: string) => ITree;
 }

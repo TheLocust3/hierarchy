@@ -1,4 +1,4 @@
-import { Data, ITree, Node } from './tree-base';
+import { ITree, Node } from './tree-base';
 import { TreeJSON } from '../json/tree-json';
 import Leaf from './leaf';
 import SentinelNode from './sentinel-node';
@@ -173,18 +173,6 @@ export default class Tree implements ITree {
     return new Tree(
       this._node,
       this.children.map((n) => n.replaceNodeById(id, node)),
-      this.parents
-    );
-  }
-
-  updateNodeById(id: string, data: Data): ITree {
-    if (this.id === id) {
-      return new Tree(new Node(this.id, data, this.createdAt), this.children, this.parents);
-    }
-
-    return new Tree(
-      this._node,
-      this.children.map((node) => node.updateNodeById(id, data)),
       this.parents
     );
   }
