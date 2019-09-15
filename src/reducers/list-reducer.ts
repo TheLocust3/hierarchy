@@ -73,7 +73,7 @@ export function listReducer(
       return {
         ...state,
         list: state.list.map((column: Column) =>
-          column.id === action.status.id ? column.addCard(card) : column
+          column.id === action.status.id ? column.addCard(card.setStatus(action.status)) : column
         ),
         cards: state.cards.map((card) =>
           card.id === action.cardId ? card.setStatus(action.status) : card
