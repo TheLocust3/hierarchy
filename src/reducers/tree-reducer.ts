@@ -3,10 +3,8 @@ import Leaf from '../models/tree/leaf';
 import {
   TreeActionTypes,
   REQUEST_ALL_TREES,
-  REQUEST_ALL_SPECIAL_TREES,
   REQUEST_TREE,
   RECEIVE_ALL_TREES,
-  RECEIVE_ALL_SPECIAL_TREES,
   RECEIVE_TREE,
   SET_OVERLAY,
   CREATE_LEAF,
@@ -25,7 +23,8 @@ export interface TreeOverlay {
 export interface TreeState {
   tree: ITree;
   nodes: ReadonlyArray<Node>;
-  specialTrees: ReadonlyArray<ITree>;
+  labels: ReadonlyArray<Node>;
+  statuses: ReadonlyArray<Node>;
   isReady: boolean;
   overlay: TreeOverlay;
 }
@@ -33,7 +32,8 @@ export interface TreeState {
 const defaultTreeState: TreeState = {
   tree: new Leaf(Node.empty()),
   nodes: [],
-  specialTrees: [],
+  labels: [],
+  statuses: [],
   isReady: false,
   overlay: { id: '', open: false }
 };
@@ -44,24 +44,21 @@ export function treeReducer(
 ): TreeState {
   switch (action.type) {
     case REQUEST_ALL_TREES:
-    case REQUEST_ALL_SPECIAL_TREES:
     case REQUEST_TREE:
       return {
         ...state,
         isReady: false
       };
     case RECEIVE_ALL_TREES:
+      const allNodes = action.payload
+        .slice()
+        .sort((tree1: Node, tree2: Node) => tree1.createdAt - tree2.createdAt);
+
       return {
         ...state,
-        nodes: action.payload
-          .slice()
-          .sort((tree1: Node, tree2: Node) => tree1.createdAt - tree2.createdAt),
-        isReady: true
-      };
-    case RECEIVE_ALL_SPECIAL_TREES:
-      return {
-        ...state,
-        specialTrees: action.payload,
+        nodes: allNodes.filter((node) => node.data.type === 'card'),
+        labels: allNodes.filter((node) => node.data.type === 'label'),
+        statuses: allNodes.filter((node) => node.data.type === 'status'),
         isReady: true
       };
     case RECEIVE_TREE:
@@ -96,22 +93,27 @@ export function treeReducer(
         tree: state.tree.replaceNodeById(action.id, action.node)
       };
     case CREATE_RELATIONSHIP:
-      const childNode = state.tree.getNodeById(action.childId);
-      if (childNode === undefined) return state;
+      const parentTree = state.tree.findParentById(action.parentId);
+      const parentNode = state.labels
+        .concat(state.statuses)
+        .find((node) => node.id === action.parentId);
+      let parent: ITree = new Leaf(Node.empty());
+      if (parentTree !== undefined) {
+        parent = parentTree;
+      } else if (parentNode !== undefined) {
+        parent = new Leaf(parentNode);
+      } else {
+        return state;
+      }
 
       return {
         ...state,
-        tree: state.tree.insertITreeByParentId(action.parentId, childNode),
-        specialTrees: state.specialTrees.map((tree) =>
-          tree.insertITreeByParentId(action.parentId, childNode)
-        )
+        tree: state.tree.addParentRelationship(parent, action.childId)
       };
     case DELETE_RELATIONSHIP:
       return {
         ...state,
-        specialTrees: state.specialTrees.map((tree) =>
-          tree.id === action.parentId ? tree.deleteNodeById(action.childId) : tree
-        )
+        tree: state.tree.deleteParentRelationship(action.parentId, action.childId)
       };
     default:
       return state;

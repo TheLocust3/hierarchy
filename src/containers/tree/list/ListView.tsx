@@ -8,14 +8,14 @@ import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
 import { getCardsRootedAt } from '../../../actions/list-actions';
 import {
   getTree,
-  getAllLabelTrees,
+  getAllTrees,
   setOverlay,
   updateNode,
   deleteNode,
   createRelationship,
   deleteRelationship
 } from '../../../actions/tree-actions';
-import { ITree, Data } from '../../../models/tree/tree-base';
+import { Data, Node } from '../../../models/tree/tree-base';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import Column from '../../../models/card/column';
@@ -35,7 +35,8 @@ interface ListViewProps {
   isReady: boolean;
   list: ReadonlyArray<Column>;
   areTreesReady: boolean;
-  specialTrees: ReadonlyArray<ITree>;
+  allLabels: ReadonlyArray<Node>;
+  allStatuses: ReadonlyArray<Node>;
   overlay: TreeOverlay;
   dispatch: Dispatch;
   match: RouterMatch<ListViewParams>;
@@ -44,8 +45,8 @@ interface ListViewProps {
 class ListView extends React.Component<ListViewProps> {
   componentDidMount() {
     this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
-    this.props.dispatch(getTree(this.props.match.params.id));
-    this.props.dispatch(getAllLabelTrees());
+    this.props.dispatch(getTree(this.props.match.params.id)); // TODO: ?
+    this.props.dispatch(getAllTrees());
   }
 
   render() {
@@ -62,9 +63,9 @@ class ListView extends React.Component<ListViewProps> {
   }
 
   private renderInner() {
-    const { isReady, list, areTreesReady, specialTrees, overlay } = this.props;
+    const { isReady, list, areTreesReady, allLabels, allStatuses, overlay } = this.props;
 
-    if (!isReady || !areTreesReady) return;
+    if (!isReady || areTreesReady) return;
 
     return (
       <div>
@@ -75,7 +76,12 @@ class ListView extends React.Component<ListViewProps> {
             <div key={column.id}>
               <ListColumn
                 column={column}
-                specialTrees={specialTrees}
+                allLabels={allLabels.map((node) => {
+                  return { id: node.id, title: node.data.title, createdAt: node.createdAt };
+                })}
+                allStatuses={allStatuses.map((node) => {
+                  return { id: node.id, title: node.data.title, createdAt: node.createdAt };
+                })}
                 overlay={overlay}
                 setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
                 updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
@@ -98,8 +104,9 @@ class ListView extends React.Component<ListViewProps> {
 const mapStateToProps = (state: AppState) => ({
   list: state.list.list,
   isReady: state.list.isReady,
-  specialTrees: state.tree.specialTrees,
   areTreesReady: state.tree.isReady,
+  allLabels: state.tree.labels,
+  allStatuses: state.tree.statuses,
   overlay: state.tree.overlay
 });
 

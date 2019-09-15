@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { ITree } from '../../../models/tree/tree-base';
+import Status from '../../../models/status';
 
 import SideMargin from '../../common/SideMargin';
 import Spacer from '../../common/Spacer';
@@ -21,20 +21,24 @@ const AddButtonContainer = styled('div')`
 
 interface StatusSectionProps {
   id: string;
+  allStatuses: ReadonlyArray<Status>;
+  status: Status | undefined;
   dropdownShown: boolean;
   dropdownToggle: () => void;
   dropdownHide: () => void;
-  specialTrees: ReadonlyArray<ITree>;
   setStatus: (oldStatusId: string, statusId: string) => void;
 }
 
 class StatusSection extends React.Component<StatusSectionProps> {
   render() {
-    const { dropdownShown, dropdownToggle, dropdownHide, setStatus } = this.props;
-
-    const status = this.props.specialTrees.find(
-      (tree: ITree) => tree.data.type === 'status' && tree.containsITree(this.props.id)
-    );
+    const {
+      allStatuses,
+      status,
+      dropdownShown,
+      dropdownToggle,
+      dropdownHide,
+      setStatus
+    } = this.props;
 
     return (
       <SideMargin margin="5%">
@@ -44,11 +48,11 @@ class StatusSection extends React.Component<StatusSectionProps> {
             <AddButton onClick={dropdownToggle} />
           </AddButtonContainer>
           <LabelDropdown
-            labels={this.props.specialTrees
-              .filter((tree: ITree) => tree.data.type === 'status')
-              .sort((tree1, tree2) => tree1.createdAt - tree2.createdAt)
-              .map((tree: ITree) => {
-                return { id: tree.id, name: tree.data.title };
+            labels={allStatuses
+              .slice()
+              .sort((status1: Status, status2: Status) => status1.createdAt - status2.createdAt)
+              .map((status: Status) => {
+                return { id: status.id, title: status.title, createdAt: status.createdAt }; // TODO: I feel bad about this
               })}
             isVisible={dropdownShown}
             onSelect={(id: string) => {
@@ -60,7 +64,7 @@ class StatusSection extends React.Component<StatusSectionProps> {
 
         <Spacer space="1%" />
 
-        <SideMargin margin="2.5%">{status === undefined ? 'N/A' : status.data.title}</SideMargin>
+        <SideMargin margin="2.5%">{status === undefined ? 'N/A' : status.title}</SideMargin>
       </SideMargin>
     );
   }

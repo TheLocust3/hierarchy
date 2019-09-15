@@ -2,7 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
-import { Data, ITree } from '../../../models/tree/tree-base';
+import { Data } from '../../../models/tree/tree-base';
+import Label from '../../../models/label';
+import Status from '../../../models/status';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import MiddleCenter from '../../common/MiddleCenter';
@@ -33,7 +35,10 @@ const OverlayContainer = styled('div')`
 interface NodeOverlayProps {
   id: string;
   data: Data;
-  specialTrees: ReadonlyArray<ITree>;
+  allLabels: ReadonlyArray<Label>;
+  labels: ReadonlyArray<Label>;
+  allStatuses: ReadonlyArray<Status>;
+  status: Status | undefined;
   currentOverlay: TreeOverlay;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
@@ -47,7 +52,10 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
     const {
       id,
       data,
-      specialTrees,
+      allLabels,
+      labels,
+      allStatuses,
+      status,
       currentOverlay,
       updateNode,
       deleteNode,
@@ -67,8 +75,11 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
             <EditableNode
               id={id}
               data={data}
+              allLabels={allLabels}
+              labels={labels}
+              allStatuses={allStatuses}
+              status={status}
               overlayOpen={currentOverlay.open}
-              specialTrees={specialTrees}
               updateNode={updateNode}
               deleteNode={deleteNode}
               addLabel={addLabel}

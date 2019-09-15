@@ -2,11 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
-
-interface Label {
-  id: string;
-  name: string;
-}
+import Label from '../../../models/label';
 
 const DropdownContainer = styled('div')`
   position: absolute;
@@ -60,7 +56,7 @@ class LabelDropdown extends React.Component<LabelDropdownProps> {
 
               onSelect(label.id);
             }}>
-            {label.name}
+            {label.title}
           </DropdownItem>
         ))}
       </DropdownContainer>

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { ITree } from '../../../models/tree/tree-base';
 import { colors } from '../../../constants';
+import LabelModel from '../../../models/label';
 
 interface LabelContainerProps {
   clickable: boolean;
@@ -31,18 +31,18 @@ const LabelContainer = styled('div')<LabelContainerProps>`
 `;
 
 interface LabelProps {
-  labelTree: ITree;
+  label: LabelModel;
   onClick?: () => void;
 }
 
 class Label extends React.Component<LabelProps> {
   render() {
-    const { labelTree } = this.props;
+    const { label } = this.props;
     const onClick = this.props.onClick === undefined ? () => {} : this.props.onClick;
 
     return (
       <LabelContainer clickable={this.props.onClick !== undefined} onClick={onClick}>
-        {labelTree.data.title}
+        {label.title}
       </LabelContainer>
     );
   }

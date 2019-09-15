@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { ITree } from '../../../models/tree/tree-base';
+import LabelModel from '../../../models/label';
 
 import Spacer from '../../common/Spacer';
 import SideMargin from '../../common/SideMargin';
@@ -27,17 +27,18 @@ const LabelContainer = styled('span')`
 
 interface LabelSectionProps {
   id: string;
+  allLabels: ReadonlyArray<LabelModel>;
+  labels: ReadonlyArray<LabelModel>;
   dropdownShown: boolean;
   dropdownToggle: () => void;
   dropdownHide: () => void;
-  specialTrees: ReadonlyArray<ITree>;
   addLabel: (labelId: string) => void;
   deleteLabel: (labelId: string) => void;
 }
 
 class LabelSection extends React.Component<LabelSectionProps> {
   render() {
-    const { dropdownShown, dropdownToggle, dropdownHide, addLabel } = this.props;
+    const { allLabels, dropdownShown, dropdownToggle, dropdownHide, addLabel } = this.props;
 
     return (
       <SideMargin margin="5%">
@@ -47,11 +48,7 @@ class LabelSection extends React.Component<LabelSectionProps> {
             <AddButton onClick={dropdownToggle} />
           </AddButtonContainer>
           <LabelDropdown
-            labels={this.props.specialTrees
-              .filter((tree: ITree) => tree.data.type === 'label')
-              .map((tree: ITree) => {
-                return { id: tree.id, name: tree.data.title };
-              })}
+            labels={allLabels}
             isVisible={dropdownShown}
             onSelect={(id: string) => {
               addLabel(id);
@@ -67,17 +64,15 @@ class LabelSection extends React.Component<LabelSectionProps> {
   }
 
   private renderLabels() {
-    const labels = this.props.specialTrees.filter(
-      (tree: ITree) => tree.containsITree(this.props.id) && tree.data.type === 'label'
-    );
+    const labels = this.props.labels;
     if (labels.length === 0) return <SideMargin margin="2.5%">None</SideMargin>;
 
     return (
       <SideMargin margin="2.5%">
-        {labels.map((labelTree: ITree) => {
+        {labels.map((label: LabelModel) => {
           return (
-            <LabelContainer key={labelTree.id}>
-              <Label labelTree={labelTree} onClick={() => this.props.deleteLabel(labelTree.id)} />
+            <LabelContainer key={label.id}>
+              <Label label={label} onClick={() => this.props.deleteLabel(label.id)} />
             </LabelContainer>
           );
         })}

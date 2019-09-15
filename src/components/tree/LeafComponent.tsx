@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { Data, ITree } from '../../models/tree/tree-base';
+import Label from '../../models/label';
+import Status from '../../models/status';
 import Viewport from '../../models/viewport';
-import NodeComponent from './NodeComponent';
-import NodeOverlay from './overlay/NodeOverlay';
 import { TreeOverlay } from '../../reducers/tree-reducer';
 
+import NodeComponent from './NodeComponent';
+import NodeOverlay from './overlay/NodeOverlay';
+
 interface LeafProps {
-  id: string;
-  data: Data;
-  specialTrees: ReadonlyArray<ITree>;
+  tree: ITree;
+  allLabels: ReadonlyArray<Label>;
+  allStatuses: ReadonlyArray<Status>;
   overlay: TreeOverlay;
   parentX: number;
   parentY: number;
@@ -26,20 +29,21 @@ class LeafComponent extends React.Component<LeafProps> {
   componentDidMount() {
     window.addEventListener('click', () => {
       // TOOD: bind this only when id is selected
-      if (this.props.overlay.id === this.props.id && this.props.overlay.open) {
-        this.props.setOverlay({ id: this.props.id, open: false });
+      if (this.props.overlay.id === this.props.tree.id && this.props.overlay.open) {
+        this.props.setOverlay({ id: this.props.tree.id, open: false });
       }
     });
   }
 
   render() {
-    const { id, data, specialTrees, overlay, parentX, parentY, viewport } = this.props;
+    const { tree, allLabels, allStatuses, overlay, parentX, parentY, viewport } = this.props;
+    const id = tree.id;
+    const data = tree.data;
 
     return (
       <div>
         <NodeComponent
-          id={id}
-          data={data}
+          tree={tree}
           parentX={parentX}
           parentY={parentY}
           viewport={viewport}
@@ -57,7 +61,16 @@ class LeafComponent extends React.Component<LeafProps> {
         <NodeOverlay
           id={id}
           data={data}
-          specialTrees={specialTrees}
+          allLabels={allLabels}
+          labels={tree.findParentsByType('label').map((tree) => {
+            return { id: tree.id, title: tree.data.title, createdAt: tree.createdAt };
+          })}
+          status={
+            tree.findParentsByType('status').map((tree) => {
+              return { id: tree.id, title: tree.data.title, createdAt: tree.createdAt };
+            })[0] // TODO: catch errors on this bad boy
+          }
+          allStatuses={allStatuses}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}

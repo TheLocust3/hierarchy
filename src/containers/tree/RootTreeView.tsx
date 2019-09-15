@@ -33,6 +33,8 @@ const AddButtonContainer = styled('div')`
 
 interface RootTreeViewProps {
   trees: ReadonlyArray<Node>;
+  labels: ReadonlyArray<Node>;
+  statuses: ReadonlyArray<Node>;
   isReady: boolean;
   dispatch: Dispatch;
 }
@@ -76,7 +78,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           </AddButtonContainer>
         </TreeListHeader>
 
-        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'status'))}
+        {this.renderTreeList(this.props.statuses)}
         <br />
         <br />
 
@@ -92,7 +94,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           </AddButtonContainer>
         </TreeListHeader>
 
-        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'label'))}
+        {this.renderTreeList(this.props.labels)}
         <br />
         <br />
 
@@ -108,7 +110,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           </AddButtonContainer>
         </TreeListHeader>
 
-        {this.renderTreeList(this.props.trees.filter((tree) => tree.data.type === 'card'))}
+        {this.renderTreeList(this.props.trees)}
       </ListContainer>
     );
   }
@@ -132,6 +134,8 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
 
 const mapStateToProps = (state: AppState) => ({
   trees: state.tree.nodes,
+  labels: state.tree.labels,
+  statuses: state.tree.statuses,
   isReady: state.tree.isReady
 });
 

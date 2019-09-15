@@ -68,10 +68,17 @@ export interface ITree {
   id: string;
   data: Data;
   children: ReadonlyArray<ITree>;
+  parents: ReadonlyArray<ITree>;
   createdAt: number;
 
   isEmpty: () => boolean;
   containsITree: (id: string) => boolean;
+
+  addParent: (tree: ITree) => void;
+  findParentsByType: (type: string) => ReadonlyArray<ITree>;
+  findParentById: (parentId: string) => ITree | undefined;
+  addParentRelationship: (parentNode: ITree, childId: string) => ITree;
+  deleteParentRelationship: (parentId: string, childId: string) => ITree;
 
   getNodeById: (id: string) => ITree | undefined;
   insertITreeByParentId: (parentId: string, tree: ITree) => ITree;

@@ -4,9 +4,11 @@ import Tree from './tree';
 export default class Leaf implements ITree {
   private _node: Node = Node.empty();
   private _children: ReadonlyArray<ITree> = [];
+  private _parents: ReadonlyArray<ITree> = [];
 
-  constructor(node: Node) {
+  constructor(node: Node, parents?: ReadonlyArray<ITree>) {
     this._node = node;
+    this._parents = parents === undefined ? [] : parents;
   }
 
   get id() {
@@ -21,6 +23,10 @@ export default class Leaf implements ITree {
     return this._children;
   }
 
+  get parents() {
+    return this._parents;
+  }
+
   get createdAt() {
     return this._node.createdAt;
   }
@@ -31,6 +37,37 @@ export default class Leaf implements ITree {
 
   containsITree(id: string) {
     return this.id === id;
+  }
+
+  addParent(tree: ITree) {
+    this._parents = this.parents.concat(tree);
+  }
+
+  findParentsByType(type: string) {
+    return this.parents
+      .filter((parent) => parent.data.type === type)
+      .concat(this.parents.flatMap((parent) => parent.findParentsByType(type)));
+  }
+
+  findParentById(parentId: string): ITree | undefined {
+    const foundParent = this.parents.find((parent) => parent.id === parentId);
+    if (foundParent !== undefined) return foundParent;
+
+    return undefined;
+  }
+
+  addParentRelationship(parentNode: ITree, childId: string): ITree {
+    if (this.id === childId) return new Leaf(this._node, this.parents.concat(parentNode));
+
+    return this;
+  }
+
+  deleteParentRelationship(parentId: string, childId: string): ITree {
+    if (childId === this.id) {
+      return new Leaf(this._node, this.parents.filter((parent) => parent.id !== parentId));
+    }
+
+    return this;
   }
 
   getNodeById(id: string): ITree | undefined {
@@ -44,23 +81,23 @@ export default class Leaf implements ITree {
       return new Tree(this._node, this.children.concat(tree));
     }
 
-    return new Leaf(this._node);
+    return new Leaf(this._node, this.parents);
   }
 
   replaceNodeById(id: string, node: Node): ITree {
     if (this.id === id) {
-      return new Leaf(node);
+      return new Leaf(node, this.parents);
     }
 
-    return new Leaf(this._node);
+    return new Leaf(this._node, this.parents);
   }
 
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
-      return new Leaf(this._node);
+      return new Leaf(this._node, this.parents);
     }
 
-    return new Leaf(this._node);
+    return new Leaf(this._node, this.parents);
   }
 
   deleteNodeById(id: string): ITree {

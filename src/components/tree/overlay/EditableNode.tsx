@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 import DateTimePicker from 'react-datetime-picker';
 
 import { colors, fonts } from '../../../constants';
-import { Data, ITree } from '../../../models/tree/tree-base';
+import { Data } from '../../../models/tree/tree-base';
+import Label from '../../../models/label';
+import Status from '../../../models/status';
 
 import Divider from '../../common/Divider';
 import ColumnLayout from '../../common/ColumnLayout';
@@ -64,8 +66,11 @@ const ActionsInner = styled('div')`
 interface EditableNodeProps {
   id: string;
   data: Data;
+  allLabels: ReadonlyArray<Label>;
+  labels: ReadonlyArray<Label>;
+  allStatuses: ReadonlyArray<Status>;
+  status: Status | undefined;
   overlayOpen: boolean;
-  specialTrees: ReadonlyArray<ITree>;
   updateNode: (data: Data) => void;
   deleteNode: () => void;
   addLabel: (labelId: string) => void;
@@ -91,7 +96,17 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
   }
 
   render() {
-    const { id, data, specialTrees, addLabel, deleteLabel, setStatus } = this.props;
+    const {
+      id,
+      data,
+      allLabels,
+      labels,
+      allStatuses,
+      status,
+      addLabel,
+      deleteLabel,
+      setStatus
+    } = this.props;
 
     return (
       <Container
@@ -118,7 +133,8 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
               })
             }
             dropdownHide={() => this.setState({ labelDropdownShown: false })}
-            specialTrees={specialTrees}
+            allLabels={allLabels}
+            labels={labels}
             addLabel={addLabel}
             deleteLabel={deleteLabel}
           />
@@ -134,7 +150,8 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
               })
             }
             dropdownHide={() => this.setState({ statusDropdownShown: false })}
-            specialTrees={specialTrees}
+            allStatuses={allStatuses}
+            status={status}
             setStatus={setStatus}
           />
           <br />

@@ -34,6 +34,14 @@ export default class SentinelNode implements ITree {
     return this._tree.children;
   }
 
+  get parents() {
+    if (this._tree === undefined) {
+      return [];
+    }
+
+    return this._tree.parents;
+  }
+
   get createdAt() {
     if (this._tree === undefined) {
       return moment().valueOf();
@@ -48,6 +56,38 @@ export default class SentinelNode implements ITree {
 
   containsITree(id: string) {
     return this._tree !== undefined && this._tree.containsITree(id);
+  }
+
+  addParent(tree: ITree) {
+    if (this._tree === undefined) return;
+
+    this._tree.addParent(tree);
+  }
+
+  findParentsByType(type: string) {
+    if (this._tree === undefined) return [];
+
+    return this._tree.findParentsByType(type);
+  }
+
+  findParentById(parentId: string): ITree | undefined {
+    if (this._tree === undefined) return undefined;
+
+    return this._tree.findParentById(parentId);
+  }
+
+  addParentRelationship(parentNode: ITree, childId: string): ITree {
+    if (this._tree === undefined) return new SentinelNode();
+
+    return this._tree.addParentRelationship(parentNode, childId);
+  }
+
+  deleteParentRelationship(parentId: string, childId: string): ITree {
+    if (this._tree === undefined) {
+      return new SentinelNode();
+    }
+
+    return this._tree.deleteParentRelationship(parentId, childId);
   }
 
   getNodeById(id: string): ITree | undefined {

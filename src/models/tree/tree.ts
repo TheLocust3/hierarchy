@@ -6,6 +6,7 @@ import SentinelNode from './sentinel-node';
 export default class Tree implements ITree {
   private _node: Node = Node.empty();
   private _children: ReadonlyArray<ITree> = [];
+  private _parents: ReadonlyArray<ITree> = [];
 
   static fromJSON(json: TreeJSON): ITree {
     const nodes = json.nodes.map((node) => Node.fromJSON(node));
@@ -28,7 +29,24 @@ export default class Tree implements ITree {
       parent2Children.set(parent, children);
     });
 
-    return new SentinelNode(this.fromJSONInner(rootNode, parent2Children));
+    const tree = new SentinelNode(this.fromJSONInner(rootNode, parent2Children));
+
+    parent2Children.forEach((children, parent) => {
+      const parentTree = tree.getNodeById(parent.id);
+      const realParentTree =
+        parentTree === undefined
+          ? new SentinelNode(this.fromJSONInner(parent, parent2Children))
+          : parentTree;
+
+      children.forEach((child) => {
+        const childTree = tree.getNodeById(child.id);
+        if (childTree === undefined) return;
+
+        childTree.addParent(realParentTree);
+      });
+    });
+
+    return tree;
   }
 
   static fromJSONInner(node: Node, parent2Children: Map<Node, ReadonlyArray<Node>>): ITree {
@@ -40,9 +58,10 @@ export default class Tree implements ITree {
     return new Tree(node, children.map((child) => this.fromJSONInner(child, parent2Children)));
   }
 
-  constructor(node: Node, children: ReadonlyArray<ITree>) {
+  constructor(node: Node, children: ReadonlyArray<ITree>, parents?: ReadonlyArray<ITree>) {
     this._node = node;
     this._children = children;
+    this._parents = parents === undefined ? [] : parents;
   }
 
   get id() {
@@ -51,6 +70,10 @@ export default class Tree implements ITree {
 
   get children() {
     return this._children;
+  }
+
+  get parents() {
+    return this._parents;
   }
 
   get data() {
@@ -72,6 +95,55 @@ export default class Tree implements ITree {
     );
   }
 
+  addParent(tree: ITree) {
+    this._parents = this.parents.concat(tree);
+  }
+
+  findParentsByType(type: string) {
+    return this.parents
+      .filter((parent) => parent.data.type === type)
+      .concat(this.parents.flatMap((parent) => parent.findParentsByType(type)));
+  }
+
+  findParentById(parentId: string): ITree | undefined {
+    const foundParent = this.parents.find((parent) => parent.id === parentId);
+    if (foundParent !== undefined) return foundParent;
+
+    const nodes = this.children
+      .flatMap((child) => child.findParentById(parentId))
+      .filter((node) => node !== undefined);
+    if (nodes.length === 0) return undefined;
+
+    return nodes[0];
+  }
+
+  addParentRelationship(parentNode: ITree, childId: string): ITree {
+    if (this.id === childId)
+      return new Tree(this._node, this.children, this.parents.concat(parentNode));
+
+    return new Tree(
+      this._node,
+      this.children.map((node) => node.addParentRelationship(parentNode, childId)),
+      this.parents
+    );
+  }
+
+  deleteParentRelationship(parentId: string, childId: string): ITree {
+    if (childId === this.id) {
+      return new Tree(
+        this._node,
+        this.children,
+        this.parents.filter((parent) => parent.id !== parentId)
+      );
+    }
+
+    return new Tree(
+      this._node,
+      this.children.map((child) => child.deleteParentRelationship(parentId, childId)),
+      this.parents
+    );
+  }
+
   getNodeById(id: string): ITree | undefined {
     const nodes = this.children
       .flatMap((node) => node.getNodeById(id))
@@ -84,29 +156,37 @@ export default class Tree implements ITree {
 
   insertITreeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
-      return new Tree(this._node, this.children.concat(tree));
+      return new Tree(this._node, this.children.concat(tree), this.parents);
     }
 
     return new Tree(
       this._node,
-      this.children.map((node) => node.insertITreeByParentId(parentId, tree))
+      this.children.map((node) => node.insertITreeByParentId(parentId, tree), this.parents)
     );
   }
 
   replaceNodeById(id: string, node: Node): ITree {
     if (this.id === id) {
-      return new Tree(node, this.children);
+      return new Tree(node, this.children, this.parents);
     }
 
-    return new Tree(this._node, this.children.map((n) => n.replaceNodeById(id, node)));
+    return new Tree(
+      this._node,
+      this.children.map((n) => n.replaceNodeById(id, node)),
+      this.parents
+    );
   }
 
   updateNodeById(id: string, data: Data): ITree {
     if (this.id === id) {
-      return new Tree(new Node(this.id, data, this.createdAt), this.children);
+      return new Tree(new Node(this.id, data, this.createdAt), this.children, this.parents);
     }
 
-    return new Tree(this._node, this.children.map((node) => node.updateNodeById(id, data)));
+    return new Tree(
+      this._node,
+      this.children.map((node) => node.updateNodeById(id, data)),
+      this.parents
+    );
   }
 
   deleteNodeById(id: string): ITree {
@@ -116,7 +196,8 @@ export default class Tree implements ITree {
         .filter((node) => {
           return node.id !== id;
         })
-        .map((node) => node.deleteNodeById(id))
+        .map((node) => node.deleteNodeById(id)),
+      this.parents
     );
   }
 }

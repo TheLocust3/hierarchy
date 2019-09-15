@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
-import { Data } from '../../models/tree/tree-base';
+import { ITree } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 
 import LineTo from '../common/LineTo';
@@ -41,8 +41,7 @@ const NodeInner = styled('div')`
 `;
 
 interface NodeProps {
-  id: string;
-  data: Data;
+  tree: ITree;
   overlay: TreeOverlay;
   parentX?: number;
   parentY?: number;
@@ -81,8 +80,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
 
   render() {
     const {
-      id,
-      data,
+      tree,
       parentX,
       parentY,
       viewport,
@@ -92,6 +90,8 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
       createLeaf
     } = this.props;
     const getXY = this.props.getXY == null ? (x: number, y: number) => {} : this.props.getXY;
+    const id = tree.id;
+    const data = tree.data;
 
     return (
       <NodeContainer>

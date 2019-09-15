@@ -7,12 +7,12 @@ import styled from '@emotion/styled';
 import { colors, TITLE } from '../../constants';
 import { AppState, Dispatch, RouterMatch, RouterParams } from '../../types';
 
-import { ITree, Data } from '../../models/tree/tree-base';
+import { ITree, Data, Node } from '../../models/tree/tree-base';
 import Viewport from '../../models/viewport';
 import TreeComponent from '../../components/tree/TreeComponent';
 import {
-  getAllLabelTrees,
   getTree,
+  getAllTrees,
   setOverlay,
   updateNode,
   deleteNode,
@@ -45,7 +45,8 @@ interface TreeViewParams extends RouterParams {
 
 interface TreeViewProps {
   tree: ITree;
-  specialTrees: ReadonlyArray<ITree>;
+  labels: ReadonlyArray<Node>;
+  statuses: ReadonlyArray<Node>;
   isReady: boolean;
   overlay: TreeOverlay;
   dispatch: Dispatch;
@@ -67,7 +68,7 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
   componentDidMount() {
     this.props.dispatch(getTree(this.props.match.params.id));
-    this.props.dispatch(getAllLabelTrees());
+    this.props.dispatch(getAllTrees());
 
     window.addEventListener('resize', () => this.updateViewport());
   }
@@ -86,11 +87,14 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
     return (
       <TreeViewport ref={this.viewportRef}>
         <TreeComponent
-          id={this.props.tree.id}
+          tree={this.props.tree}
+          allLabels={this.props.labels.map((label) => {
+            return { id: label.id, title: label.data.title, createdAt: label.createdAt };
+          })}
+          allStatuses={this.props.statuses.map((status) => {
+            return { id: status.id, title: status.data.title, createdAt: status.createdAt };
+          })}
           viewport={this.state.viewport}
-          data={this.props.tree.data}
-          nodes={this.props.tree.children}
-          specialTrees={this.props.specialTrees}
           overlay={this.props.overlay}
           setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
           updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
@@ -149,7 +153,8 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
 
 const mapStateToProps = (state: AppState) => ({
   tree: state.tree.tree,
-  specialTrees: state.tree.specialTrees,
+  labels: state.tree.labels,
+  statuses: state.tree.statuses,
   isReady: state.tree.isReady,
   overlay: state.tree.overlay
 });

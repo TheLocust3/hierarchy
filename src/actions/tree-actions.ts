@@ -10,9 +10,6 @@ import TreeApi from '../api/tree-api';
 export const REQUEST_ALL_TREES = 'REQUEST_ALL_TREES';
 export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 
-export const REQUEST_ALL_SPECIAL_TREES = 'REQUEST_ALL_SPECIAL_TREES';
-export const RECEIVE_ALL_SPECIAL_TREES = 'RECEIVE_ALL_SPECIAL_TREES';
-
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
 
@@ -33,15 +30,6 @@ interface RequestAllTreesAction {
 interface ReceiveAllTreesAction {
   type: typeof RECEIVE_ALL_TREES;
   payload: ReadonlyArray<Node>;
-}
-
-interface RequestAllSpecialTreesAction {
-  type: typeof REQUEST_ALL_SPECIAL_TREES;
-}
-
-interface ReceiveAllSpecialTreesAction {
-  type: typeof RECEIVE_ALL_SPECIAL_TREES;
-  payload: ReadonlyArray<ITree>;
 }
 
 interface RequestTreeAction {
@@ -96,8 +84,6 @@ interface DeleteRelationshipAction {
 export type TreeActionTypes =
   | RequestAllTreesAction
   | ReceiveAllTreesAction
-  | RequestAllSpecialTreesAction
-  | ReceiveAllSpecialTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
   | SetOverlayAction
@@ -119,19 +105,6 @@ const InternalActions = {
     return {
       type: RECEIVE_ALL_TREES,
       payload: nodes
-    };
-  },
-
-  requestAllSpecialTrees(): TreeActionTypes {
-    return {
-      type: REQUEST_ALL_SPECIAL_TREES
-    };
-  },
-
-  receiveAllSpecialTrees(trees: ReadonlyArray<ITree>): TreeActionTypes {
-    return {
-      type: RECEIVE_ALL_SPECIAL_TREES,
-      payload: trees
     };
   },
 
@@ -209,14 +182,6 @@ export const getAllTrees = (): ThunkAction<void, AppState, null, TreeActionTypes
 
     const trees = await TreeApi.getAllTrees();
     dispatch(InternalActions.receiveAllTrees(trees));
-  };
-};
-
-export const getAllLabelTrees = (): ThunkAction<void, AppState, null, TreeActionTypes> => {
-  return async (dispatch) => {
-    dispatch(InternalActions.requestAllSpecialTrees());
-
-    dispatch(InternalActions.receiveAllSpecialTrees([]));
   };
 };
 

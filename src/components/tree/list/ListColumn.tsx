@@ -4,7 +4,9 @@ import styled from '@emotion/styled';
 import { colors } from '../../../constants';
 import Column from '../../../models/card/column';
 import Card from '../../../models/card/card';
-import { ITree, Data } from '../../../models/tree/tree-base';
+import { Data } from '../../../models/tree/tree-base';
+import Label from '../../../models/label';
+import Status from '../../../models/status';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import CardComponent from './CardComponent';
@@ -32,7 +34,8 @@ const ColumnTitle = styled('h3')``;
 
 interface ListColumnProps {
   column: Column;
-  specialTrees: ReadonlyArray<ITree>;
+  allLabels: ReadonlyArray<Label>;
+  allStatuses: ReadonlyArray<Status>;
   overlay: TreeOverlay;
   setOverlay: (overlay: TreeOverlay) => void;
   updateNode: (id: string, data: Data) => void;
@@ -43,7 +46,7 @@ interface ListColumnProps {
 
 class ListColumn extends React.Component<ListColumnProps> {
   render() {
-    const { column, specialTrees, overlay, setOverlay } = this.props;
+    const { column, allLabels, allStatuses, overlay, setOverlay } = this.props;
 
     return (
       <ColumnContainer>
@@ -53,10 +56,8 @@ class ListColumn extends React.Component<ListColumnProps> {
           <div key={card.id}>
             <CardComponent
               card={card}
-              labels={specialTrees.filter(
-                (tree: ITree) =>
-                  tree.data.type === 'label' && tree.getNodeById(card.id) !== undefined
-              )}
+              allLabels={allLabels}
+              allStatuses={allStatuses}
               onClick={(event: any) => {
                 if (!overlay.open) {
                   setOverlay({ id: card.id, open: true });
@@ -65,7 +66,6 @@ class ListColumn extends React.Component<ListColumnProps> {
               }}
               overlay={overlay}
               setOverlay={setOverlay}
-              specialTrees={specialTrees}
               updateNode={this.props.updateNode}
               deleteNode={this.props.deleteNode}
               createRelationship={this.props.createRelationship}

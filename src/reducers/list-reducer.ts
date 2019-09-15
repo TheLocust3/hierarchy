@@ -11,7 +11,6 @@ import {
   CREATE_RELATIONSHIP,
   DELETE_RELATIONSHIP
 } from '../actions/tree-actions';
-import { Node } from '../models/tree/tree-base';
 import Column from '../models/card/column';
 import Card from '../models/card/card';
 
@@ -47,7 +46,7 @@ export function listReducer(
         isReady: true
       };
     case UPDATE_NODE:
-      const newCard = new Card(Node.empty());
+      const newCard = Card.empty();
       return {
         ...state,
         list: state.list.map((column: Column) => column.replaceCardById(action.id, newCard)),
@@ -62,10 +61,10 @@ export function listReducer(
     case REPLACE_NODE:
       return {
         ...state,
-        list: state.list.map((column: Column) =>
-          column.replaceCardById(action.id, new Card(action.node))
+        list: state.list.map(
+          (column: Column) => column.replaceCardById(action.id, new Card(action.node, [])) // TODO
         ),
-        cards: state.cards.map((card) => (card.id === action.id ? new Card(action.node) : card))
+        cards: state.cards.map((card) => (card.id === action.id ? new Card(action.node, []) : card))
       };
     case CREATE_RELATIONSHIP:
       const card = state.cards.find((card) => card.id === action.childId);

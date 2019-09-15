@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
 import Card from '../../../models/card/card';
-import { ITree, Data } from '../../../models/tree/tree-base';
+import { Data } from '../../../models/tree/tree-base';
+import LabelModel from '../../../models/label';
+import Status from '../../../models/status';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import Label from '../overlay/Label';
@@ -44,8 +46,8 @@ const LabelContainer = styled('span')`
 
 interface CardProps {
   card: Card;
-  labels: ReadonlyArray<ITree>;
-  specialTrees: ReadonlyArray<ITree>;
+  allLabels: ReadonlyArray<LabelModel>;
+  allStatuses: ReadonlyArray<Status>;
   overlay: TreeOverlay;
   onClick: (event: any) => void;
   setOverlay: (overlay: TreeOverlay) => void;
@@ -66,16 +68,16 @@ class CardComponent extends React.Component<CardProps> {
   }
 
   render() {
-    const { card, labels, specialTrees, overlay, onClick } = this.props;
+    const { card, allLabels, allStatuses, overlay, onClick } = this.props;
     const id = card.id;
 
     return (
       <CardContainer onClick={onClick}>
         <CardInner draggable={true}>
-          {labels.map((labelTree: ITree) => {
+          {card.labels.map((label) => {
             return (
-              <LabelContainer key={labelTree.id}>
-                <Label labelTree={labelTree} />
+              <LabelContainer key={label.id}>
+                <Label label={label} />
               </LabelContainer>
             );
           })}
@@ -89,7 +91,10 @@ class CardComponent extends React.Component<CardProps> {
         <NodeOverlay
           id={id}
           data={card.data}
-          specialTrees={specialTrees}
+          allLabels={allLabels}
+          labels={card.labels}
+          allStatuses={allStatuses}
+          status={card.status}
           currentOverlay={overlay}
           updateNode={(data: Data) => this.props.updateNode(id, data)}
           deleteNode={() => this.props.deleteNode(id)}
