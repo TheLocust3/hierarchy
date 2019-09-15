@@ -5,6 +5,7 @@ This project is currently in active development.
 
 ## to-do
 
+- Using back and forward buttons sometimes don't work
 - Create single overlay (instead of a bunch of individual ones)
 - Combine REPLACE_NODE and UPDATE_NODE actions
 - Handle server errors properly

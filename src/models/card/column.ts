@@ -1,5 +1,8 @@
 import moment from 'moment';
 
+import { Node } from '../tree/tree-base';
+import Label from '../label';
+import Status from '../status';
 import Card from './card';
 import { CardJSON, ColumnJSON } from '../json/list-json';
 
@@ -49,11 +52,11 @@ export default class Column {
     return new Column(this.id, this.name, this.cards.concat(card), this.createdAt);
   }
 
-  replaceCardById(id: string, card: Card): Column {
+  replaceCardNodeById(id: string, node: Node): Column {
     return new Column(
       this.id,
       this.name,
-      this.cards.map((c: Card) => (c.id === id ? card : c)),
+      this.cards.map((c: Card) => (c.id === id ? new Card(node, c.labels, c.status) : c)),
       this.createdAt
     );
   }
@@ -63,6 +66,37 @@ export default class Column {
       this.id,
       this.name,
       this.cards.filter((card) => card.id !== id),
+      this.createdAt
+    );
+  }
+
+  addLabelToCard(label: Label, cardId: string): Column {
+    return new Column(
+      this.id,
+      this.name,
+      this.cards.map((card) => (card.id === cardId ? card.addLabel(label) : card)),
+      this.createdAt
+    );
+  }
+
+  setCardStatus(status: Status, cardId: string): Column {
+    return new Column(
+      this.id,
+      this.name,
+      this.cards.map((card) => (card.id === cardId ? card.setStatus(status) : card)),
+      this.createdAt
+    );
+  }
+
+  deleteRelationship(parentId: string, cardId: string): Column {
+    if (this.id === parentId) {
+      return this.deleteCardById(cardId);
+    }
+
+    return new Column(
+      this.id,
+      this.name,
+      this.cards.map((card) => (card.id === cardId ? card.removeLabel(parentId) : card)),
       this.createdAt
     );
   }

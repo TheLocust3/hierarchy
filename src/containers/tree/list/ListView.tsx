@@ -5,14 +5,12 @@ import styled from '@emotion/styled';
 
 import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
-import { getCardsRootedAt } from '../../../actions/list-actions';
+import { getCardsRootedAt, addLabel, setStatus } from '../../../actions/list-actions';
 import {
-  getTree,
   getAllTrees,
   setOverlay,
   updateNode,
   deleteNode,
-  createRelationship,
   deleteRelationship
 } from '../../../actions/tree-actions';
 import { Data, Node } from '../../../models/tree/tree-base';
@@ -45,7 +43,6 @@ interface ListViewProps {
 class ListView extends React.Component<ListViewProps> {
   componentDidMount() {
     this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
-    this.props.dispatch(getTree(this.props.match.params.id)); // TODO: ?
     this.props.dispatch(getAllTrees());
   }
 
@@ -65,7 +62,7 @@ class ListView extends React.Component<ListViewProps> {
   private renderInner() {
     const { isReady, list, areTreesReady, allLabels, allStatuses, overlay } = this.props;
 
-    if (!isReady || areTreesReady) return;
+    if (!isReady || !areTreesReady) return;
 
     return (
       <div>
@@ -86,9 +83,26 @@ class ListView extends React.Component<ListViewProps> {
                 setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
                 updateNode={(id: string, data: Data) => this.props.dispatch(updateNode(id, data))}
                 deleteNode={(id: string) => this.props.dispatch(deleteNode(id))}
-                createRelationship={(parentId: string, childId: string) =>
-                  this.props.dispatch(createRelationship(parentId, childId))
-                }
+                createRelationship={(parentId: string, childId: string) => {
+                  const label = allLabels.find((label) => label.id === parentId);
+                  const status = allStatuses.find((status) => status.id === parentId);
+
+                  if (label !== undefined) {
+                    this.props.dispatch(
+                      addLabel(
+                        { id: label.id, title: label.data.title, createdAt: label.createdAt },
+                        childId
+                      )
+                    );
+                  } else if (status !== undefined) {
+                    this.props.dispatch(
+                      setStatus(
+                        { id: status.id, title: status.data.title, createdAt: status.createdAt },
+                        childId
+                      )
+                    );
+                  }
+                }}
                 deleteRelationship={(parentId: string, childId: string) =>
                   this.props.dispatch(deleteRelationship(parentId, childId))
                 }

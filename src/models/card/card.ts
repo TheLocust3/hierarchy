@@ -45,4 +45,16 @@ export default class Card {
   get status() {
     return this._status;
   }
+
+  addLabel(label: Label): Card {
+    return new Card(this._node, this.labels.concat(label), this.status);
+  }
+
+  setStatus(status: Status): Card {
+    return new Card(this._node, this.labels, status);
+  }
+
+  removeLabel(labelId: string): Card {
+    return new Card(this._node, this.labels.filter((l) => l.id !== labelId), this.status);
+  }
 }
