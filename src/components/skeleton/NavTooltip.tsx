@@ -5,7 +5,7 @@ import { colors } from '../../constants';
 
 const TooltipContainer = styled('div')`
   position: absolute;
-  top: 20px;
+  top: 17px;
   left: 75px;
 
   height: 20px;

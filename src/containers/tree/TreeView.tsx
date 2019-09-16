@@ -32,7 +32,7 @@ const TreeViewport = styled('div')`
   margin: 1%;
 
   width: 96%;
-  height: 88vh;
+  height: 85vh;
 
   overflow: scroll;
 

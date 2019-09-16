@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 import { colors } from '../../constants';
 
 import Divider from '../common/Divider';
+import Spacer from '../common/Spacer';
 import NavItem from './NavItem';
 
 const NavigationContainer = styled('div')`
   width: 100%;
   height: 100%;
-  padding-top: 20px;
 
   background-color: ${colors.themeMainBackground};
 `;
@@ -23,6 +23,8 @@ class Navigation extends React.Component<{}> {
   render() {
     return (
       <NavigationContainer>
+        <br />
+
         <NavItem text="Home" to="/" icon="home" tooltipWidth={'50px'} />
         <Divider
           marginTop="0"
@@ -69,6 +71,8 @@ class Navigation extends React.Component<{}> {
             color={colors.themeMainBackgroundLight}
           />
           <NavItem text="Sign Out" to="/sign_out" icon="exit_to_app" tooltipWidth={'70px'} />
+
+          <Spacer space="10px" />
         </Bottom>
       </NavigationContainer>
     );

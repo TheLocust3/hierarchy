@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
-import { colors } from '../constants';
-
 import Navigation from '../components/skeleton/Navigation';
 
 const SkeletonContainer = styled('div')`
