@@ -6,8 +6,18 @@ injectGlobal`
     body {
         margin: 0;
         padding: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        color: ${colors.black};
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #root {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
         position: relative;
         color: ${colors.black};
         font-family: 'Roboto', sans-serif;

@@ -1,6 +1,7 @@
 /** @jsx jsx  */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
 
 import { colors } from '../../constants';
@@ -15,8 +16,8 @@ class UnstyledLink extends React.Component<UnstyledLinkProps> {
     let { children, to } = this.props;
 
     return (
-      <a
-        href={to}
+      <Link
+        to={to}
         css={css`
           color: ${colors.black};
           text-decoration: none;
@@ -26,7 +27,7 @@ class UnstyledLink extends React.Component<UnstyledLinkProps> {
           }
         `}>
         {children}
-      </a>
+      </Link>
     );
   }
 }

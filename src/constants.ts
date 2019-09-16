@@ -27,7 +27,12 @@ export const colors = {
 
   nodeBackground: '#fafafa',
   nodeBackgroundHover: '#eeeeee',
-  dropdownHover: '#dddddd'
+  dropdownHover: '#dddddd',
+
+  themeMain: '#548aff',
+  themeMainBackground: '#33373f',
+  themeMainBackgroundDark: '#292c33',
+  themeMainBackgroundLight: '#475166'
 };
 
 export const fonts = {

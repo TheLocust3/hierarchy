@@ -9,6 +9,7 @@ import { history } from './constants';
 import './global-styles';
 import reducer from './reducers/root-reducer';
 
+import Skeleton from './containers/Skeleton';
 import Index from './containers/Index';
 import RootTreeView from './containers/tree/RootTreeView';
 import TreeView from './containers/tree/TreeView';
@@ -24,7 +25,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <Router history={history}>
-        <div>
+        <Skeleton>
           <Switch>
             <Route exact path="/" component={Index} />
             <Route exact path="/tree" component={RootTreeView} />
@@ -33,7 +34,7 @@ const App: React.FC = () => {
 
             <Route component={NotFound} />
           </Switch>
-        </div>
+        </Skeleton>
       </Router>
     </Provider>
   );

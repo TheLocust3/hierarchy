@@ -5,7 +5,7 @@ This project is currently in active development.
 
 ## to-do
 
-- Using back and forward buttons sometimes don't work
+- Proper webapp flow
 - Create single overlay (instead of a bunch of individual ones)
 - Handle server errors properly
 - Some weird bugs when adding/updating cards quickly
