@@ -25,7 +25,7 @@ const ColumnContainer = styled('div')`
   border: 1px solid ${colors.lightBlack};
   border-radius: 5px;
 
-  background-color: ${colors.nodeBackground};
+  background-color: ${colors.nodeBackgroundDarker};
 
   overflow: scroll;
 `;

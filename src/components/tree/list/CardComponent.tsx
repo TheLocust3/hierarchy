@@ -27,6 +27,11 @@ const CardContainer = styled('div')`
   border-radius: 5px;
 
   background-color: white;
+  transition: background-color 250ms;
+
+  &:hover {
+    background-color: ${colors.nodeBackground};
+  }
 `;
 
 const CardInner = styled('div')`

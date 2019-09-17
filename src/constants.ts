@@ -26,6 +26,7 @@ export const colors = {
   listPurpleActive: '#9c27b0',
 
   nodeBackground: '#fafafa',
+  nodeBackgroundDarker: '#f4f4f4',
   nodeBackgroundHover: '#eeeeee',
   dropdownHover: '#dddddd',
 

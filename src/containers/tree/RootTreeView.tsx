@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { AppState, Dispatch } from '../../types';
@@ -9,6 +8,7 @@ import { Node } from '../../models/tree/tree-base';
 import { getAllTrees, createRootLeaf } from '../../actions/tree-actions';
 
 import AddButton from '../../components/tree/AddButton';
+import RootNode from '../../components/tree/RootNode';
 
 const ListContainer = styled('div')`
   margin-top: 0.5%;
@@ -20,14 +20,14 @@ const TreeList = styled('div')`
   margin-left: 1.5%;
 `;
 
-const TreeListHeader = styled('div')`
-  width: 110px;
+const TreeListHeader = styled('h2')`
+  width: 170px;
   position: relative;
 `;
 
 const AddButtonContainer = styled('div')`
   position: absolute;
-  top: -1px;
+  top: 3px;
   right: 0;
 `;
 
@@ -67,6 +67,22 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
     return (
       <ListContainer>
         <TreeListHeader>
+          Task Trees
+          <AddButtonContainer>
+            <AddButton
+              onClick={() => {
+                this.props.dispatch(createRootLeaf('card'));
+                window.location.reload();
+              }}
+            />
+          </AddButtonContainer>
+        </TreeListHeader>
+
+        {this.renderTreeList(this.props.trees)}
+        <br />
+        <br />
+
+        <TreeListHeader>
           Status Trees
           <AddButtonContainer>
             <AddButton
@@ -95,22 +111,6 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
         </TreeListHeader>
 
         {this.renderTreeList(this.props.labels)}
-        <br />
-        <br />
-
-        <TreeListHeader>
-          Task Trees
-          <AddButtonContainer>
-            <AddButton
-              onClick={() => {
-                this.props.dispatch(createRootLeaf('card'));
-                window.location.reload();
-              }}
-            />
-          </AddButtonContainer>
-        </TreeListHeader>
-
-        {this.renderTreeList(this.props.trees)}
       </ListContainer>
     );
   }
@@ -122,9 +122,9 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
       <TreeList>
         {trees.map((tree, i) => {
           return (
-            <div key={i}>
-              <Link to={`/tree/${tree.id}`}>{tree.data.title}</Link>
-            </div>
+            <span key={i}>
+              <RootNode node={tree} />
+            </span>
           );
         })}
       </TreeList>
