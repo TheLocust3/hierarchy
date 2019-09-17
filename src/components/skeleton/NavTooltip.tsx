@@ -26,6 +26,8 @@ const TooltipContainer = styled('div')`
   transition: visibility 500ms, opacity 500ms;
 
   color: white;
+
+  z-index: 10;
 `;
 
 const Arrow = styled('div')`

@@ -43,7 +43,7 @@ class Navigation extends React.Component<{}> {
           color={colors.themeMainBackgroundLight}
         />
 
-        <NavItem text="Lists" to="/list" icon="list" tooltipWidth={'40px'} />
+        <NavItem text="Lists" to="/lists" icon="list" tooltipWidth={'40px'} />
         <Divider
           marginTop="0"
           marginBottom="0"

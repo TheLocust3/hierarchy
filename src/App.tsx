@@ -12,6 +12,7 @@ import reducer from './reducers/root-reducer';
 import Skeleton from './containers/Skeleton';
 import Index from './containers/Index';
 import RootTreeView from './containers/tree/RootTreeView';
+import RootListView from './containers/tree/list/RootListView';
 import TreeView from './containers/tree/TreeView';
 import ListView from './containers/tree/list/ListView';
 import NotFound from './containers/NotFound';
@@ -31,6 +32,8 @@ const App: React.FC = () => {
             <Route exact path="/tree" component={RootTreeView} />
             <Route exact path="/tree/:id" component={TreeView} />
             <Route exact path="/tree/:id/list" component={ListView} />
+
+            <Route exact path="/lists" component={RootListView} />
 
             <Route component={NotFound} />
           </Switch>

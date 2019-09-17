@@ -34,13 +34,16 @@ const NodeContainer = styled('div')`
 
 interface RootNodeProps {
   node: Node;
+  to?: string;
 }
 
 class RootNode extends React.Component<RootNodeProps> {
   render() {
     const { node } = this.props;
+    const to = this.props.to === undefined ? `/tree/${node.id}` : `/tree/${node.id}/list`;
+
     return (
-      <UnstyledLink to={`/tree/${node.id}`}>
+      <UnstyledLink to={to}>
         <NodeContainer>
           <h4>{node.data.title}</h4>
         </NodeContainer>

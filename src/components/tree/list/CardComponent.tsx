@@ -29,6 +29,8 @@ const CardContainer = styled('div')`
   background-color: white;
   transition: background-color 250ms;
 
+  box-shadow: 2px 2px 3px #ccc;
+
   &:hover {
     background-color: ${colors.nodeBackground};
   }

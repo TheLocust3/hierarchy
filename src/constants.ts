@@ -26,11 +26,11 @@ export const colors = {
   listPurpleActive: '#9c27b0',
 
   nodeBackground: '#fafafa',
-  nodeBackgroundDarker: '#f4f4f4',
+  nodeBackgroundDarker: '#f7f7f7',
   nodeBackgroundHover: '#eeeeee',
   dropdownHover: '#dddddd',
 
-  themeMain: '#548aff',
+  themeMain: '#4cc3ff',
   themeMainBackground: '#33373f',
   themeMainBackgroundDark: '#292c33',
   themeMainBackgroundLight: '#475166'
