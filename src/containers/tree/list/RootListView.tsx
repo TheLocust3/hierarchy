@@ -35,7 +35,9 @@ class RootListView extends React.Component<RootListViewProps> {
           {this.props.trees
             .filter((tree) => tree.data.type === 'card')
             .map((tree) => (
-              <RootNode node={tree} to={`/tree/${tree.id}/list`} />
+              <div key={tree.id}>
+                <RootNode node={tree} to={`/tree/${tree.id}/list`} />
+              </div>
             ))}
         </div>
       </div>

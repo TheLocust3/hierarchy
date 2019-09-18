@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import moment from 'moment';
 
 import { colors } from '../../../constants';
 import Card from '../../../models/card/card';
@@ -37,6 +38,8 @@ const CardContainer = styled('div')`
 `;
 
 const CardInner = styled('div')`
+  position: relative;
+
   width: 100%;
   height: 100%;
 
@@ -45,10 +48,24 @@ const CardInner = styled('div')`
   }
 `;
 
+const CardBottom = styled('div')`
+  position: absolute;
+  bottom: 0;
+`;
+
 const CardHeader = styled('h4')``;
 
 const LabelContainer = styled('span')`
   margin-right: 5px;
+`;
+
+const DueByContainer = styled('div')`
+  border: 1px solid ${colors.black};
+  border-radius: 5px;
+
+  padding: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 interface CardProps {
@@ -94,6 +111,8 @@ class CardComponent extends React.Component<CardProps> {
           <SideMargin margin="3%">
             <CardHeader>{card.data.title}</CardHeader>
           </SideMargin>
+
+          {this.renderDueBy(card.data.dueOn)}
         </CardInner>
 
         <NodeOverlay
@@ -117,6 +136,16 @@ class CardComponent extends React.Component<CardProps> {
           }}
         />
       </CardContainer>
+    );
+  }
+
+  private renderDueBy(dueBy?: number) {
+    if (dueBy === undefined) return;
+
+    return (
+      <CardBottom>
+        <DueByContainer>{moment(dueBy).format('MMM D')}</DueByContainer>
+      </CardBottom>
     );
   }
 }

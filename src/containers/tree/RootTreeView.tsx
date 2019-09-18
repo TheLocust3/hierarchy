@@ -9,6 +9,7 @@ import { getAllTrees, createRootLeaf } from '../../actions/tree-actions';
 
 import AddButton from '../../components/tree/AddButton';
 import RootNode from '../../components/tree/RootNode';
+import SpecialNode from '../../components/tree/SpecialNode';
 
 const ListContainer = styled('div')`
   margin-top: 0.5%;
@@ -94,7 +95,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           </AddButtonContainer>
         </TreeListHeader>
 
-        {this.renderTreeList(this.props.statuses)}
+        {this.renderSpecialTreeList(this.props.statuses)}
         <br />
         <br />
 
@@ -110,7 +111,7 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
           </AddButtonContainer>
         </TreeListHeader>
 
-        {this.renderTreeList(this.props.labels)}
+        {this.renderSpecialTreeList(this.props.labels)}
       </ListContainer>
     );
   }
@@ -125,6 +126,22 @@ class RootTreeView extends React.Component<RootTreeViewProps> {
             <span key={i}>
               <RootNode node={tree} />
             </span>
+          );
+        })}
+      </TreeList>
+    );
+  }
+
+  private renderSpecialTreeList(trees: ReadonlyArray<Node>) {
+    if (trees.length === 0) return <TreeList>None</TreeList>;
+
+    return (
+      <TreeList>
+        {trees.map((tree, i) => {
+          return (
+            <div key={i}>
+              <SpecialNode node={tree} />
+            </div>
           );
         })}
       </TreeList>

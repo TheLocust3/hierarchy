@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import uuid from 'uuid/v4';
 
 import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
