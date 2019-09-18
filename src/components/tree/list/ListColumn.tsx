@@ -34,6 +34,8 @@ const ColumnTitle = styled('h3')``;
 
 interface ListColumnProps {
   column: Column;
+  onDragEnter: () => void;
+  onDragEnd: (card: Card) => void;
   allLabels: ReadonlyArray<Label>;
   allStatuses: ReadonlyArray<Status>;
   overlay: TreeOverlay;
@@ -45,16 +47,31 @@ interface ListColumnProps {
 }
 
 class ListColumn extends React.Component<ListColumnProps> {
+  constructor(props: ListColumnProps) {
+    super(props);
+
+    this.state = {};
+  }
+
   render() {
-    const { column, allLabels, allStatuses, overlay, setOverlay } = this.props;
+    const {
+      column,
+      onDragEnter,
+      onDragEnd,
+      allLabels,
+      allStatuses,
+      overlay,
+      setOverlay
+    } = this.props;
 
     return (
-      <ColumnContainer>
+      <ColumnContainer onDragEnter={onDragEnter}>
         <ColumnTitle>{column.name}</ColumnTitle>
 
         {column.cards.map((card: Card) => (
           <div key={card.id}>
             <CardComponent
+              onDragEnd={() => onDragEnd(card)}
               card={card}
               allLabels={allLabels}
               allStatuses={allStatuses}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import uuid from 'uuid/v4';
 
 import { TITLE } from '../../../constants';
 import { Dispatch, RouterMatch, RouterParams, AppState } from '../../../types';
@@ -14,6 +15,7 @@ import {
   deleteRelationship
 } from '../../../actions/tree-actions';
 import { Data, Node } from '../../../models/tree/tree-base';
+import Card from '../../../models/card/card';
 import { TreeOverlay } from '../../../reducers/tree-reducer';
 
 import Column from '../../../models/card/column';
@@ -29,6 +31,10 @@ interface ListViewParams extends RouterParams {
   id: string;
 }
 
+interface ListViewState {
+  hoveredColumn: Column;
+}
+
 interface ListViewProps {
   isReady: boolean;
   list: ReadonlyArray<Column>;
@@ -40,7 +46,13 @@ interface ListViewProps {
   match: RouterMatch<ListViewParams>;
 }
 
-class ListView extends React.Component<ListViewProps> {
+class ListView extends React.Component<ListViewProps, ListViewState> {
+  constructor(props: ListViewProps) {
+    super(props);
+
+    this.state = { hoveredColumn: new Column('', '', [], 0) };
+  }
+
   componentDidMount() {
     this.props.dispatch(getCardsRootedAt(this.props.match.params.id));
     this.props.dispatch(getAllTrees());
@@ -72,6 +84,22 @@ class ListView extends React.Component<ListViewProps> {
           {list.map((column) => (
             <div key={column.id}>
               <ListColumn
+                onDragEnter={() => this.setState({ hoveredColumn: column })}
+                onDragEnd={(card: Card) => {
+                  const hoveredColumn = this.state.hoveredColumn;
+                  this.props.dispatch(
+                    setStatus(
+                      {
+                        id: hoveredColumn.id,
+                        title: hoveredColumn.name,
+                        createdAt: hoveredColumn.createdAt
+                      },
+                      card.id
+                    )
+                  );
+
+                  this.props.dispatch(deleteRelationship(column.id, card.id));
+                }}
                 column={column}
                 allLabels={allLabels.map((node) => {
                   return { id: node.id, title: node.data.title, createdAt: node.createdAt };

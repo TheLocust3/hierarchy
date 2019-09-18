@@ -53,6 +53,7 @@ const LabelContainer = styled('span')`
 
 interface CardProps {
   card: Card;
+  onDragEnd: () => void;
   allLabels: ReadonlyArray<LabelModel>;
   allStatuses: ReadonlyArray<Status>;
   overlay: TreeOverlay;
@@ -75,12 +76,12 @@ class CardComponent extends React.Component<CardProps> {
   }
 
   render() {
-    const { card, allLabels, allStatuses, overlay, onClick } = this.props;
+    const { card, onDragEnd, allLabels, allStatuses, overlay, onClick } = this.props;
     const id = card.id;
 
     return (
-      <CardContainer onClick={onClick}>
-        <CardInner draggable={true}>
+      <CardContainer onClick={onClick} draggable={true} onDragEnd={() => onDragEnd()}>
+        <CardInner>
           {card.labels.map((label) => {
             return (
               <LabelContainer key={label.id}>

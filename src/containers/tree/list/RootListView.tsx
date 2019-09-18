@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
 
 import { AppState, Dispatch } from '../../../types';
 import { Node } from '../../../models/tree/tree-base';
@@ -34,7 +33,7 @@ class RootListView extends React.Component<RootListViewProps> {
           <br />
 
           {this.props.trees
-            .filter((tree) => tree.data.type == 'card')
+            .filter((tree) => tree.data.type === 'card')
             .map((tree) => (
               <RootNode node={tree} to={`/tree/${tree.id}/list`} />
             ))}
