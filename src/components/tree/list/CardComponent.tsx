@@ -117,6 +117,7 @@ class CardComponent extends React.Component<CardProps> {
 
         <NodeOverlay
           id={id}
+          color={card.data.color}
           data={card.data}
           allLabels={allLabels}
           labels={card.labels}
