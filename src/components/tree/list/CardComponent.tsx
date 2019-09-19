@@ -63,7 +63,7 @@ const DueByContainer = styled('div')`
   border: 1px solid ${colors.black};
   border-radius: 5px;
 
-  padding: 3px;
+  padding: 2px;
   padding-left: 5px;
   padding-right: 5px;
 `;

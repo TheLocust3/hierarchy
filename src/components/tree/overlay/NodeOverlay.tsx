@@ -34,6 +34,7 @@ const OverlayContainer = styled('div')`
 
 interface NodeOverlayProps {
   id: string;
+  color?: string;
   data: Data;
   allLabels: ReadonlyArray<Label>;
   labels: ReadonlyArray<Label>;
@@ -51,6 +52,7 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
   render() {
     const {
       id,
+      color,
       data,
       allLabels,
       labels,
@@ -74,6 +76,7 @@ class NodeOverlay extends React.Component<NodeOverlayProps> {
           <OverlayContainer onClick={(event) => event.stopPropagation()}>
             <EditableNode
               id={id}
+              color={color}
               data={data}
               allLabels={allLabels}
               labels={labels}

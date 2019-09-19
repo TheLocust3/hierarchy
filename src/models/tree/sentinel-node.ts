@@ -50,6 +50,14 @@ export default class SentinelNode implements ITree {
     return this._tree.createdAt;
   }
 
+  get color() {
+    if (this._tree === undefined) {
+      return undefined;
+    }
+
+    return this._tree.color;
+  }
+
   isEmpty() {
     return this._tree === undefined || this._tree === null || this._tree instanceof SentinelNode;
   }

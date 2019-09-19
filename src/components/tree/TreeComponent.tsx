@@ -84,6 +84,7 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
 
         <NodeOverlay
           id={id}
+          color={tree.color}
           data={data}
           allLabels={allLabels}
           labels={tree.findParentsByType('label').map((tree) => {

@@ -60,6 +60,7 @@ class LeafComponent extends React.Component<LeafProps> {
 
         <NodeOverlay
           id={id}
+          color={tree.color}
           data={data}
           allLabels={allLabels}
           labels={tree.findParentsByType('label').map((tree) => {

@@ -7,13 +7,20 @@ export class Data {
   body: string = '';
   dueOn?: number;
   type: string = '';
+  color?: string;
 
   static fromJSON(json: DataJSON): Data {
-    return new Data(json.title, json.body, json.type, json.dueOn === null ? undefined : json.dueOn);
+    return new Data(
+      json.title,
+      json.body,
+      json.type,
+      json.dueOn === null ? undefined : json.dueOn,
+      json.color === null ? undefined : json.color
+    );
   }
 
   static empty(): Data {
-    return new Data('', '', 'card');
+    return new Data('', '', 'card', undefined, undefined);
   }
 
   static default(): Data {
@@ -21,14 +28,21 @@ export class Data {
   }
 
   static defaultWithType(type: string): Data {
-    return new Data('Title', 'Description', type);
+    return new Data('Title', 'Description', type, undefined, undefined);
   }
 
-  constructor(title: string, body: string, type: string, dueOn?: number) {
+  constructor(
+    title: string,
+    body: string,
+    type: string,
+    dueOn: number | undefined,
+    color: string | undefined
+  ) {
     this.title = title;
     this.body = body;
     this.dueOn = dueOn;
     this.type = type;
+    this.color = color;
   }
 }
 
@@ -38,7 +52,7 @@ export class Node {
   private _createdAt: number = moment().valueOf();
 
   static fromJSON(json: NodeJSON) {
-    return new Node(json.id, json.data, json.createdAt);
+    return new Node(json.id, Data.fromJSON(json.data), json.createdAt);
   }
 
   static empty() {
@@ -70,6 +84,7 @@ export interface ITree {
   children: ReadonlyArray<ITree>;
   parents: ReadonlyArray<ITree>;
   createdAt: number;
+  color?: string;
 
   isEmpty: () => boolean;
   containsITree: (id: string) => boolean;

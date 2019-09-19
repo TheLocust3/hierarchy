@@ -9,7 +9,7 @@ type TextFieldProps = {
 };
 
 export const StyledTextField = styled('input')<TextFieldProps>`
-  width: 100%;
+  display: inline;
 
   border: none;
 
@@ -25,7 +25,7 @@ export const StyledTextField = styled('input')<TextFieldProps>`
 
 export const StyledTextArea = styled('textarea')<TextFieldProps>`
   width: 100%;
-  height: 200px;
+  height: 180px;
 
   border: none;
   resize: none;

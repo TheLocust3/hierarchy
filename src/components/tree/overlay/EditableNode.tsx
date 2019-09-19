@@ -46,6 +46,7 @@ const Body = styled('div')`
 
 interface EditableNodeProps {
   id: string;
+  color?: string;
   data: Data;
   allLabels: ReadonlyArray<Label>;
   labels: ReadonlyArray<Label>;
@@ -63,6 +64,7 @@ interface EditableNodeState {
   labelDropdownShown: boolean;
   statusDropdownShown: boolean;
   dueBy: Date;
+  initialColor: string;
 }
 
 class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
@@ -72,13 +74,15 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
     this.state = {
       labelDropdownShown: false,
       statusDropdownShown: false,
-      dueBy: new Date()
+      dueBy: new Date(),
+      initialColor: props.color === undefined ? 'N/A' : props.color
     };
   }
 
   render() {
     const {
       id,
+      color,
       data,
       allLabels,
       labels,
@@ -153,6 +157,22 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
                 disableClock={true}
               />
             </SideMargin>
+          </SideMargin>
+          <br />
+
+          <SideMargin margin="5%">
+            Color:{' '}
+            <EditableTextField
+              onUnfocus={(value) => {
+                if (value !== this.state.initialColor) {
+                  this.props.updateNode({ ...this.props.data, color: value });
+                }
+              }}
+              fontSize="16px"
+              fontFamily={fonts.body}
+              backgroundColor={colors.nodeBackground}>
+              {color === undefined ? 'N/A' : color}
+            </EditableTextField>
           </SideMargin>
 
           <Spacer space="5%" />

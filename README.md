@@ -5,7 +5,7 @@ This project is currently in active development.
 
 ## to-do
 
-- Proper webapp flow
+- Are you sure you want to delete the root node?
 - Create single overlay (instead of a bunch of individual ones)
 - Handle server errors properly
 - Some weird bugs when adding/updating cards quickly

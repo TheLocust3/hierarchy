@@ -3,6 +3,7 @@ export interface DataJSON {
   body: string;
   dueOn?: number;
   type: string;
+  color?: string;
 }
 
 export interface NodeJSON {

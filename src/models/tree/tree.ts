@@ -62,6 +62,8 @@ export default class Tree implements ITree {
     this._node = node;
     this._children = children;
     this._parents = parents === undefined ? [] : parents;
+
+    this.children.forEach((child) => child.addParent(this));
   }
 
   get id() {
@@ -84,6 +86,15 @@ export default class Tree implements ITree {
     return this._node.createdAt;
   }
 
+  get color() {
+    const parents = this.findParentsByType('card');
+    if (this._node.data.color === undefined && parents.length >= 1) {
+      return parents[0].color;
+    }
+
+    return this._node.data.color;
+  }
+
   isEmpty() {
     return false;
   }
@@ -96,7 +107,19 @@ export default class Tree implements ITree {
   }
 
   addParent(tree: ITree) {
-    this._parents = this.parents.concat(tree);
+    let added = false;
+    this._parents = this.parents.map((parent) => {
+      if (parent.id === tree.id) {
+        added = true;
+        return tree;
+      }
+
+      return parent;
+    });
+
+    if (!added) {
+      this._parents = this._parents.concat(tree);
+    }
   }
 
   findParentsByType(type: string) {
@@ -156,6 +179,7 @@ export default class Tree implements ITree {
 
   insertITreeByParentId(parentId: string, tree: ITree): ITree {
     if (this.id === parentId) {
+      tree.addParent(this);
       return new Tree(this._node, this.children.concat(tree), this.parents);
     }
 
