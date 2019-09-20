@@ -32,12 +32,35 @@ const NodeInner = styled('div')`
   border: 1px solid ${colors.black};
   border-radius: 10px;
 
-  background-color: ${colors.nodeBackground};
-  transition: background-color 0.25s;
-
-  &:hover {
-    background-color: ${colors.nodeBackgroundHover};
+  &:hover span {
+    -webkit-filter: brightness(95%);
   }
+`;
+
+interface BackgroundProps {
+  backgroundColor?: string;
+}
+
+const Background = styled('span')<BackgroundProps>`
+  position: absolute;
+  top: -1px;
+  left: -1px;
+
+  width: ${NODE_WIDTH + 2}px;
+  height: ${NODE_HEIGHT + 2}px;
+
+  background-color: ${(props: BackgroundProps) =>
+    props.backgroundColor === undefined ? colors.nodeBackground : props.backgroundColor};
+
+  border-radius: 10px;
+  overflow: hidden;
+
+  filter: brightness(100%);
+  -webkit-filter: brightness(100%);
+
+  transition: background-color 0.25s, filter 0.25s;
+
+  z-index: -1;
 `;
 
 interface NodeProps {
@@ -106,6 +129,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
               this.updateXYState(rect.left, rect.top);
             }
           }}>
+          <Background backgroundColor={tree.color} />
           <NodeActions id={id} overlay={overlay} deleteNode={deleteNode} createLeaf={createLeaf} />
           <h3>{data.title}</h3>
 
