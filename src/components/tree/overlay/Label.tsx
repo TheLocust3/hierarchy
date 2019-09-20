@@ -32,7 +32,11 @@ const LabelContainer = styled('div')<LabelContainerProps>`
 
     color: ${(props: LabelContainerProps) => (props.clickable ? 'white' : 'initial')};
     background-color: ${(props: LabelContainerProps) =>
-      props.clickable ? colors.deleteRed : 'initial'};
+      props.clickable
+        ? colors.deleteRed
+        : props.backgroundColor === undefined
+        ? 'initial'
+        : props.backgroundColor};
   }
 `;
 

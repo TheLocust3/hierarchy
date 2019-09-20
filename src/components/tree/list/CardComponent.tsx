@@ -15,7 +15,11 @@ import Spacer from '../../common/Spacer';
 import Background from '../../common/Background';
 import NodeOverlay from '../overlay/NodeOverlay';
 
-const CardContainer = styled('div')`
+interface CardContainerProps {
+  borderColor?: string;
+}
+
+const CardContainer = styled('div')<CardContainerProps>`
   position: relative;
 
   width: 250px;
@@ -31,11 +35,20 @@ const CardContainer = styled('div')`
   border-radius: 5px;
 
   background-color: white;
-  transition: background-color 250ms;
+  transition: background-color 250ms, border-color 250ms;
 
   box-shadow: 2px 2px 3px #ccc;
 
   overflow: hidden;
+
+  &:hover {
+    padding: 9px;
+
+    border-color: ${(props: CardContainerProps) =>
+      props.borderColor === undefined ? colors.black : props.borderColor};
+
+    border-width: 2px;
+  }
 
   &:hover span {
     -webkit-filter: brightness(95%);
@@ -102,7 +115,11 @@ class CardComponent extends React.Component<CardProps> {
     const id = card.id;
 
     return (
-      <CardContainer onClick={onClick} draggable={true} onDragEnd={() => onDragEnd()}>
+      <CardContainer
+        onClick={onClick}
+        draggable={true}
+        onDragEnd={() => onDragEnd()}
+        borderColor={card.status === undefined ? undefined : card.status.color}>
         <Background backgroundColor={card.data.color} />
 
         <CardInner>

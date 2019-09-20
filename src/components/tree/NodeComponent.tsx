@@ -21,7 +21,11 @@ const NodeContainer = styled('div')`
   min-width: 110px;
 `;
 
-const NodeInner = styled('div')`
+interface NodeInnerProps {
+  borderColor?: string;
+}
+
+const NodeInner = styled('div')<NodeInnerProps>`
   position: relative;
   cursor: pointer;
 
@@ -31,6 +35,13 @@ const NodeInner = styled('div')`
 
   border: 1px solid ${colors.black};
   border-radius: 10px;
+
+  transition: border-color 250ms;
+
+  &:hover {
+    border-color: ${(props: NodeInnerProps) =>
+      props.borderColor === undefined ? colors.black : props.borderColor};
+  }
 
   &:hover span {
     -webkit-filter: brightness(95%);
@@ -116,6 +127,15 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
     const id = tree.id;
     const data = tree.data;
 
+    const status = tree.findParentsByType('status').map((tree) => {
+      return {
+        id: tree.id,
+        title: tree.data.title,
+        createdAt: tree.createdAt,
+        color: tree.color
+      };
+    })[0]; // TODO: catch errors on this bad boy
+
     return (
       <NodeContainer>
         {this.renderLine(viewport, parentX, parentY)}
@@ -128,7 +148,8 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
               getXY(rect.left, rect.top);
               this.updateXYState(rect.left, rect.top);
             }
-          }}>
+          }}
+          borderColor={status === undefined ? undefined : status.color}>
           <Background backgroundColor={tree.color} />
           <NodeActions id={id} overlay={overlay} deleteNode={deleteNode} createLeaf={createLeaf} />
           <h3>{data.title}</h3>
