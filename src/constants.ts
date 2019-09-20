@@ -38,13 +38,13 @@ export const colors = {
 
 export const customColors = [
   colors.nodeBackground,
-  '#ef5350',
-  '#ba68c8',
-  '#64b5f6',
-  '#81c784',
-  '#ffee58',
-  '#ffa726',
-  '#4dd0e1'
+  '#ef9a9a',
+  '#ce93d8',
+  '#90caf9',
+  '#80deea',
+  '#c5e1a5',
+  '#fff59d',
+  '#ffcc80'
 ];
 
 export const fonts = {
