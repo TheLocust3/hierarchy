@@ -88,11 +88,21 @@ class TreeComponent extends React.Component<TreeProps, TreeState> {
           data={data}
           allLabels={allLabels}
           labels={tree.findParentsByType('label').map((tree) => {
-            return { id: tree.id, title: tree.data.title, createdAt: tree.createdAt };
+            return {
+              id: tree.id,
+              title: tree.data.title,
+              createdAt: tree.createdAt,
+              color: tree.color
+            };
           })}
           status={
             tree.findParentsByType('status').map((tree) => {
-              return { id: tree.id, title: tree.data.title, createdAt: tree.createdAt };
+              return {
+                id: tree.id,
+                title: tree.data.title,
+                createdAt: tree.createdAt,
+                color: tree.color
+              };
             })[0] // TODO: catch errors on this bad boy
           }
           allStatuses={allStatuses}

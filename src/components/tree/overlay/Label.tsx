@@ -6,9 +6,12 @@ import LabelModel from '../../../models/label';
 
 interface LabelContainerProps {
   clickable: boolean;
+  backgroundColor?: string;
 }
 
 const LabelContainer = styled('div')<LabelContainerProps>`
+  position: relative;
+
   display: inline-block;
 
   padding-top: 2px;
@@ -20,6 +23,9 @@ const LabelContainer = styled('div')<LabelContainerProps>`
   border-radius: 5px;
 
   transition: background-color 400ms, white 400ms;
+
+  background-color: ${(props: LabelContainerProps) =>
+    props.backgroundColor === undefined ? 'initial' : props.backgroundColor};
 
   &:hover {
     cursor: ${(props: LabelContainerProps) => (props.clickable ? 'pointer' : 'inherit')};
@@ -41,7 +47,10 @@ class Label extends React.Component<LabelProps> {
     const onClick = this.props.onClick === undefined ? () => {} : this.props.onClick;
 
     return (
-      <LabelContainer clickable={this.props.onClick !== undefined} onClick={onClick}>
+      <LabelContainer
+        clickable={this.props.onClick !== undefined}
+        backgroundColor={label.color}
+        onClick={onClick}>
         {label.title}
       </LabelContainer>
     );

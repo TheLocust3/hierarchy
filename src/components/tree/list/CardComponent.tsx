@@ -12,6 +12,7 @@ import { TreeOverlay } from '../../../reducers/tree-reducer';
 import Label from '../overlay/Label';
 import SideMargin from '../../common/SideMargin';
 import Spacer from '../../common/Spacer';
+import Background from '../../common/Background';
 import NodeOverlay from '../overlay/NodeOverlay';
 
 const CardContainer = styled('div')`
@@ -39,27 +40,6 @@ const CardContainer = styled('div')`
   &:hover span {
     -webkit-filter: brightness(95%);
   }
-`;
-
-interface BackgroundProps {
-  backgroundColor?: string;
-}
-
-const Background = styled('span')<BackgroundProps>`
-  position: absolute;
-  left: 0;
-  top: 0;
-
-  width: 100%;
-  height: 100%;
-
-  background-color: ${(props: BackgroundProps) =>
-    props.backgroundColor === undefined ? colors.nodeBackground : props.backgroundColor};
-
-  filter: brightness(100%);
-  -webkit-filter: brightness(100%);
-
-  transition: background-color 0.25s, filter 0.25s;
 `;
 
 const CardInner = styled('div')`

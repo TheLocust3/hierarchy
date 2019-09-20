@@ -40,10 +40,11 @@ export const customColors = [
   colors.nodeBackground,
   '#ef5350',
   '#ba68c8',
-  '#42a5f5',
-  '#66bb6a',
+  '#64b5f6',
+  '#81c784',
   '#ffee58',
-  '#ffa726'
+  '#ffa726',
+  '#4dd0e1'
 ];
 
 export const fonts = {

@@ -30,6 +30,8 @@ const OverlayContainer = styled('div')`
   border-radius: 10px;
 
   background-color: ${colors.nodeBackground};
+
+  overlay: hidden;
 `;
 
 interface NodeOverlayProps {

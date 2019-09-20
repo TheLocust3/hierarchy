@@ -82,6 +82,8 @@ interface PickerProps {
 }
 
 const Picker = styled('div')<PickerProps>`
+  position: absolute;
+
   opacity: ${(props: PickerProps) => (props.open ? 1 : 0)};
   visibility: ${(props: PickerProps) => (props.open ? 'initial' : 'hidden')};
 
