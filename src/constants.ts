@@ -36,6 +36,16 @@ export const colors = {
   themeMainBackgroundLight: '#475166'
 };
 
+export const customColors = [
+  colors.nodeBackground,
+  '#ef5350',
+  '#ba68c8',
+  '#42a5f5',
+  '#66bb6a',
+  '#ffee58',
+  '#ffa726'
+];
+
 export const fonts = {
   title: "'Roboto Slab', serif",
   body: "'Roboto', sans-serif"

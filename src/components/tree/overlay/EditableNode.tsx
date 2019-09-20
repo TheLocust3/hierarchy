@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import DateTimePicker from 'react-datetime-picker';
+import { GithubPicker } from 'react-color';
 
-import { colors, fonts } from '../../../constants';
+import { colors, customColors, fonts } from '../../../constants';
 import { Data } from '../../../models/tree/tree-base';
 import Label from '../../../models/label';
 import Status from '../../../models/status';
@@ -44,6 +45,52 @@ const Body = styled('div')`
   margin-right: 5%;
 `;
 
+interface ColorSwatchProps {
+  color: string;
+}
+
+const ColorSwatch = styled('div')<ColorSwatchProps>`
+  position: absolute;
+  display: inline-block;
+
+  width: 20px;
+  height: 20px;
+
+  margin-left: 5px;
+
+  border: 1px solid ${colors.lightBlack};
+  border-radius: 3px;
+  overflow: hidden;
+
+  background-color: ${(props: ColorSwatchProps) => props.color};
+
+  filter: brightness(100%);
+  -webkit-filter: brightness(100%);
+
+  transition: background-color 0.25s, filter 0.25s;
+
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(95%);
+    -webkit-filter: brightness(95%);
+  }
+`;
+
+interface PickerProps {
+  open: boolean;
+}
+
+const Picker = styled('div')<PickerProps>`
+  opacity: ${(props: PickerProps) => (props.open ? 1 : 0)};
+  visibility: ${(props: PickerProps) => (props.open ? 'initial' : 'hidden')};
+
+  transition: opacity 0.25ms, visibility 0.25ms;
+
+  margin-left: 38px;
+  margin-top: 8px;
+`;
+
 interface EditableNodeProps {
   id: string;
   color?: string;
@@ -64,7 +111,7 @@ interface EditableNodeState {
   labelDropdownShown: boolean;
   statusDropdownShown: boolean;
   dueBy: Date;
-  initialColor: string;
+  pickerOpen: boolean;
 }
 
 class EditableNode extends React.Component<EditableNodeProps, EditableNodeState> {
@@ -75,7 +122,7 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
       labelDropdownShown: false,
       statusDropdownShown: false,
       dueBy: new Date(),
-      initialColor: props.color === undefined ? 'N/A' : props.color
+      pickerOpen: false
     };
   }
 
@@ -95,7 +142,13 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
 
     return (
       <Container
-        onClick={() => this.setState({ labelDropdownShown: false, statusDropdownShown: false })}>
+        onClick={() =>
+          this.setState({
+            labelDropdownShown: false,
+            statusDropdownShown: false,
+            pickerOpen: false
+          })
+        }>
         <LeftColumn>
           <Title>
             <EditableTextField
@@ -161,18 +214,26 @@ class EditableNode extends React.Component<EditableNodeProps, EditableNodeState>
           <br />
 
           <SideMargin margin="5%">
-            Color:{' '}
-            <EditableTextField
-              onUnfocus={(value) => {
-                if (value !== this.state.initialColor) {
-                  this.props.updateNode({ ...this.props.data, color: value });
-                }
+            Color:
+            <ColorSwatch
+              color={color === undefined ? colors.nodeBackground : color}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                this.setState({ pickerOpen: !this.state.pickerOpen });
               }}
-              fontSize="16px"
-              fontFamily={fonts.body}
-              backgroundColor={colors.nodeBackground}>
-              {color === undefined ? 'N/A' : color}
-            </EditableTextField>
+            />
+            <Picker open={this.state.pickerOpen}>
+              <GithubPicker
+                colors={customColors}
+                onChange={(color) => {
+                  this.props.updateNode({
+                    ...this.props.data,
+                    color: color.hex === colors.nodeBackground ? '' : color.hex
+                  });
+                }}
+              />
+            </Picker>
           </SideMargin>
 
           <Spacer space="5%" />
