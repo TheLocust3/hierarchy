@@ -15,6 +15,7 @@ export interface ColumnJSON {
   name: string;
   cards: ReadonlyArray<CardJSON>;
   createdAt: number;
+  color?: string;
 }
 
 export interface ListResponse {

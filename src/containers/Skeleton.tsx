@@ -15,12 +15,14 @@ const Content = styled('div')`
 `;
 
 const LeftColumn = styled('div')`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 
   width: 70px;
   height: 100%;
+
+  z-index: 100;
 `;
 
 const RealContent = styled('div')`

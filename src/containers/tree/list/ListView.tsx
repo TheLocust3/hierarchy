@@ -91,7 +91,8 @@ class ListView extends React.Component<ListViewProps, ListViewState> {
                       {
                         id: hoveredColumn.id,
                         title: hoveredColumn.name,
-                        createdAt: hoveredColumn.createdAt
+                        createdAt: hoveredColumn.createdAt,
+                        color: hoveredColumn.color
                       },
                       card.id
                     )
@@ -101,10 +102,20 @@ class ListView extends React.Component<ListViewProps, ListViewState> {
                 }}
                 column={column}
                 allLabels={allLabels.map((node) => {
-                  return { id: node.id, title: node.data.title, createdAt: node.createdAt };
+                  return {
+                    id: node.id,
+                    title: node.data.title,
+                    createdAt: node.createdAt,
+                    color: node.data.color
+                  };
                 })}
                 allStatuses={allStatuses.map((node) => {
-                  return { id: node.id, title: node.data.title, createdAt: node.createdAt };
+                  return {
+                    id: node.id,
+                    title: node.data.title,
+                    createdAt: node.createdAt,
+                    color: node.data.color
+                  };
                 })}
                 overlay={overlay}
                 setOverlay={(overlay: TreeOverlay) => this.props.dispatch(setOverlay(overlay))}
@@ -117,14 +128,24 @@ class ListView extends React.Component<ListViewProps, ListViewState> {
                   if (label !== undefined) {
                     this.props.dispatch(
                       addLabel(
-                        { id: label.id, title: label.data.title, createdAt: label.createdAt },
+                        {
+                          id: label.id,
+                          title: label.data.title,
+                          createdAt: label.createdAt,
+                          color: label.data.color
+                        },
                         childId
                       )
                     );
                   } else if (status !== undefined) {
                     this.props.dispatch(
                       setStatus(
-                        { id: status.id, title: status.data.title, createdAt: status.createdAt },
+                        {
+                          id: status.id,
+                          title: status.data.title,
+                          createdAt: status.createdAt,
+                          color: status.data.color
+                        },
                         childId
                       )
                     );

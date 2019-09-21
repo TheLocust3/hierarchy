@@ -9,6 +9,7 @@ import { CardJSON, ColumnJSON } from '../json/list-json';
 export default class Column {
   private _id: string = '';
   private _name: string = '';
+  private _color?: string = '';
   private _cards: ReadonlyArray<Card> = [];
   private _createdAt: number = moment().valueOf();
 
@@ -17,15 +18,23 @@ export default class Column {
       json.id,
       json.name,
       json.cards.map((cardJSON: CardJSON) => Card.fromJSON(cardJSON)),
-      json.createdAt
+      json.createdAt,
+      json.color
     );
   }
 
-  constructor(id: string, name: string, cards: ReadonlyArray<Card>, createdAt: number) {
+  constructor(
+    id: string,
+    name: string,
+    cards: ReadonlyArray<Card>,
+    createdAt: number,
+    color?: string
+  ) {
     this._id = id;
     this._name = name;
     this._cards = cards;
     this._createdAt = createdAt;
+    this._color = color;
   }
 
   get id() {
@@ -44,12 +53,16 @@ export default class Column {
     return this._createdAt;
   }
 
+  get color() {
+    return this._color;
+  }
+
   getCardById(id: string): Card | undefined {
     return this.cards.find((card: Card) => card.id === id);
   }
 
   addCard(card: Card): Column {
-    return new Column(this.id, this.name, this.cards.concat(card), this.createdAt);
+    return new Column(this.id, this.name, this.cards.concat(card), this.createdAt, this.color);
   }
 
   replaceCardNodeById(id: string, node: Node): Column {
@@ -57,7 +70,8 @@ export default class Column {
       this.id,
       this.name,
       this.cards.map((c: Card) => (c.id === id ? new Card(node, c.labels, c.status) : c)),
-      this.createdAt
+      this.createdAt,
+      this.color
     );
   }
 
@@ -66,7 +80,8 @@ export default class Column {
       this.id,
       this.name,
       this.cards.filter((card) => card.id !== id),
-      this.createdAt
+      this.createdAt,
+      this.color
     );
   }
 
@@ -75,7 +90,8 @@ export default class Column {
       this.id,
       this.name,
       this.cards.map((card) => (card.id === cardId ? card.addLabel(label) : card)),
-      this.createdAt
+      this.createdAt,
+      this.color
     );
   }
 
@@ -84,7 +100,8 @@ export default class Column {
       this.id,
       this.name,
       this.cards.map((card) => (card.id === cardId ? card.setStatus(status) : card)),
-      this.createdAt
+      this.createdAt,
+      this.color
     );
   }
 
@@ -97,7 +114,8 @@ export default class Column {
       this.id,
       this.name,
       this.cards.map((card) => (card.id === cardId ? card.removeLabel(parentId) : card)),
-      this.createdAt
+      this.createdAt,
+      this.color
     );
   }
 }
