@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
+import { colors } from '../constants';
+
 import Navigation from '../components/skeleton/Navigation';
 
 const SkeletonContainer = styled('div')`
@@ -23,6 +25,8 @@ const LeftColumn = styled('div')`
   height: 100%;
 
   z-index: 100;
+
+  box-shadow: 2px 0 5px ${colors.actionShadow};
 `;
 
 const RealContent = styled('div')`

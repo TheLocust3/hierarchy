@@ -6,6 +6,7 @@ This project is currently in active development.
 ## to-do
 
 - Are you sure you want to delete the root node?
+- Use different picker for selecting status on NodeOverlay
 - Create single overlay (instead of a bunch of individual ones)
 - Handle server errors properly
 - Some weird bugs when adding/updating cards quickly
