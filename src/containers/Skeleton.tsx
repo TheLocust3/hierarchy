@@ -2,9 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
+import { AppState, Dispatch } from '../types';
 import { colors } from '../constants';
+import { getUser } from '../actions/user-actions';
 
 import Navigation from '../components/skeleton/Navigation';
+import User from '../models/user/user';
 
 const SkeletonContainer = styled('div')`
   height: 100%;
@@ -35,9 +38,16 @@ const RealContent = styled('div')`
 
 interface SkeletonProps {
   children: any;
+  user: User;
+  isReady: boolean;
+  dispatch: Dispatch;
 }
 
 class Skeleton extends React.Component<SkeletonProps> {
+  componentDidMount() {
+    this.props.dispatch(getUser());
+  }
+
   render() {
     const { children } = this.props;
 
@@ -55,4 +65,9 @@ class Skeleton extends React.Component<SkeletonProps> {
   }
 }
 
-export default connect()(Skeleton);
+const mapStateToProps = (state: AppState) => ({
+  user: state.user.user,
+  isReady: state.user.isReady
+});
+
+export default connect(mapStateToProps)(Skeleton);
