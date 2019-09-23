@@ -19,7 +19,11 @@ const Bottom = styled('div')`
   bottom: 0;
 `;
 
-class Navigation extends React.Component<{}> {
+interface NavigationProps {
+  signOut: () => void;
+}
+
+class Navigation extends React.Component<NavigationProps> {
   render() {
     return (
       <NavigationContainer>
@@ -70,7 +74,12 @@ class Navigation extends React.Component<{}> {
             width="50px"
             color={colors.themeMainBackgroundLight}
           />
-          <NavItem text="Sign Out" to="/sign_out" icon="exit_to_app" tooltipWidth={'70px'} />
+          <NavItem
+            text="Sign Out"
+            onClick={() => this.props.signOut()}
+            icon="exit_to_app"
+            tooltipWidth={'70px'}
+          />
 
           <Spacer space="10px" />
         </Bottom>

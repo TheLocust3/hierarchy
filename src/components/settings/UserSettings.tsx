@@ -82,7 +82,7 @@ class UserSettings extends React.Component<UserSettingsProps, UserSettingsState>
         <h3>User</h3>
         <Spacer space="2%" />
 
-        <SideMargin marginLeft="1%" marginRight="40%">
+        <SideMargin marginLeft="1%" marginRight="30%">
           <InputContainer>
             <Label>Email:</Label>
 

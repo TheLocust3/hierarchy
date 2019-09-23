@@ -3,7 +3,9 @@ import {
   REQUEST_USER,
   RECEIVE_USER,
   CHANGE_PASSWORD,
-  UPDATE_USER
+  UPDATE_USER,
+  SIGN_IN,
+  SIGN_OUT
 } from '../actions/user-actions';
 import User from '../models/user/user';
 
@@ -40,6 +42,10 @@ export function userReducer(
         ...state,
         user: { ...state.user, email: action.email }
       };
+    case SIGN_IN:
+      return state;
+    case SIGN_OUT:
+      return state;
     default:
       return state;
   }

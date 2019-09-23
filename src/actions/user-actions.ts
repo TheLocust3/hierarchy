@@ -10,6 +10,9 @@ export const RECEIVE_USER = 'RECEIVE_USER';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const UPDATE_USER = 'UPDATE_USER';
 
+export const SIGN_IN = 'SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+
 interface RequestUser {
   type: typeof REQUEST_USER;
 }
@@ -30,7 +33,23 @@ interface UpdateUser {
   email: string;
 }
 
-export type UserActionTypes = RequestUser | ReceiveUser | ChangePassword | UpdateUser;
+interface SignIn {
+  type: typeof SIGN_IN;
+  email: string;
+  password: string;
+}
+
+interface SignOut {
+  type: typeof SIGN_OUT;
+}
+
+export type UserActionTypes =
+  | RequestUser
+  | ReceiveUser
+  | ChangePassword
+  | UpdateUser
+  | SignIn
+  | SignOut;
 
 const InternalActions = {
   requestUser(): UserActionTypes {
@@ -58,6 +77,20 @@ const InternalActions = {
     return {
       type: UPDATE_USER,
       email: email
+    };
+  },
+
+  signIn(email: string, password: string): UserActionTypes {
+    return {
+      type: SIGN_IN,
+      email: email,
+      password: password
+    };
+  },
+
+  signOut(): UserActionTypes {
+    return {
+      type: SIGN_OUT
     };
   }
 };
@@ -89,5 +122,25 @@ export const updateUser = (email: string): ThunkAction<void, AppState, null, Use
 
     const user = await UserApi.updateUser(email);
     dispatch(InternalActions.receiveUser(user));
+  };
+};
+
+export const signIn = (
+  email: string,
+  password: string
+): ThunkAction<void, AppState, null, UserActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.signIn(email, password));
+
+    const user = await UserApi.signIn(email, password);
+    dispatch(InternalActions.receiveUser(user));
+  };
+};
+
+export const signOut = (): ThunkAction<void, AppState, null, UserActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.signOut());
+
+    await UserApi.signOut();
   };
 };

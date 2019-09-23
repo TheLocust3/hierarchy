@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { AppState, Dispatch } from '../types';
 import { colors } from '../constants';
-import { getUser } from '../actions/user-actions';
+import { getUser, signOut } from '../actions/user-actions';
 import User from '../models/user/user';
 
 import Navigation from '../components/skeleton/Navigation';
@@ -54,7 +54,12 @@ class Skeleton extends React.Component<SkeletonProps> {
     return (
       <SkeletonContainer>
         <LeftColumn>
-          <Navigation />
+          <Navigation
+            signOut={() => {
+              this.props.dispatch(signOut());
+              window.location.reload();
+            }}
+          />
         </LeftColumn>
 
         <Content>

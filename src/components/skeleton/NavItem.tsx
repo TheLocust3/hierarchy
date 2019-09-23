@@ -36,13 +36,26 @@ const ItemContainer = styled('div')`
 interface NavItemProps {
   text: string;
   tooltipWidth: string;
-  to: string;
+  to?: string;
+  onClick?: () => void;
   icon: string;
 }
 
 class NavItem extends React.Component<NavItemProps> {
   render() {
+    const { to } = this.props;
+
+    if (to !== undefined) {
+      return this.renderLink();
+    }
+
+    return this.renderOnClick();
+  }
+
+  renderLink() {
     const { text, tooltipWidth, to, icon } = this.props;
+
+    if (to === undefined) return;
 
     return (
       <ItemContainer>
@@ -51,6 +64,20 @@ class NavItem extends React.Component<NavItemProps> {
 
           <NavTooltip text={text} width={tooltipWidth} />
         </UnstyledLink>
+      </ItemContainer>
+    );
+  }
+
+  renderOnClick() {
+    const { text, tooltipWidth, onClick, icon } = this.props;
+
+    return (
+      <ItemContainer>
+        <div onClick={onClick} style={{ cursor: 'pointer' }}>
+          <MaterialIcon icon={icon} fontSize="35px" />
+
+          <NavTooltip text={text} width={tooltipWidth} />
+        </div>
       </ItemContainer>
     );
   }
