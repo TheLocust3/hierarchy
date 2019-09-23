@@ -1,4 +1,10 @@
-import { UserActionTypes, REQUEST_USER, RECEIVE_USER } from '../actions/user-actions';
+import {
+  UserActionTypes,
+  REQUEST_USER,
+  RECEIVE_USER,
+  CHANGE_PASSWORD,
+  UPDATE_USER
+} from '../actions/user-actions';
 import User from '../models/user/user';
 
 export interface UserState {
@@ -26,6 +32,13 @@ export function userReducer(
         ...state,
         user: action.user,
         isReady: true
+      };
+    case CHANGE_PASSWORD:
+      return state;
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: { ...state.user, email: action.email }
       };
     default:
       return state;

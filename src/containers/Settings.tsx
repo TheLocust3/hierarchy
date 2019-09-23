@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { AppState, Dispatch } from '../types';
 import { TITLE } from '../constants';
-import { getUser } from '../actions/user-actions';
+import { getUser, changePassword, updateUser } from '../actions/user-actions';
 import User from '../models/user/user';
 
 import SideMargin from '../components/common/SideMargin';
@@ -22,7 +22,7 @@ class Settings extends React.Component<SettingsProps> {
   }
 
   render() {
-    const { user, isReady } = this.props;
+    const { user, isReady, dispatch } = this.props;
 
     return (
       <div>
@@ -35,7 +35,19 @@ class Settings extends React.Component<SettingsProps> {
           <h1>Settings</h1>
           <br />
 
-          <SideMargin margin="2.5%">{isReady ? <UserSettings user={user} /> : <div />}</SideMargin>
+          <SideMargin margin="2.5%">
+            {isReady ? (
+              <UserSettings
+                user={user}
+                changePassword={(newPassword: string, newPasswordConfirmation: string) =>
+                  dispatch(changePassword(newPassword, newPasswordConfirmation))
+                }
+                updateUser={(email: string) => dispatch(updateUser(email))}
+              />
+            ) : (
+              <div />
+            )}
+          </SideMargin>
         </div>
       </div>
     );

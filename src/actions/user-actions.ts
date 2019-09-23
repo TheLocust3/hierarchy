@@ -7,6 +7,9 @@ import UserApi from '../api/user-api';
 export const REQUEST_USER = 'REQUEST_USER';
 export const RECEIVE_USER = 'RECEIVE_USER';
 
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export const UPDATE_USER = 'UPDATE_USER';
+
 interface RequestUser {
   type: typeof REQUEST_USER;
 }
@@ -16,7 +19,18 @@ interface ReceiveUser {
   user: User;
 }
 
-export type UserActionTypes = RequestUser | ReceiveUser;
+interface ChangePassword {
+  type: typeof CHANGE_PASSWORD;
+  newPassword: string;
+  newPasswordConfirmation: string;
+}
+
+interface UpdateUser {
+  type: typeof UPDATE_USER;
+  email: string;
+}
+
+export type UserActionTypes = RequestUser | ReceiveUser | ChangePassword | UpdateUser;
 
 const InternalActions = {
   requestUser(): UserActionTypes {
@@ -30,6 +44,21 @@ const InternalActions = {
       type: RECEIVE_USER,
       user: user
     };
+  },
+
+  changePassword(newPassword: string, newPasswordConfirmation: string): UserActionTypes {
+    return {
+      type: CHANGE_PASSWORD,
+      newPassword: newPassword,
+      newPasswordConfirmation: newPasswordConfirmation
+    };
+  },
+
+  updateUser(email: string): UserActionTypes {
+    return {
+      type: UPDATE_USER,
+      email: email
+    };
   }
 };
 
@@ -38,6 +67,27 @@ export const getUser = (): ThunkAction<void, AppState, null, UserActionTypes> =>
     dispatch(InternalActions.requestUser());
 
     const user = await UserApi.getUser();
+    dispatch(InternalActions.receiveUser(user));
+  };
+};
+
+export const changePassword = (
+  newPassword: string,
+  newPasswordConfirmation: string
+): ThunkAction<void, AppState, null, UserActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.changePassword(newPassword, newPasswordConfirmation));
+
+    const user = await UserApi.changePassword(newPassword, newPasswordConfirmation);
+    dispatch(InternalActions.receiveUser(user));
+  };
+};
+
+export const updateUser = (email: string): ThunkAction<void, AppState, null, UserActionTypes> => {
+  return async (dispatch) => {
+    dispatch(InternalActions.updateUser(email));
+
+    const user = await UserApi.updateUser(email);
     dispatch(InternalActions.receiveUser(user));
   };
 };

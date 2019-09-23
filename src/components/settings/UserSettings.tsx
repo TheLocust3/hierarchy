@@ -32,11 +32,48 @@ const ButtonContainer = styled('div')`
   float: right;
 `;
 
-interface UserSettingsProps {
-  user: User;
+interface UserSettingsState {
+  oldEmail: string;
+  email: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
 }
 
-class UserSettings extends React.Component<UserSettingsProps> {
+interface UserSettingsProps {
+  user: User;
+  changePassword: (newPassword: string, newPasswordConfirmation: string) => void;
+  updateUser: (email: string) => void;
+}
+
+class UserSettings extends React.Component<UserSettingsProps, UserSettingsState> {
+  constructor(props: UserSettingsProps) {
+    super(props);
+
+    this.state = {
+      oldEmail: this.props.user.email,
+      email: this.props.user.email,
+      newPassword: '',
+      newPasswordConfirmation: ''
+    };
+  }
+
+  onSave() {
+    if (this.state.email !== this.state.oldEmail) {
+      this.props.updateUser(this.state.email);
+    }
+
+    if (
+      this.state.newPassword !== undefined &&
+      this.state.newPassword !== null &&
+      this.state.newPassword !== '' &&
+      this.state.newPasswordConfirmation !== undefined &&
+      this.state.newPasswordConfirmation !== null &&
+      this.state.newPasswordConfirmation !== ''
+    ) {
+      this.props.changePassword(this.state.newPassword, this.state.newPasswordConfirmation);
+    }
+  }
+
   render() {
     const { user } = this.props;
 
@@ -50,17 +87,23 @@ class UserSettings extends React.Component<UserSettingsProps> {
             <Label>Email:</Label>
 
             <TextFieldContainer>
-              <TextField defaultValue={user.email} />
+              <TextField
+                defaultValue={user.email}
+                onChange={(event) => this.setState({ email: event.target.value })}
+              />
             </TextFieldContainer>
           </InputContainer>
 
-          <Spacer space="4%" />
+          <Spacer space="8%" />
 
           <InputContainer>
             <Label>New Password:</Label>
 
             <TextFieldContainer>
-              <TextField />
+              <TextField
+                type="password"
+                onChange={(event) => this.setState({ newPassword: event.target.value })}
+              />
             </TextFieldContainer>
           </InputContainer>
 
@@ -70,12 +113,15 @@ class UserSettings extends React.Component<UserSettingsProps> {
             <Label>New Password Confirmation:</Label>
 
             <TextFieldContainer>
-              <TextField />
+              <TextField
+                type="password"
+                onChange={(event) => this.setState({ newPasswordConfirmation: event.target.value })}
+              />
             </TextFieldContainer>
           </InputContainer>
         </SideMargin>
 
-        <Spacer space="1%" />
+        <Spacer space="3%" />
 
         <ButtonContainer>
           <Button
@@ -85,7 +131,7 @@ class UserSettings extends React.Component<UserSettingsProps> {
             textColor="white"
             width="70px"
             height="40px"
-            onClick={() => {}}>
+            onClick={() => this.onSave()}>
             Save
           </Button>
         </ButtonContainer>
