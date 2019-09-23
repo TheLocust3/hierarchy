@@ -15,6 +15,7 @@ import RootTreeView from './containers/tree/RootTreeView';
 import RootListView from './containers/tree/list/RootListView';
 import TreeView from './containers/tree/TreeView';
 import ListView from './containers/tree/list/ListView';
+import Settings from './containers/Settings';
 import NotFound from './containers/NotFound';
 
 const store = createStore(
@@ -34,6 +35,8 @@ const App: React.FC = () => {
             <Route exact path="/tree/:id/list" component={ListView} />
 
             <Route exact path="/lists" component={RootListView} />
+
+            <Route exact path="/settings" component={Settings} />
 
             <Route component={NotFound} />
           </Switch>

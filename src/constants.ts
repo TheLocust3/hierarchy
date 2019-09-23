@@ -31,6 +31,8 @@ export const colors = {
   dropdownHover: '#dddddd',
 
   themeMain: '#4cc3ff',
+  themeMainHover: '#44afe5',
+  themeMainActive: '#3d9ccc',
   themeMainBackground: '#33373f',
   themeMainBackgroundDark: '#292c33',
   themeMainBackgroundLight: '#475166'
