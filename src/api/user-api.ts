@@ -13,6 +13,7 @@ const UserApi = {
   async changePassword(newPassword: string, newPasswordConfirmation: string): Promise<User> {
     const response = await fetch(`${API_ENDPOINT}/user/password`, {
       method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         newPassword: newPassword,
         newPasswordConfirmation: newPasswordConfirmation
@@ -26,6 +27,7 @@ const UserApi = {
   async updateUser(email: string): Promise<User> {
     const response = await fetch(`${API_ENDPOINT}/user`, {
       method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email
       })
@@ -36,8 +38,9 @@ const UserApi = {
   },
 
   async signIn(email: string, password: string): Promise<User> {
-    const response = await fetch(`${API_ENDPOINT}/sign_in`, {
+    const response = await fetch(`${API_ENDPOINT}/user/sign_in`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
         password: password
@@ -49,7 +52,7 @@ const UserApi = {
   },
 
   async signOut(): Promise<string> {
-    const response = await fetch(`${API_ENDPOINT}/sign_out`, {
+    const response = await fetch(`${API_ENDPOINT}/user/sign_out`, {
       method: 'DELETE'
     });
     const json: UserSuccessResponse = await response.json();
