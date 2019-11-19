@@ -1,17 +1,17 @@
-import { API_ENDPOINT } from '../constants';
+import { USER_API_ENDPOINT } from '../constants';
 import { UserResponse, UserSuccessResponse } from '../models/json/user-json';
 import User from '../models/user/user';
 
 const UserApi = {
   async getUser(): Promise<User> {
-    const response = await fetch(`${API_ENDPOINT}/user`, { method: 'GET' });
+    const response = await fetch(`${USER_API_ENDPOINT}/user`, { method: 'GET' });
     const json: UserResponse = await response.json();
 
     return json.user;
   },
 
   async changePassword(newPassword: string, newPasswordConfirmation: string): Promise<User> {
-    const response = await fetch(`${API_ENDPOINT}/user/password`, {
+    const response = await fetch(`${USER_API_ENDPOINT}/auth/password`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -25,7 +25,7 @@ const UserApi = {
   },
 
   async updateUser(email: string): Promise<User> {
-    const response = await fetch(`${API_ENDPOINT}/user`, {
+    const response = await fetch(`${USER_API_ENDPOINT}/user`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -38,7 +38,7 @@ const UserApi = {
   },
 
   async signIn(email: string, password: string): Promise<User> {
-    const response = await fetch(`${API_ENDPOINT}/user/sign_in`, {
+    const response = await fetch(`${USER_API_ENDPOINT}/auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -52,7 +52,7 @@ const UserApi = {
   },
 
   async signOut(): Promise<string> {
-    const response = await fetch(`${API_ENDPOINT}/user/sign_out`, {
+    const response = await fetch(`${USER_API_ENDPOINT}/auth`, {
       method: 'DELETE'
     });
     const json: UserSuccessResponse = await response.json();
