@@ -24,6 +24,5 @@ This project is currently in active development.
 ## bugs
 
 - Status coloring is weird
-- Deleting the root node generally just fails/doesn't fully delete children
 - When a tree is given a status/label, all it's descendants get it
 - Lots of text overflow issues with cards

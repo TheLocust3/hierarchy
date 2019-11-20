@@ -216,9 +216,9 @@ export const updateNode = (
 
 export const deleteNode = (id: string): ThunkAction<void, AppState, null, TreeActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.deleteNodeById(id));
-
     await TreeApi.deleteTree(id);
+
+    dispatch(InternalActions.deleteNodeById(id));
   };
 };
 
