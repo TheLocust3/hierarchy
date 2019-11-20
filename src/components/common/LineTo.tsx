@@ -60,6 +60,7 @@ class LineTo extends React.Component<LineToProps, {}> {
   updateWidth(props: LineToProps) {
     if (this.lineRef.current !== null) {
       this.lineRef.current.style.width = `${props.viewport.width}px`;
+      this.lineRef.current.style.height = `${props.viewport.height}px`;
     }
   }
 }
