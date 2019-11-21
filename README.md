@@ -25,4 +25,3 @@ This project is currently in active development.
 
 - Status coloring is weird
 - When a tree is given a status/label, all it's descendants get it
-- Lots of text overflow issues with cards

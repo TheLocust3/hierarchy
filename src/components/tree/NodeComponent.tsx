@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React from "react";
+import styled from "@emotion/styled";
 
-import { colors } from '../../constants';
-import { ITree } from '../../models/tree/tree-base';
-import Viewport from '../../models/viewport';
+import { colors } from "../../constants";
+import { ITree } from "../../models/tree/tree-base";
+import Viewport from "../../models/viewport";
 
-import LineTo from '../common/LineTo';
-import NodeActions from './NodeActions';
-import { TreeOverlay } from '../../reducers/tree-reducer';
+import LineTo from "../common/LineTo";
+import NodeActions from "./NodeActions";
+import { TreeOverlay } from "../../reducers/tree-reducer";
 
 const NODE_WIDTH = 100;
 const NODE_HEIGHT = 100;
@@ -15,7 +15,7 @@ const NODE_HEIGHT = 100;
 const X_OFFSET = NODE_WIDTH / 2;
 const Y_OFFSET = NODE_HEIGHT + 2; // adjusted for border
 
-const NodeContainer = styled('div')`
+const NodeContainer = styled("div")`
   text-align: center;
   margin-bottom: 75px;
   min-width: 110px;
@@ -25,7 +25,7 @@ interface NodeInnerProps {
   borderColor?: string;
 }
 
-const NodeInner = styled('div')<NodeInnerProps>`
+const NodeInner = styled("div")<NodeInnerProps>`
   position: relative;
   cursor: pointer;
 
@@ -48,11 +48,19 @@ const NodeInner = styled('div')<NodeInnerProps>`
   }
 `;
 
+const Body = styled("p")`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 interface BackgroundProps {
   backgroundColor?: string;
 }
 
-const Background = styled('span')<BackgroundProps>`
+const Background = styled("span")<BackgroundProps>`
   position: absolute;
   top: -1px;
   left: -1px;
@@ -92,10 +100,20 @@ interface NodeState {
 }
 
 class NodeComponent extends React.Component<NodeProps, NodeState> {
+  headerRef: React.RefObject<HTMLDivElement> = React.createRef();
+
   constructor(props: NodeProps) {
     super(props);
 
     this.state = { x: 0, y: 0 };
+  }
+
+  componentDidMount() {
+    this.updateTextSize();
+  }
+
+  componentDidUpdate() {
+    this.updateTextSize();
   }
 
   renderLine(viewport: Viewport, parentX?: number, parentY?: number) {
@@ -127,7 +145,7 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
     const id = tree.id;
     const data = tree.data;
 
-    const status = tree.findParentsByType('status').map((tree) => {
+    const status = tree.findParentsByType("status").map((tree) => {
       return {
         id: tree.id,
         title: tree.data.title,
@@ -152,9 +170,9 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
           borderColor={status === undefined ? undefined : status.color}>
           <Background backgroundColor={tree.color} />
           <NodeActions id={id} overlay={overlay} deleteNode={deleteNode} createLeaf={createLeaf} />
-          <h3>{data.title}</h3>
+          <h3 ref={this.headerRef}>{data.title}</h3>
 
-          <p>{data.body}</p>
+          <Body>{data.body}</Body>
         </NodeInner>
       </NodeContainer>
     );
@@ -171,6 +189,22 @@ class NodeComponent extends React.Component<NodeProps, NodeState> {
       this.setState({
         y: y
       });
+    }
+  }
+
+  updateTextSize() {
+    if (this.headerRef.current === null) return;
+
+    const header = this.headerRef.current;
+    const computedStyle = window.getComputedStyle(header);
+    if (computedStyle === null || computedStyle.fontSize === null) return;
+
+    let fontSize = parseFloat(computedStyle.fontSize);
+
+    // shrink if header is too wide or too tall
+    while (header.scrollWidth > NODE_WIDTH || header.scrollHeight > NODE_HEIGHT / 1.75) {
+      fontSize -= 1;
+      header.style.fontSize = `${fontSize}px`;
     }
   }
 }
