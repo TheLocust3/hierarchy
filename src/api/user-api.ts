@@ -1,5 +1,6 @@
+import { setCookie } from '../utils/cookies';
 import { USER_API_ENDPOINT } from '../constants';
-import { UserResponse, UserSuccessResponse } from '../models/json/user-json';
+import { UserResponse, AuthResponse } from '../models/json/user-json';
 import User from '../models/user/user';
 
 const UserApi = {
@@ -46,18 +47,15 @@ const UserApi = {
         password: password
       })
     });
-    const json: UserResponse = await response.json();
+    const json: AuthResponse = await response.json();
+
+    setCookie('token', json.token, 1);
 
     return json.user;
   },
 
-  async signOut(): Promise<string> {
-    const response = await fetch(`${USER_API_ENDPOINT}/auth`, {
-      method: 'DELETE'
-    });
-    const json: UserSuccessResponse = await response.json();
-
-    return json.success;
+  signOut(): void {
+    setCookie('token', '', 1);
   }
 };
 

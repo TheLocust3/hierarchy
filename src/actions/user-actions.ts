@@ -141,6 +141,6 @@ export const signOut = (): ThunkAction<void, AppState, null, UserActionTypes> =>
   return async (dispatch) => {
     dispatch(InternalActions.signOut());
 
-    await UserApi.signOut();
+    UserApi.signOut();
   };
 };
