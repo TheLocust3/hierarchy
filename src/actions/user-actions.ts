@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ThunkAction } from 'redux-thunk';
 
 import { AppState } from '../types';
@@ -12,6 +13,8 @@ export const UPDATE_USER = 'UPDATE_USER';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
+
+export const USER_REQUEST_ERROR = 'USER_REQUEST_ERROR';
 
 interface RequestUser {
   type: typeof REQUEST_USER;
@@ -43,13 +46,19 @@ interface SignOut {
   type: typeof SIGN_OUT;
 }
 
+interface UserRequestError {
+  type: typeof USER_REQUEST_ERROR;
+  error: string;
+}
+
 export type UserActionTypes =
   | RequestUser
   | ReceiveUser
   | ChangePassword
   | UpdateUser
   | SignIn
-  | SignOut;
+  | SignOut
+  | UserRequestError;
 
 const InternalActions = {
   requestUser(): UserActionTypes {
@@ -92,6 +101,13 @@ const InternalActions = {
     return {
       type: SIGN_OUT
     };
+  },
+
+  userRequestError(error: string): UserActionTypes {
+    return {
+      type: USER_REQUEST_ERROR,
+      error: error
+    };
   }
 };
 
@@ -132,8 +148,13 @@ export const signIn = (
   return async (dispatch) => {
     dispatch(InternalActions.signIn(email, password));
 
-    const user = await UserApi.signIn(email, password);
-    dispatch(InternalActions.receiveUser(user));
+    UserApi.signIn(email, password).then((user) => {
+      if (_.isUndefined(user)) {
+        dispatch(InternalActions.userRequestError('Invalid email/password!'));
+      } else {
+        dispatch(InternalActions.receiveUser(user));
+      }
+    });
   };
 };
 

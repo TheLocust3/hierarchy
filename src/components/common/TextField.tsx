@@ -5,11 +5,13 @@ import { colors, fonts } from '../../constants';
 interface TextFieldProps {
   fontSize?: string;
   fontFamily?: string;
+  height?: string;
 }
 
 const TextField = styled('input')<TextFieldProps>`
   display: inline-block;
   width: 100%;
+  height: ${(props: TextFieldProps) => (props.height === undefined ? 'auto' : props.height)};
 
   font-size: ${(props: TextFieldProps) => (props.fontSize === undefined ? '14px' : props.fontSize)};
   font-family: ${(props: TextFieldProps) =>

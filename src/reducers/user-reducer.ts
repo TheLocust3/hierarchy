@@ -5,18 +5,21 @@ import {
   CHANGE_PASSWORD,
   UPDATE_USER,
   SIGN_IN,
-  SIGN_OUT
+  SIGN_OUT,
+  USER_REQUEST_ERROR
 } from '../actions/user-actions';
 import User from '../models/user/user';
 
 export interface UserState {
   user: User;
   isReady: boolean;
+  error: string;
 }
 
 const defaultUserState: UserState = {
   user: { email: 'test@test.com', name: 'test' },
-  isReady: false
+  isReady: false,
+  error: ''
 };
 
 export function userReducer(
@@ -27,13 +30,15 @@ export function userReducer(
     case REQUEST_USER:
       return {
         ...state,
-        isReady: false
+        isReady: false,
+        error: ''
       };
     case RECEIVE_USER:
       return {
         ...state,
         user: action.user,
-        isReady: true
+        isReady: true,
+        error: ''
       };
     case CHANGE_PASSWORD:
       return state;
@@ -43,9 +48,20 @@ export function userReducer(
         user: { ...state.user, email: action.email }
       };
     case SIGN_IN:
-      return state;
+      return {
+        ...state,
+        error: ''
+      };
     case SIGN_OUT:
-      return state;
+      return {
+        ...state,
+        error: ''
+      };
+    case USER_REQUEST_ERROR:
+      return {
+        ...state,
+        error: action.error
+      };
     default:
       return state;
   }
