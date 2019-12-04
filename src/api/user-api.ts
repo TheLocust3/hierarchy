@@ -1,24 +1,21 @@
 import { setCookie } from '../utils/cookies';
+import Api from './api';
 import { USER_API_ENDPOINT } from '../constants';
 import { UserResponse, AuthResponse } from '../models/json/user-json';
 import User from '../models/user/user';
 
 const UserApi = {
   async getUser(): Promise<User> {
-    const response = await fetch(`${USER_API_ENDPOINT}/user`, { method: 'GET' });
+    const response = await Api.get(`${USER_API_ENDPOINT}/user`);
     const json: UserResponse = await response.json();
 
     return json.user;
   },
 
   async changePassword(newPassword: string, newPasswordConfirmation: string): Promise<User> {
-    const response = await fetch(`${USER_API_ENDPOINT}/auth/password`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        newPassword: newPassword,
-        newPasswordConfirmation: newPasswordConfirmation
-      })
+    const response = await Api.patch(`${USER_API_ENDPOINT}/auth/password`, {
+      newPassword: newPassword,
+      newPasswordConfirmation: newPasswordConfirmation
     });
     const json: UserResponse = await response.json();
 
@@ -26,26 +23,16 @@ const UserApi = {
   },
 
   async updateUser(email: string): Promise<User> {
-    const response = await fetch(`${USER_API_ENDPOINT}/user`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email
-      })
-    });
+    const response = await Api.patch(`${USER_API_ENDPOINT}/user`, { email: email });
     const json: UserResponse = await response.json();
 
     return json.user;
   },
 
   async signIn(email: string, password: string): Promise<User> {
-    const response = await fetch(`${USER_API_ENDPOINT}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+    const response = await Api.post(`${USER_API_ENDPOINT}/auth`, {
+      email: email,
+      password: password
     });
     const json: AuthResponse = await response.json();
 

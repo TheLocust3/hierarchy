@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { AppState, Dispatch } from '../types';
 import { TITLE } from '../constants';
-import { getUser, changePassword, updateUser } from '../actions/user-actions';
+import { changePassword, updateUser } from '../actions/user-actions';
 import User from '../models/user/user';
 
 import SideMargin from '../components/common/SideMargin';
@@ -17,10 +17,6 @@ interface SettingsProps {
 }
 
 class Settings extends React.Component<SettingsProps> {
-  componentDidMount() {
-    this.props.dispatch(getUser());
-  }
-
   render() {
     const { user, isReady, dispatch } = this.props;
 
