@@ -28,7 +28,6 @@ interface ReceiveUser {
 interface ChangePassword {
   type: typeof CHANGE_PASSWORD;
   newPassword: string;
-  newPasswordConfirmation: string;
 }
 
 interface UpdateUser {
@@ -74,11 +73,10 @@ const InternalActions = {
     };
   },
 
-  changePassword(newPassword: string, newPasswordConfirmation: string): UserActionTypes {
+  changePassword(newPassword: string): UserActionTypes {
     return {
       type: CHANGE_PASSWORD,
-      newPassword: newPassword,
-      newPasswordConfirmation: newPasswordConfirmation
+      newPassword: newPassword
     };
   },
 
@@ -121,13 +119,12 @@ export const getUser = (): ThunkAction<void, AppState, null, UserActionTypes> =>
 };
 
 export const changePassword = (
-  newPassword: string,
-  newPasswordConfirmation: string
+  newPassword: string
 ): ThunkAction<void, AppState, null, UserActionTypes> => {
   return async (dispatch) => {
-    dispatch(InternalActions.changePassword(newPassword, newPasswordConfirmation));
+    dispatch(InternalActions.changePassword(newPassword));
 
-    const user = await UserApi.changePassword(newPassword, newPasswordConfirmation);
+    const user = await UserApi.changePassword(newPassword);
     dispatch(InternalActions.receiveUser(user));
   };
 };

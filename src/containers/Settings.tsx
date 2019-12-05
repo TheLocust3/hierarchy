@@ -35,9 +35,7 @@ class Settings extends React.Component<SettingsProps> {
             {isReady ? (
               <UserSettings
                 user={user}
-                changePassword={(newPassword: string, newPasswordConfirmation: string) =>
-                  dispatch(changePassword(newPassword, newPasswordConfirmation))
-                }
+                changePassword={(newPassword: string) => dispatch(changePassword(newPassword))}
                 updateUser={(email: string) => dispatch(updateUser(email))}
               />
             ) : (

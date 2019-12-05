@@ -37,11 +37,12 @@ interface UserSettingsState {
   email: string;
   newPassword: string;
   newPasswordConfirmation: string;
+  passwordError: string;
 }
 
 interface UserSettingsProps {
   user: User;
-  changePassword: (newPassword: string, newPasswordConfirmation: string) => void;
+  changePassword: (newPassword: string) => void;
   updateUser: (email: string) => void;
 }
 
@@ -53,13 +54,18 @@ class UserSettings extends React.Component<UserSettingsProps, UserSettingsState>
       oldEmail: this.props.user.email,
       email: this.props.user.email,
       newPassword: '',
-      newPasswordConfirmation: ''
+      newPasswordConfirmation: '',
+      passwordError: ''
     };
   }
 
   onSave() {
+    let shouldRefresh = false;
+
     if (this.state.email !== this.state.oldEmail) {
       this.props.updateUser(this.state.email);
+
+      shouldRefresh = true;
     }
 
     if (
@@ -70,8 +76,20 @@ class UserSettings extends React.Component<UserSettingsProps, UserSettingsState>
       this.state.newPasswordConfirmation !== null &&
       this.state.newPasswordConfirmation !== ''
     ) {
-      this.props.changePassword(this.state.newPassword, this.state.newPasswordConfirmation);
+      if (this.state.newPassword === this.state.newPasswordConfirmation) {
+        this.props.changePassword(this.state.newPassword);
+
+        shouldRefresh = true;
+      } else {
+        this.setState({
+          passwordError: 'Passwords must match!'
+        });
+
+        shouldRefresh = false;
+      }
     }
+
+    window.location.reload();
   }
 
   render() {
@@ -119,9 +137,15 @@ class UserSettings extends React.Component<UserSettingsProps, UserSettingsState>
               />
             </TextFieldContainer>
           </InputContainer>
+
+          <Spacer space="1.5%" />
+
+          <SideMargin marginLeft="1%" marginRight="1%">
+            <p>{this.state.passwordError}</p>
+          </SideMargin>
         </SideMargin>
 
-        <Spacer space="3%" />
+        <Spacer space="1.5%" />
 
         <ButtonContainer>
           <Button

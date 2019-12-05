@@ -12,10 +12,9 @@ const UserApi = {
     return json.user;
   },
 
-  async changePassword(newPassword: string, newPasswordConfirmation: string): Promise<User> {
+  async changePassword(password: string): Promise<User> {
     const response = await Api.patch(`${USER_API_ENDPOINT}/auth/password`, {
-      newPassword: newPassword,
-      newPasswordConfirmation: newPasswordConfirmation
+      password: password
     });
     const json: UserResponse = await response.json();
 
