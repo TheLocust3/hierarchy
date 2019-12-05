@@ -5,6 +5,7 @@ export const history = createBrowserHistory();
 export const colors = {
   black: '#444',
   lightBlack: '#999',
+  lightestBlack: '#bbb',
 
   actionHover: '#e0e0e0',
   actionShadow: '#bdbdbd',

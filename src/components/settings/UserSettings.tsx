@@ -89,7 +89,9 @@ class UserSettings extends React.Component<UserSettingsProps, UserSettingsState>
       }
     }
 
-    window.location.reload();
+    if (shouldRefresh) {
+      window.location.reload();
+    }
   }
 
   render() {

@@ -56,6 +56,15 @@ class Navigation extends React.Component<NavigationProps> {
           color={colors.themeMainBackgroundLight}
         />
 
+        <NavItem text="Calendar" to="/calendar" icon="calendar_today" tooltipWidth={'70px'} />
+        <Divider
+          marginTop="0"
+          marginBottom="0"
+          marginLeft="10px"
+          width="50px"
+          color={colors.themeMainBackgroundLight}
+        />
+
         <Bottom>
           <Divider
             marginTop="0"
