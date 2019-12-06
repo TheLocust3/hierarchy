@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,29 @@ import { TITLE } from '../../constants';
 
 import Calendar from '../../components/calendar/Calendar';
 
-class CalendarView extends React.Component<{}> {
+interface CalendarState {
+  time: Moment;
+}
+
+class CalendarView extends React.Component<{}, CalendarState> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = { time: moment() };
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({
+        time: moment()
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval();
+  }
+
   render() {
     return (
       <div>
@@ -20,7 +42,7 @@ class CalendarView extends React.Component<{}> {
           <h1>Calendar</h1>
           <br />
 
-          <Calendar time={moment()} view="DAY" />
+          <Calendar time={this.state.time} view="DAY" />
         </div>
       </div>
     );

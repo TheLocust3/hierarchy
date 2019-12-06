@@ -11,6 +11,7 @@ injectGlobal`
         position: relative;
         color: ${colors.black};
         font-family: 'Roboto', sans-serif;
+        font-weight: 100;
     }
 
     #root {
@@ -21,6 +22,7 @@ injectGlobal`
         position: relative;
         color: ${colors.black};
         font-family: 'Roboto', sans-serif;
+        font-weight: 100;
     }
 
     h1, h2, h3, h4, h5 {

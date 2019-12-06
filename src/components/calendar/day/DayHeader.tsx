@@ -7,12 +7,10 @@ import { colors } from '../../../constants';
 import Spacer from '../../common/Spacer';
 
 const Header = styled('div')`
-  border: 1px solid ${colors.lightestBlack};
+  border: 1px solid ${colors.lightBlack};
   border-top: 0px;
   border-left: 0px;
   border-right: 0px;
-
-  margin-bottom: 1%;
 `;
 
 const Date = styled('h2')`
