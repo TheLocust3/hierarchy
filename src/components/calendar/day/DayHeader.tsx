@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { colors } from '../../../constants';
 
 import Spacer from '../../common/Spacer';
+import SoftCenter from '../../common/SoftCenter';
 
 type HeaderProps = {
   separators?: boolean;
@@ -13,13 +14,17 @@ type HeaderProps = {
 const Header = styled('div')<HeaderProps>`
   border: 1px solid ${colors.lightBlack};
   border-top: 0px;
-  border-left-width: ${(props: HeaderProps) => (props.separators ? `1px` : '0')};
+  border-left: 0px;
   border-right-width: ${(props: HeaderProps) => (props.separators ? `1px` : '0')};
 
-  margin-left: -1px;
+  margin-right: -1px;
 `;
 
 const Date = styled('h2')`
+  font-family: 'Roboto', sans-serif;
+`;
+
+const DateCompact = styled('h3')`
   font-family: 'Roboto', sans-serif;
 `;
 
@@ -33,15 +38,24 @@ const Day = styled('h3')`
 
 interface DayHeaderProps {
   time: Moment;
+  compact?: boolean;
   separators?: boolean;
 }
 
 class DayHeader extends React.Component<DayHeaderProps> {
   render() {
+    if (this.props.compact) {
+      return this.renderCompact();
+    } else {
+      return this.renderNormal();
+    }
+  }
+
+  private renderNormal() {
     const time = this.props.time;
 
     return (
-      <Header separators={this.props.separators}>
+      <Header>
         <Date>
           <Bolded>{time.format('MMMM Do')}</Bolded>, {time.format('YYYY')}
         </Date>
@@ -51,6 +65,22 @@ class DayHeader extends React.Component<DayHeaderProps> {
         <Day>{time.format('dddd')}</Day>
 
         <Spacer space="1%" />
+      </Header>
+    );
+  }
+
+  private renderCompact() {
+    const time = this.props.time;
+
+    return (
+      <Header separators={this.props.separators}>
+        <SoftCenter>
+          <DateCompact>
+            <Bolded>{time.format('ddd D')}</Bolded>
+          </DateCompact>
+
+          <Spacer space="2%" />
+        </SoftCenter>
       </Header>
     );
   }

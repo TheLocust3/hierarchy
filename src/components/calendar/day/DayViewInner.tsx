@@ -13,7 +13,7 @@ const Day = styled('div')`
   position: relative;
   z-index: 1;
 
-  margin-right: -1px;
+  padding-right: -1px;
 `;
 
 const HeaderContainer = styled('div')`
@@ -22,8 +22,6 @@ const HeaderContainer = styled('div')`
   background-color: white;
 
   padding-top: 0.5vh;
-
-  padding-right: 1px;
 `;
 
 const HoursContainer = styled('div')`
@@ -51,6 +49,7 @@ const CurrentHour = styled('div')<CurrentHourProps>`
 
 interface DayViewProps {
   time: Moment;
+  compact?: boolean;
   separators?: boolean;
 }
 
@@ -95,7 +94,11 @@ class DayViewInner extends React.Component<DayViewProps> {
     return (
       <Day ref={this.dayRef}>
         <HeaderContainer ref={this.dayHeaderRef}>
-          <DayHeader time={this.props.time} separators={this.props.separators} />
+          <DayHeader
+            time={this.props.time}
+            compact={this.props.compact}
+            separators={this.props.separators}
+          />
         </HeaderContainer>
 
         <div ref={this.dayHeaderSpacerRef} />
@@ -103,7 +106,11 @@ class DayViewInner extends React.Component<DayViewProps> {
         <HoursContainer>
           {_.range(24).map((hour) => (
             <span key={hour}>
-              <HourBlock time={moment(startOfDay).hour(hour)} separators={this.props.separators} />
+              <HourBlock
+                time={moment(startOfDay).hour(hour)}
+                compact={this.props.compact}
+                separators={this.props.separators}
+              />
 
               {hour !== 23 ? <HourDivider /> : <span />}
             </span>

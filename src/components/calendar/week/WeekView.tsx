@@ -18,10 +18,14 @@ const WeekContainer = styled('div')`
   border-radius: 5px;
 
   height: 85vh;
+
+  padding: -1px;
 `;
 
 const DayContainer = styled('span')`
   flex-grow: 1;
+
+  padding-top: 2px;
 `;
 
 interface WeekViewProps {
@@ -69,7 +73,7 @@ class WeekView extends React.Component<WeekViewProps, WeekViewState> {
         {_.range(7).map((day) => {
           return (
             <DayContainer key={day}>
-              <DayViewInner time={moment(startOfWeek).day(day)} separators />
+              <DayViewInner time={moment(startOfWeek).day(day)} separators={day !== 6} compact />
             </DayContainer>
           );
         })}

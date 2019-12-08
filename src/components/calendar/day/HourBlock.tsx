@@ -28,6 +28,7 @@ const Hour = styled('div')``;
 
 interface HourBlockProps {
   time: Moment;
+  compact?: boolean;
   separators?: boolean;
 }
 
@@ -35,7 +36,7 @@ class HourBlock extends React.Component<HourBlockProps> {
   render() {
     return (
       <Block separators={this.props.separators}>
-        <Hour>{this.props.time.format('h A')}</Hour>
+        <Hour>{this.props.compact ? '' : this.props.time.format('h A')}</Hour>
       </Block>
     );
   }
