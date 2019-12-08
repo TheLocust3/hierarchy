@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 
 import { colors } from '../../../constants';
 
-import Spacer from '../../common/Spacer';
 import DayHeader from './DayHeader';
 import HourBlock from './HourBlock';
 import HourDivider from './HourDivider';
@@ -14,24 +13,17 @@ const Day = styled('div')`
   position: relative;
   z-index: 1;
 
-  border: 1px solid ${colors.lightBlack};
-  border-radius: 5px;
-
-  height: 85vh;
-
-  overflow-y: scroll;
+  margin-right: -1px;
 `;
 
 const HeaderContainer = styled('div')`
   position: fixed;
 
   background-color: white;
-  width: 39.2vw;
 
   padding-top: 0.5vh;
 
-  margin-left: 0.4vw;
-  margin-right: 0.4vw;
+  padding-right: 1px;
 `;
 
 const HoursContainer = styled('div')`
@@ -39,8 +31,6 @@ const HoursContainer = styled('div')`
   z-index: -1;
 
   padding-top: 1%;
-  padding-left: 1%;
-  padding-right: 1%;
 `;
 
 type CurrentHourProps = {
@@ -61,9 +51,40 @@ const CurrentHour = styled('div')<CurrentHourProps>`
 
 interface DayViewProps {
   time: Moment;
+  separators?: boolean;
 }
 
 class DayViewInner extends React.Component<DayViewProps> {
+  private dayRef: React.RefObject<HTMLDivElement>;
+  private dayHeaderRef: React.RefObject<HTMLDivElement>;
+  private dayHeaderSpacerRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: DayViewProps) {
+    super(props);
+
+    this.dayRef = React.createRef();
+    this.dayHeaderRef = React.createRef();
+    this.dayHeaderSpacerRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.updateWidths();
+
+    window.addEventListener('resize', () => this.updateWidths());
+  }
+
+  updateWidths() {
+    if (this.dayRef === null || this.dayRef.current === null) return;
+    if (this.dayHeaderRef === null || this.dayHeaderRef.current === null) return;
+    if (this.dayHeaderSpacerRef === null || this.dayHeaderSpacerRef.current === null) return;
+
+    const parentwidth = this.dayRef.current.getBoundingClientRect().width;
+    this.dayHeaderRef.current.style.width = `${parentwidth - 1}px`;
+
+    const headerHeight = this.dayHeaderRef.current.getBoundingClientRect().height;
+    this.dayHeaderSpacerRef.current.style.height = `${headerHeight}px`;
+  }
+
   render() {
     const startOfDay = moment(this.props.time)
       .millisecond(0)
@@ -72,17 +93,17 @@ class DayViewInner extends React.Component<DayViewProps> {
       .hour(0);
 
     return (
-      <Day>
-        <HeaderContainer>
-          <DayHeader time={this.props.time} />
+      <Day ref={this.dayRef}>
+        <HeaderContainer ref={this.dayHeaderRef}>
+          <DayHeader time={this.props.time} separators={this.props.separators} />
         </HeaderContainer>
 
-        <Spacer space="7.5vh" />
+        <div ref={this.dayHeaderSpacerRef} />
 
         <HoursContainer>
           {_.range(24).map((hour) => (
             <span key={hour}>
-              <HourBlock time={moment(startOfDay).hour(hour)} />
+              <HourBlock time={moment(startOfDay).hour(hour)} separators={this.props.separators} />
 
               {hour !== 23 ? <HourDivider /> : <span />}
             </span>

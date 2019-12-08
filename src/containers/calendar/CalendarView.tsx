@@ -42,7 +42,7 @@ class CalendarView extends React.Component<{}, CalendarState> {
           <h1>Calendar</h1>
           <br />
 
-          <Calendar time={this.state.time} view="DAY" />
+          <Calendar time={this.state.time} view="WEEK" />
         </div>
       </div>
     );

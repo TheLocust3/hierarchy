@@ -6,11 +6,17 @@ import { colors } from '../../../constants';
 
 import Spacer from '../../common/Spacer';
 
-const Header = styled('div')`
+type HeaderProps = {
+  separators?: boolean;
+};
+
+const Header = styled('div')<HeaderProps>`
   border: 1px solid ${colors.lightBlack};
   border-top: 0px;
-  border-left: 0px;
-  border-right: 0px;
+  border-left-width: ${(props: HeaderProps) => (props.separators ? `1px` : '0')};
+  border-right-width: ${(props: HeaderProps) => (props.separators ? `1px` : '0')};
+
+  margin-left: -1px;
 `;
 
 const Date = styled('h2')`
@@ -27,6 +33,7 @@ const Day = styled('h3')`
 
 interface DayHeaderProps {
   time: Moment;
+  separators?: boolean;
 }
 
 class DayHeader extends React.Component<DayHeaderProps> {
@@ -34,7 +41,7 @@ class DayHeader extends React.Component<DayHeaderProps> {
     const time = this.props.time;
 
     return (
-      <Header>
+      <Header separators={this.props.separators}>
         <Date>
           <Bolded>{time.format('MMMM Do')}</Bolded>, {time.format('YYYY')}
         </Date>

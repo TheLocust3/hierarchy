@@ -2,6 +2,7 @@ import React from 'react';
 import { Moment } from 'moment';
 
 import DayView from './day/DayView';
+import WeekView from './week/WeekView';
 
 interface DayViewProps {
   time: Moment;
@@ -17,6 +18,8 @@ class Calendar extends React.Component<DayViewProps> {
     switch (this.props.view) {
       case 'DAY':
         return <DayView time={this.props.time} />;
+      case 'WEEK':
+        return <WeekView time={this.props.time} />;
       default:
         return <div />;
     }

@@ -2,6 +2,8 @@ import React from 'react';
 import moment, { Moment } from 'moment';
 import styled from '@emotion/styled';
 
+import { colors } from '../../../constants';
+
 import DayViewInner from './DayViewInner';
 import DayControls from './DayControls';
 
@@ -12,6 +14,18 @@ const Container = styled('div')`
 
   margin-left: 3%;
   margin-right: 3%;
+`;
+
+const DayContainer = styled('div')`
+  overflow-y: scroll;
+
+  border: 1px solid ${colors.lightBlack};
+  border-radius: 5px;
+
+  height: 85vh;
+
+  padding-left: 1%;
+  padding-right: 1%;
 `;
 
 interface DayViewProps {
@@ -77,7 +91,9 @@ class DayView extends React.Component<DayViewProps, DayViewState> {
           today={() => this.setState({ viewingCurrentTime: true, time: this.props.time })}
         />
 
-        <DayViewInner time={this.state.time} />
+        <DayContainer>
+          <DayViewInner time={this.state.time} />
+        </DayContainer>
       </Container>
     );
   }
