@@ -3,8 +3,6 @@ import styled from '@emotion/styled';
 
 import { colors } from '../../constants';
 
-import MiddleCenter from './MiddleCenter';
-
 interface ButtonComponentProps {
   color: string;
   hoverColor: string;
@@ -12,11 +10,12 @@ interface ButtonComponentProps {
   textColor: string;
   width: string;
   height: string;
+  fontSize: string;
 }
 
 const ButtonComponent = styled('div')<ButtonComponentProps>`
   position: relative;
-  display: inline-block;
+  display: flex;
 
   width: ${(props: ButtonComponentProps) => props.width};
   height: ${(props: ButtonComponentProps) => props.height};
@@ -27,12 +26,15 @@ const ButtonComponent = styled('div')<ButtonComponentProps>`
   border-radius: 5px;
 
   color: ${(props: ButtonComponentProps) => props.textColor};
-  font-size: 16px;
+  font-size: ${(props: ButtonComponentProps) => props.fontSize};
 
   background-color: ${(props: ButtonComponentProps) => props.color};
   transition: background-color 0.4s;
 
   user-select: none;
+
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: ${(props: ButtonComponentProps) => props.hoverColor};
@@ -52,6 +54,7 @@ interface ButtonProps {
   onClick: (event: any) => void;
   width?: string;
   height?: string;
+  fontSize?: string;
 }
 
 class Button extends React.Component<ButtonProps> {
@@ -59,6 +62,7 @@ class Button extends React.Component<ButtonProps> {
     const { children, color, hoverColor, activeColor, textColor, onClick } = this.props;
     const width = this.props.width === undefined ? '80px' : this.props.width;
     const height = this.props.height === undefined ? '25px' : this.props.height;
+    const fontSize = this.props.fontSize === undefined ? '16px' : this.props.fontSize;
 
     return (
       <ButtonComponent
@@ -68,8 +72,9 @@ class Button extends React.Component<ButtonProps> {
         textColor={textColor}
         onClick={(event) => onClick(event)}
         width={width}
-        height={height}>
-        <MiddleCenter>{children}</MiddleCenter>
+        height={height}
+        fontSize={fontSize}>
+        {children}
       </ButtonComponent>
     );
   }
