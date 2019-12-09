@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { colors } from '../../../constants';
 
 import DayViewInner from '../day/DayViewInner';
+import HoursHeader from './HoursHeader';
 
 const WeekContainer = styled('div')`
   display: flex;
@@ -20,12 +21,11 @@ const WeekContainer = styled('div')`
   height: 85vh;
 
   padding: -1px;
+  padding-right: 1px;
 `;
 
 const DayContainer = styled('span')`
   flex-grow: 1;
-
-  padding-top: 2px;
 `;
 
 interface WeekViewProps {
@@ -70,10 +70,24 @@ class WeekView extends React.Component<WeekViewProps, WeekViewState> {
 
     return (
       <WeekContainer>
+        <HoursHeader />
+
         {_.range(7).map((day) => {
+          let dayTime = moment(startOfWeek).day(day);
+          let hideHourLine = true;
+          if (dayTime.isSame(this.state.time, 'day')) {
+            dayTime = this.state.time;
+            hideHourLine = false;
+          }
+
           return (
             <DayContainer key={day}>
-              <DayViewInner time={moment(startOfWeek).day(day)} separators={day !== 6} compact />
+              <DayViewInner
+                time={dayTime}
+                separators={day !== 6}
+                hideHourLine={hideHourLine}
+                compact
+              />
             </DayContainer>
           );
         })}

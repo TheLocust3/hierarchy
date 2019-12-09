@@ -20,8 +20,6 @@ const HeaderContainer = styled('div')`
   position: fixed;
 
   background-color: white;
-
-  padding-top: 0.5vh;
 `;
 
 const HoursContainer = styled('div')`
@@ -51,6 +49,7 @@ interface DayViewProps {
   time: Moment;
   compact?: boolean;
   separators?: boolean;
+  hideHourLine?: boolean;
 }
 
 class DayViewInner extends React.Component<DayViewProps> {
@@ -115,14 +114,17 @@ class DayViewInner extends React.Component<DayViewProps> {
               {hour !== 23 ? <HourDivider /> : <span />}
             </span>
           ))}
-
-          <CurrentHour
-            percent={
-              (this.props.time.hours() +
-                (this.props.time.minutes() + this.props.time.seconds() / 60) / 60) /
-              24
-            }
-          />
+          {this.props.hideHourLine ? (
+            <span />
+          ) : (
+            <CurrentHour
+              percent={
+                (this.props.time.hours() +
+                  (this.props.time.minutes() + this.props.time.seconds() / 60) / 60) /
+                24
+              }
+            />
+          )}
         </HoursContainer>
       </Day>
     );
