@@ -23,6 +23,13 @@ const TreeApi = {
     return Tree.fromJSON(json.tree);
   },
 
+  async getLeaves(id: string): Promise<ReadonlyArray<Node>> {
+    const response = await fetch(`${API_ENDPOINT}/tree/${id}/leaves`, { method: 'GET' });
+
+    const json: ListOfNodesResponse = await response.json();
+    return json.nodes.map((node) => Node.fromJSON(node));
+  },
+
   async createLeaf(parentId: string, data: Data): Promise<Node> {
     let payload: any = { data: data };
     if (parentId) {

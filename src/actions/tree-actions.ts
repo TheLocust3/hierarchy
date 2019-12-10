@@ -13,6 +13,9 @@ export const RECEIVE_ALL_TREES = 'RECEIVE_ALL_TREES';
 export const REQUEST_TREE = 'REQUEST_TREE';
 export const RECEIVE_TREE = 'RECEIVE_TREE';
 
+export const REQUEST_LEAVES = 'REQUEST_LEAVES';
+export const RECEIVE_LEAVES = 'RECEIVE_LEAVES';
+
 export const SET_OVERLAY = 'SET_OVERLAY';
 
 export const CREATE_LEAF = 'CREATE_LEAF';
@@ -38,6 +41,15 @@ interface RequestTreeAction {
 interface ReceiveTreeAction {
   type: typeof RECEIVE_TREE;
   payload: ITree;
+}
+
+interface RequestLeavesAction {
+  type: typeof REQUEST_LEAVES;
+}
+
+interface ReceiveLeavesAction {
+  type: typeof RECEIVE_LEAVES;
+  payload: ReadonlyArray<Node>;
 }
 
 interface SetOverlayAction {
@@ -79,6 +91,8 @@ export type TreeActionTypes =
   | ReceiveAllTreesAction
   | RequestTreeAction
   | ReceiveTreeAction
+  | RequestLeavesAction
+  | ReceiveLeavesAction
   | SetOverlayAction
   | CreateLeafAction
   | DeleteNodeAction
@@ -110,6 +124,19 @@ const InternalActions = {
     return {
       type: RECEIVE_TREE,
       payload: tree
+    };
+  },
+
+  requestLeaves(): TreeActionTypes {
+    return {
+      type: REQUEST_LEAVES
+    };
+  },
+
+  receiveLeaves(leaves: ReadonlyArray<Node>): TreeActionTypes {
+    return {
+      type: RECEIVE_LEAVES,
+      payload: leaves
     };
   },
 
@@ -175,6 +202,15 @@ export function getTree(id: string): ThunkAction<void, AppState, null, TreeActio
 
     const tree = await TreeApi.getTree(id);
     dispatch(InternalActions.receiveTree(tree));
+  };
+}
+
+export function getLeaves(id: string): ThunkAction<void, AppState, null, TreeActionTypes> {
+  return async (dispatch) => {
+    dispatch(InternalActions.requestLeaves());
+
+    const leaves = await TreeApi.getLeaves(id);
+    dispatch(InternalActions.receiveLeaves(leaves));
   };
 }
 

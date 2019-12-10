@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 
 import { TITLE } from '../../constants';
 import { AppState, RouterMatch, RouterParams } from '../../types';
-import { getCardsRootedAt } from '../../actions/list-actions';
-import Column from '../../models/card/column';
+import { getLeaves } from '../../actions/tree-actions';
+import { Node } from '../../models/tree/tree-base';
 
 import Calendar from '../../components/calendar/Calendar';
 
@@ -16,9 +16,9 @@ interface CalendarViewParams extends RouterParams {
 
 interface CalendarProps {
   isReady: boolean;
-  list: ReadonlyArray<Column>;
+  nodes: ReadonlyArray<Node>;
   match: RouterMatch<CalendarViewParams>;
-  getCardsRootedAt: (id: string) => void;
+  getLeaves: (id: string) => void;
 }
 
 interface CalendarState {
@@ -33,7 +33,7 @@ class CalendarView extends React.Component<CalendarProps, CalendarState> {
   }
 
   componentDidMount() {
-    this.props.getCardsRootedAt(this.props.match.params.id);
+    this.props.getLeaves(this.props.match.params.id);
 
     setInterval(() => {
       this.setState({
@@ -47,8 +47,6 @@ class CalendarView extends React.Component<CalendarProps, CalendarState> {
   }
 
   render() {
-    console.log(this.props.list);
-
     return (
       <div>
         <Helmet>
@@ -68,8 +66,8 @@ class CalendarView extends React.Component<CalendarProps, CalendarState> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  list: state.list.list,
-  isReady: state.list.isReady
+  nodes: state.tree.leaves,
+  isReady: state.tree.isReady
 });
 
-export default connect(mapStateToProps, { getCardsRootedAt })(CalendarView);
+export default connect(mapStateToProps, { getLeaves })(CalendarView);

@@ -4,8 +4,10 @@ import {
   TreeActionTypes,
   REQUEST_ALL_TREES,
   REQUEST_TREE,
+  REQUEST_LEAVES,
   RECEIVE_ALL_TREES,
   RECEIVE_TREE,
+  RECEIVE_LEAVES,
   SET_OVERLAY,
   CREATE_LEAF,
   DELETE_NODE,
@@ -22,6 +24,7 @@ export interface TreeOverlay {
 export interface TreeState {
   tree: ITree;
   nodes: ReadonlyArray<Node>;
+  leaves: ReadonlyArray<Node>;
   labels: ReadonlyArray<Node>;
   statuses: ReadonlyArray<Node>;
   isReady: boolean;
@@ -31,6 +34,7 @@ export interface TreeState {
 const defaultTreeState: TreeState = {
   tree: new Leaf(Node.empty()),
   nodes: [],
+  leaves: [],
   labels: [],
   statuses: [],
   isReady: false,
@@ -44,6 +48,7 @@ export function treeReducer(
   switch (action.type) {
     case REQUEST_ALL_TREES:
     case REQUEST_TREE:
+    case REQUEST_LEAVES:
       return {
         ...state,
         isReady: false
@@ -64,6 +69,12 @@ export function treeReducer(
       return {
         ...state,
         tree: action.payload,
+        isReady: true
+      };
+    case RECEIVE_LEAVES:
+      return {
+        ...state,
+        leaves: action.payload,
         isReady: true
       };
     case SET_OVERLAY:
