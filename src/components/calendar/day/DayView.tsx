@@ -92,7 +92,7 @@ class DayView extends React.Component<DayViewProps, DayViewState> {
         />
 
         <DayContainer>
-          <DayViewInner time={this.state.time} />
+          <DayViewInner time={this.state.time} hideHourLine={!this.state.viewingCurrentTime} />
         </DayContainer>
       </Container>
     );

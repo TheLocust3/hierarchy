@@ -40,7 +40,7 @@ interface RootNodeProps {
 class RootNode extends React.Component<RootNodeProps> {
   render() {
     const { node } = this.props;
-    const to = this.props.to === undefined ? `/tree/${node.id}` : `/tree/${node.id}/list`;
+    const to = this.props.to === undefined ? `/tree/${node.id}` : this.props.to;
 
     return (
       <UnstyledLink to={to}>

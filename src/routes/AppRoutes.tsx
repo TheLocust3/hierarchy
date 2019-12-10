@@ -8,6 +8,7 @@ import TreeView from '../containers/tree/TreeView';
 import ListView from '../containers/tree/list/ListView';
 import Settings from '../containers/Settings';
 import CalendarView from '../containers/calendar/CalendarView';
+import CalendarListView from '../containers/calendar/CalendarListView';
 import NotFound from '../containers/NotFound';
 
 const AppRoutes: React.FC = () => {
@@ -20,7 +21,8 @@ const AppRoutes: React.FC = () => {
 
       <Route exact path="/lists" component={RootListView} />
 
-      <Route exact path="/calendar" component={CalendarView} />
+      <Route exact path="/calendar/:id" component={CalendarView} />
+      <Route exact path="/calendar" component={CalendarListView} />
 
       <Route exact path="/settings" component={Settings} />
 
