@@ -5,6 +5,9 @@ This project is currently in active development.
 
 ## to-do
 
+- Allow some sort of prioritization of goals
+- Track history of trees and visualize its change over time
+- Add some personal journal?
 - Enforce some sort of customizable ordering to lists/trees
 - List view refactor
   - What should the columns be? Should they really be statuses'?
