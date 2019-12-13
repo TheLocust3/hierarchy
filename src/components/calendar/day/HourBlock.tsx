@@ -30,12 +30,13 @@ interface HourBlockProps {
   time: Moment;
   compact?: boolean;
   separators?: boolean;
+  onClick: () => void;
 }
 
 class HourBlock extends React.Component<HourBlockProps> {
   render() {
     return (
-      <Block separators={this.props.separators}>
+      <Block onClick={this.props.onClick} separators={this.props.separators}>
         <Hour>{this.props.compact ? '' : this.props.time.format('h A')}</Hour>
       </Block>
     );

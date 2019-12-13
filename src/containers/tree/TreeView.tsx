@@ -143,7 +143,16 @@ class TreeView extends React.Component<TreeViewProps, TreeViewState> {
       y: rect.top - this.viewportRef.current.scrollTop
     };
 
-    if (!_.isEqual(newViewport, this.state.viewport)) {
+    const oldViewport = this.state.viewport;
+
+    if (
+      !(
+        newViewport.x === oldViewport.x &&
+        newViewport.y === oldViewport.y &&
+        _.inRange(newViewport.width, oldViewport.width - 5, oldViewport.width + 5) &&
+        _.inRange(newViewport.height, oldViewport.height - 5, oldViewport.height + 5)
+      )
+    ) {
       this.setState({
         viewport: newViewport
       });

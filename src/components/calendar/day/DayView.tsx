@@ -30,6 +30,7 @@ const DayContainer = styled('div')`
 
 interface DayViewProps {
   time: Moment;
+  onTimeSelect: (startTime: Moment) => void;
 }
 
 interface DayViewState {
@@ -38,10 +39,14 @@ interface DayViewState {
 }
 
 class DayView extends React.Component<DayViewProps, DayViewState> {
+  private dayRef: React.RefObject<HTMLDivElement>;
+
   constructor(props: DayViewProps) {
     super(props);
 
     this.state = { time: props.time, viewingCurrentTime: true };
+
+    this.dayRef = React.createRef();
   }
 
   componentDidMount() {
@@ -91,8 +96,12 @@ class DayView extends React.Component<DayViewProps, DayViewState> {
           today={() => this.setState({ viewingCurrentTime: true, time: this.props.time })}
         />
 
-        <DayContainer>
-          <DayViewInner time={this.state.time} hideHourLine={!this.state.viewingCurrentTime} />
+        <DayContainer ref={this.dayRef}>
+          <DayViewInner
+            time={this.state.time}
+            hideHourLine={!this.state.viewingCurrentTime}
+            onTimeSelect={this.props.onTimeSelect}
+          />
         </DayContainer>
       </Container>
     );

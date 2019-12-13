@@ -26,7 +26,7 @@ const HoursContainer = styled('div')`
   position: relative;
   z-index: -1;
 
-  padding-top: 1%;
+  padding-top: 3px;
 `;
 
 type CurrentHourProps = {
@@ -50,15 +50,22 @@ interface DayViewProps {
   compact?: boolean;
   separators?: boolean;
   hideHourLine?: boolean;
+  onTimeSelect: (startTime: Moment) => void;
 }
 
-class DayViewInner extends React.Component<DayViewProps> {
+interface DayViewState {
+  headerOffset: number;
+}
+
+class DayViewInner extends React.Component<DayViewProps, DayViewState> {
   private dayRef: React.RefObject<HTMLDivElement>;
   private dayHeaderRef: React.RefObject<HTMLDivElement>;
   private dayHeaderSpacerRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: DayViewProps) {
     super(props);
+
+    this.state = { headerOffset: 0 };
 
     this.dayRef = React.createRef();
     this.dayHeaderRef = React.createRef();
@@ -81,6 +88,8 @@ class DayViewInner extends React.Component<DayViewProps> {
 
     const headerHeight = this.dayHeaderRef.current.getBoundingClientRect().height;
     this.dayHeaderSpacerRef.current.style.height = `${headerHeight}px`;
+
+    this.setState({ headerOffset: headerHeight });
   }
 
   render() {
@@ -103,17 +112,22 @@ class DayViewInner extends React.Component<DayViewProps> {
         <div ref={this.dayHeaderSpacerRef} />
 
         <HoursContainer>
-          {_.range(24).map((hour) => (
-            <span key={hour}>
-              <HourBlock
-                time={moment(startOfDay).hour(hour)}
-                compact={this.props.compact}
-                separators={this.props.separators}
-              />
+          {_.range(24).map((hour) => {
+            const time = moment(startOfDay).hour(hour);
 
-              {hour !== 23 ? <HourDivider /> : <span />}
-            </span>
-          ))}
+            return (
+              <span key={hour}>
+                <HourBlock
+                  time={time}
+                  compact={this.props.compact}
+                  separators={this.props.separators}
+                  onClick={() => this.props.onTimeSelect(time)}
+                />
+
+                {hour !== 23 ? <HourDivider /> : <span />}
+              </span>
+            );
+          })}
           {this.props.hideHourLine ? (
             <span />
           ) : (

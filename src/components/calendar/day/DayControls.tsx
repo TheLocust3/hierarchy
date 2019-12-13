@@ -9,7 +9,7 @@ const Controls = styled('div')`
   display: flex;
   justify-content: space-between;
 
-  margin-bottom: 1%;
+  margin-bottom: 5px;
 `;
 
 interface DayControlsProps {

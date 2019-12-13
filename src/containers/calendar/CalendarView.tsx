@@ -10,9 +10,10 @@ import { getLeaves } from '../../actions/tree-actions';
 import { Node } from '../../models/tree/tree-base';
 
 import Calendar from '../../components/calendar/Calendar';
-import NodePicker from '../../components/calendar/NodePicker';
+import TimeSelect from '../../components/calendar/TimeSelect';
 
 const PanelContainer = styled('div')`
+  position: relative;
   display: flex;
 `;
 
@@ -29,6 +30,7 @@ interface CalendarProps {
 
 interface CalendarState {
   time: Moment;
+  startTime?: Moment;
 }
 
 class CalendarView extends React.Component<CalendarProps, CalendarState> {
@@ -65,9 +67,17 @@ class CalendarView extends React.Component<CalendarProps, CalendarState> {
           <br />
 
           <PanelContainer>
-            <Calendar time={this.state.time} view="DAY" />
+            <Calendar
+              time={this.state.time}
+              view="DAY"
+              onTimeSelect={(startTime: Moment) => this.setState({ startTime: startTime })}
+            />
 
-            {this.props.isReady ? <NodePicker nodes={this.props.nodes} /> : <span />}
+            {this.props.isReady ? (
+              <TimeSelect nodes={this.props.nodes} startTime={this.state.startTime} />
+            ) : (
+              <span />
+            )}
           </PanelContainer>
         </div>
       </div>

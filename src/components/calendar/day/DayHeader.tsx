@@ -60,11 +60,11 @@ class DayHeader extends React.Component<DayHeaderProps> {
           <Bolded>{time.format('MMMM Do')}</Bolded>, {time.format('YYYY')}
         </Date>
 
-        <Spacer space="1%" />
+        <Spacer space="5px" />
 
         <Day>{time.format('dddd')}</Day>
 
-        <Spacer space="1%" />
+        <Spacer space="5px" />
       </Header>
     );
   }
@@ -79,7 +79,7 @@ class DayHeader extends React.Component<DayHeaderProps> {
             <Bolded>{time.format('ddd D')}</Bolded>
           </DateCompact>
 
-          <Spacer space="2%" />
+          <Spacer space="10px" />
         </SoftCenter>
       </Header>
     );

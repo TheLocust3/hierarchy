@@ -86,6 +86,7 @@ class WeekView extends React.Component<WeekViewProps, WeekViewState> {
                 time={dayTime}
                 separators={day !== 6}
                 hideHourLine={hideHourLine}
+                onTimeSelect={(startTime: Moment) => {}}
                 compact
               />
             </DayContainer>
